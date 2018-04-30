@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SmartHouse</string>
+    <string name="hand_mode">Ручной режим</string>
+    <string name="temp">Температура</string>
+    <string name="hot">Нагрев</string>
+    <string name="cool">Охлаждение</string>
+    <string name="top_temp">Верхняя:</string>
+    <string name="bot_temp">Нижняя:</string>
+    <string name="time">Время</string>
+    <string name="period_time">Период:</string>
+    <string name="duration_time">Длительность:</string>
+</resources>
