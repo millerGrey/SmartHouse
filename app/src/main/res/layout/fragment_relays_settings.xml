@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/temp"
+        android:text="@string/temp_mode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
         android:layout_marginTop="8dp"
-        android:text="@string/time"
+        android:text="@string/time_mode"
         app:layout_constraintStart_toEndOf="@+id/handModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
