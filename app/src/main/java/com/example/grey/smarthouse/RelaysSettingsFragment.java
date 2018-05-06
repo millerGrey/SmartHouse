@@ -1,15 +1,13 @@
 package com.example.grey.smarthouse;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-
-import org.w3c.dom.Text;
 
 import java.util.UUID;
 
@@ -19,12 +17,16 @@ import java.util.UUID;
 
 public class RelaysSettingsFragment extends Fragment {
 
+    private static final String ARG_RELAY_ID = "relay_id";
+
+
+    Relay mRelay;
     private EditText mDescriptionField;
     private EditText mTopTemp;
     private EditText mBotTemp;
     private EditText mPeriodTime;
     private EditText mDurationTime;
-//    private Text mTextTopTemp;
+    //    private Text mTextTopTemp;
 //    private Text mTextBotTemp;
 //    private Text mTextPeriod;
 //    private Text mTextDuration;
@@ -33,17 +35,23 @@ public class RelaysSettingsFragment extends Fragment {
     private CheckBox mTimeModeCheckBox;
 
 
-    public static RelaysSettingsFragment newInstance() {
+    public static RelaysSettingsFragment newInstance(UUID rId) {
         Bundle args = new Bundle();
-        //args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putSerializable(ARG_RELAY_ID, rId);
         RelaysSettingsFragment fragment = new RelaysSettingsFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
+        mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_relays_settings, container, false);
 
         mDescriptionField = (EditText) v.findViewById(R.id.description);
@@ -52,46 +60,50 @@ public class RelaysSettingsFragment extends Fragment {
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
         mDurationTime = (EditText) v.findViewById(R.id.durationTime);
 
-        mHandModeCheckBox = (CheckBox)v.findViewById(R.id.handModeCheckbox);
+        mHandModeCheckBox = (CheckBox) v.findViewById(R.id.handModeCheckbox);
+
         mHandModeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHandModeCheckBox.setChecked(true);
-                mTempModeCheckBox.setChecked(false);
-                mTimeModeCheckBox.setChecked(false);
-                mTopTemp.setEnabled(false);
-                mBotTemp.setEnabled(false);
-                mPeriodTime.setEnabled(false);
-                mDurationTime.setEnabled(false);
+                mRelay.setMode(Relay.HAND_MODE);
+                updateUI(mRelay.getMode());
             }
         });
-        mTempModeCheckBox = (CheckBox)v.findViewById(R.id.tempModeCheckbox);
+        mTempModeCheckBox = (CheckBox) v.findViewById(R.id.tempModeCheckbox);
         mTempModeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTempModeCheckBox.setChecked(true);
-                mHandModeCheckBox.setChecked(false);
-                mTimeModeCheckBox.setChecked(false);
-                mTopTemp.setEnabled(true);
-                mBotTemp.setEnabled(true);
-                mPeriodTime.setEnabled(false);
-                mDurationTime.setEnabled(false);
+                mRelay.setMode(Relay.TEMP_MODE);
+                updateUI(mRelay.getMode());
             }
         });
-        mTimeModeCheckBox = (CheckBox)v.findViewById(R.id.timeModeCheckbox);
+        mTimeModeCheckBox = (CheckBox) v.findViewById(R.id.timeModeCheckbox);
         mTimeModeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTimeModeCheckBox.setChecked(true);
-                mHandModeCheckBox.setChecked(false);
-                mTempModeCheckBox.setChecked(false);
-                mTopTemp.setEnabled(false);
-                mBotTemp.setEnabled(false);
-                mPeriodTime.setEnabled(true);
-                mDurationTime.setEnabled(true);
+                mRelay.setMode(Relay.TIME_MODE);
+                updateUI(mRelay.getMode());
             }
         });
 
+        updateUI(mRelay.getMode());
+
         return v;
+    }
+
+    private void updateUI(int mode)
+    {
+        boolean mTemp = (mode == 0);
+        boolean mTime = ((mode & 0x01)!=0);
+        boolean mHand = ((mode & 0x02)!=0);
+
+        mHandModeCheckBox.setChecked(mHand);
+        mTempModeCheckBox.setChecked(mTemp);
+        mTimeModeCheckBox.setChecked(mTime);
+        mTopTemp.setEnabled(mTemp);
+        mBotTemp.setEnabled(mTemp);
+        mPeriodTime.setEnabled(mTime);
+        mDurationTime.setEnabled(mTime);
+
     }
 }

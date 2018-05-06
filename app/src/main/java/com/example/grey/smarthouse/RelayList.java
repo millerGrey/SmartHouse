@@ -28,7 +28,7 @@ public class RelayList {
         mContext = context.getApplicationContext();
         for (int i = 0; i < 4; i++) {
             Relay relay = new Relay();
-            relay.setDescription("Crime #" + i);
+            relay.setDescription("Реле " + i);
             relay.setMode(1); // Для каждого второго объекта
             mRelays.add(relay);
         }
@@ -39,9 +39,16 @@ public class RelayList {
         return mRelays;
     }
 
-//    public Relay getRelay(UUID id)
-//    {
-//
-//    }
+    public Relay getRelay(UUID id)
+    {
+        for(Relay relay  : mRelays)
+        {
+            if(relay.getId().equals(id))
+            {
+                return relay;
+            }
+        }
+        return null;
+    }
 
 }

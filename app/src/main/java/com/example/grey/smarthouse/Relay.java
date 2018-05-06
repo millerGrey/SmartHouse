@@ -13,8 +13,9 @@ public class Relay {
     public final static int TIME_MODE = 1;
 
     private UUID mId;
-    private int mNumber;
     private String mDescription;
+
+    private int mNumber;
     private int mMode;
     private boolean mHot;
     private int mTopTemp;
