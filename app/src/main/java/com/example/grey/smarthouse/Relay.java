@@ -22,6 +22,7 @@ public class Relay {
     private int mBotTemp;
     private int mPeriodTime;
     private int mDurationTime;
+    private int mSensNum;
 
     public Relay() {
         this(UUID.randomUUID());
@@ -68,6 +69,10 @@ public class Relay {
         mDurationTime = durationTime;
     }
 
+    public void setSensNum(int sensNum) {
+        mSensNum = sensNum;
+    }
+
     public UUID getId() {
         return mId;
     }
@@ -102,5 +107,9 @@ public class Relay {
 
     public int getDurationTime() {
         return mDurationTime;
+    }
+
+    public int getSensNum() {
+        return mSensNum;
     }
 }

@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class RelaySetActivity extends AppCompatActivity {
 
     private static final String EXTRA_RELAY_ID = "com.example.grey.smarthouse.relay_id";
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = RelaysSettingsFragment.newInstance(relayId);
+            fragment = RelaySetFragment.newInstance(relayId);
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Intent NewIntent(Context packageContext, UUID relayId)
     {
-        Intent intent = new Intent(packageContext, MainActivity.class);
+        Intent intent = new Intent(packageContext, RelaySetActivity.class);
         intent.putExtra(EXTRA_RELAY_ID, relayId);
         return intent;
     }

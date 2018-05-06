@@ -1,5 +1,6 @@
 package com.example.grey.smarthouse;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by GREY on 29.04.2018.
  */
 
-public class RelaysSettingsFragment extends Fragment {
+public class RelaySetFragment extends Fragment {
 
     private static final String ARG_RELAY_ID = "relay_id";
 
@@ -33,12 +35,12 @@ public class RelaysSettingsFragment extends Fragment {
     private CheckBox mHandModeCheckBox;
     private CheckBox mTempModeCheckBox;
     private CheckBox mTimeModeCheckBox;
+    MyTask mTask;
 
-
-    public static RelaysSettingsFragment newInstance(UUID rId) {
+    public static RelaySetFragment newInstance(UUID rId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_RELAY_ID, rId);
-        RelaysSettingsFragment fragment = new RelaysSettingsFragment();
+        RelaySetFragment fragment = new RelaySetFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,11 +50,13 @@ public class RelaysSettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
         mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
+        mTask = new MyTask();
+        mTask.execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_relays_settings, container, false);
+        View v = inflater.inflate(R.layout.fragment_relay_set, container, false);
 
         mDescriptionField = (EditText) v.findViewById(R.id.description);
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
@@ -105,5 +109,29 @@ public class RelaysSettingsFragment extends Fragment {
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
 
+    }
+
+    private  class MyTask extends AsyncTask<Void,List<String>,Void> {
+
+        List<String> val;
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            val = new Requests().getConfig(mRelay.getNumber());
+            mRelay.setMode(Integer.parseInt(val.get(1)));
+            mRelay.setTopTemp(Integer.parseInt(val.get(2)));
+            mRelay.setBotTemp(Integer.parseInt(val.get(3)));
+            mRelay.setPeriodTime(Integer.parseInt(val.get(4)));
+            mRelay.setDurationTime(Integer.parseInt(val.get(5)));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            updateUI(mRelay.getMode());
+            mTopTemp.setText(String.valueOf(mRelay.getTopTemp()));
+            mBotTemp.setText(String.valueOf(mRelay.getBotTemp()));
+        }
     }
 }

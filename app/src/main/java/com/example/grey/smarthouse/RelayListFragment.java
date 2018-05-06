@@ -99,7 +99,7 @@ public class RelayListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = MainActivity.NewIntent(getActivity(), mRelay.getId());
+            Intent intent = RelaySetActivity.NewIntent(getActivity(), mRelay.getId());
             startActivity(intent);
         }
     }

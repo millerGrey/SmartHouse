@@ -28,8 +28,9 @@ public class RelayList {
         mContext = context.getApplicationContext();
         for (int i = 0; i < 4; i++) {
             Relay relay = new Relay();
-            relay.setDescription("Реле " + i);
-            relay.setMode(1); // Для каждого второго объекта
+            relay.setDescription("Реле " + (i + 1));
+            relay.setMode(1);
+            relay.setNumber(i+1);
             mRelays.add(relay);
         }
     }
