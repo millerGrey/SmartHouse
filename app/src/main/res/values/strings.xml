@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">SmartHouse</string>
+    <string name="relay_n">Реле %1$d</string>
     <string name="hand_mode">Ручной режим</string>
     <string name="temp_mode">Температура</string>
     <string name="hot">Нагрев</string>
+    <string name="degree">°С</string>
     <string name="cool">Охлаждение</string>
     <string name="top_temp">Верхняя:</string>
     <string name="bot_temp">Нижняя:</string>
     <string name="time_mode">Время</string>
+    <string name="minutes">мин.</string>
     <string name="period_time">Период:</string>
     <string name="duration_time">Длительность:</string>
+    <string name="save">Сохранить</string>
 </resources>

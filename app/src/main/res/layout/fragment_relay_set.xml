@@ -7,22 +7,30 @@
     android:layout_margin="0dp"
     android:padding="0dp">
 
+    <TextView
+        android:id="@+id/relayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/relay_n"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/description"
         android:layout_width="322dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Описание"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="text"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toBottomOf="@+id/relayNumber" />
 
     <CheckBox
         android:id="@+id/handModeCheckbox"
@@ -31,16 +39,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/hand_mode"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <CheckBox
         android:id="@+id/tempModeCheckbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="33dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/temp_mode"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
@@ -52,14 +62,26 @@
         android:layout_marginTop="8dp"
         android:text="@string/top_temp"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
+
+    <TextView
+        android:id="@+id/textTopDegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/degree"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/topTemp"
+        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
 
     <EditText
         android:id="@+id/topTemp"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:allowUndo="false"
@@ -70,10 +92,9 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textColorLink="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/textDurationTime"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
-        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
 
     <TextView
         android:id="@+id/textBotTemp"
@@ -83,14 +104,26 @@
         android:layout_marginTop="8dp"
         android:text="@string/bot_temp"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTopTemp" />
+
+    <TextView
+        android:id="@+id/textBotDegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/degree"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/botTemp"
+        app:layout_constraintTop_toBottomOf="@+id/textTopDegree" />
 
     <EditText
         android:id="@+id/botTemp"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:allowUndo="false"
@@ -101,8 +134,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textColorLink="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/textDurationTime"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
         app:layout_constraintTop_toBottomOf="@+id/topTemp" />
 
@@ -110,11 +142,12 @@
         android:id="@+id/timeModeCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/time_mode"
-        app:layout_constraintStart_toEndOf="@+id/handModeCheckbox"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBotTemp" />
 
     <TextView
         android:id="@+id/textPeriodTime"
@@ -123,14 +156,26 @@
         android:layout_marginTop="8dp"
         android:text="@string/period_time"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/timeModeCheckbox"
+        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+
+    <TextView
+        android:id="@+id/textPeriodMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/minutes"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/periodTime"
         app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
 
     <EditText
         android:id="@+id/periodTime"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:allowUndo="false"
@@ -141,8 +186,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textColorLink="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
         app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
 
@@ -153,6 +197,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/duration_time"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/timeModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/textPeriodTime" />
 
@@ -160,7 +205,6 @@
         android:id="@+id/durationTime"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_style"
@@ -170,22 +214,32 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textColorLink="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
         app:layout_constraintTop_toBottomOf="@+id/periodTime" />
+
+    <TextView
+        android:id="@+id/textDurationMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/minutes"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/durationTime"
+        app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/hotSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
         android:text="@string/hot"
-        app:layout_constraintBottom_toTopOf="@+id/textTopTemp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
@@ -197,8 +251,23 @@
         android:layout_marginTop="8dp"
         android:text="@string/cool"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/topTemp"
         app:layout_constraintStart_toEndOf="@+id/hotSwitch"
         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDurationTime" />
 
 </android.support.constraint.ConstraintLayout>

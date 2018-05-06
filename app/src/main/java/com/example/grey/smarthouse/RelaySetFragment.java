@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,19 +25,17 @@ public class RelaySetFragment extends Fragment {
 
 
     Relay mRelay;
+    private TextView mNumber;
     private EditText mDescriptionField;
     private EditText mTopTemp;
     private EditText mBotTemp;
     private EditText mPeriodTime;
     private EditText mDurationTime;
-    //    private Text mTextTopTemp;
-//    private Text mTextBotTemp;
-//    private Text mTextPeriod;
-//    private Text mTextDuration;
     private CheckBox mHandModeCheckBox;
     private CheckBox mTempModeCheckBox;
     private CheckBox mTimeModeCheckBox;
-    MyTask mTask;
+    private Button mSaveButton;
+
 
     public static RelaySetFragment newInstance(UUID rId) {
         Bundle args = new Bundle();
@@ -50,19 +50,31 @@ public class RelaySetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
         mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
-        mTask = new MyTask();
-        mTask.execute();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI(mRelay.getMode());
+        mTopTemp.setText(String.valueOf(mRelay.getTopTemp()));
+        mBotTemp.setText(String.valueOf(mRelay.getBotTemp()));
+        mPeriodTime.setText(String.valueOf(mRelay.getPeriodTime()));
+        mDurationTime.setText(String.valueOf(mRelay.getDurationTime()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_relay_set, container, false);
 
+        mNumber = (TextView) v.findViewById(R.id.relayNumber);
+        mNumber.setText(String.format(getResources().getString(R.string.relay_n), mRelay.getNumber()));
         mDescriptionField = (EditText) v.findViewById(R.id.description);
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
         mBotTemp = (EditText) v.findViewById(R.id.botTemp);
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
         mDurationTime = (EditText) v.findViewById(R.id.durationTime);
+        mSaveButton = (Button) v.findViewById(R.id.saveButton);
 
         mHandModeCheckBox = (CheckBox) v.findViewById(R.id.handModeCheckbox);
 
@@ -109,29 +121,6 @@ public class RelaySetFragment extends Fragment {
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
 
-    }
 
-    private  class MyTask extends AsyncTask<Void,List<String>,Void> {
-
-        List<String> val;
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            val = new Requests().getConfig(mRelay.getNumber());
-            mRelay.setMode(Integer.parseInt(val.get(1)));
-            mRelay.setTopTemp(Integer.parseInt(val.get(2)));
-            mRelay.setBotTemp(Integer.parseInt(val.get(3)));
-            mRelay.setPeriodTime(Integer.parseInt(val.get(4)));
-            mRelay.setDurationTime(Integer.parseInt(val.get(5)));
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            updateUI(mRelay.getMode());
-            mTopTemp.setText(String.valueOf(mRelay.getTopTemp()));
-            mBotTemp.setText(String.valueOf(mRelay.getBotTemp()));
-        }
     }
 }
