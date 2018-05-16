@@ -40,7 +40,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/hand_mode"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ic_hand"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <CheckBox
@@ -51,7 +51,31 @@
         android:layout_marginTop="8dp"
         android:text="@string/temp_mode"
         android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/ic_temp"
+        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/hotSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:text="@string/hot"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/hotSwitch"
+        app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
     <TextView
@@ -146,18 +170,19 @@
         android:layout_marginTop="8dp"
         android:text="@string/time_mode"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ic_time"
         app:layout_constraintTop_toBottomOf="@+id/textBotTemp" />
 
     <TextView
         android:id="@+id/textPeriodTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/period_time"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/timeModeCheckbox"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
 
     <TextView
@@ -194,11 +219,12 @@
         android:id="@+id/textDurationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/duration_time"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/timeModeCheckbox"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPeriodTime" />
 
     <EditText
@@ -230,19 +256,6 @@
         app:layout_constraintStart_toEndOf="@+id/durationTime"
         app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/hotSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:paddingEnd="0dp"
-        android:paddingStart="0dp"
-        android:text="@string/hot"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -269,5 +282,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textDurationTime" />
+
+    <ImageView
+        android:id="@+id/ic_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBotTemp"
+        app:srcCompat="@drawable/ic_time" />
+
+    <ImageView
+        android:id="@+id/ic_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox"
+        app:srcCompat="@drawable/ic_sun" />
+
+    <ImageView
+        android:id="@+id/ic_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:srcCompat="@drawable/ic_hand" />
 
 </android.support.constraint.ConstraintLayout>

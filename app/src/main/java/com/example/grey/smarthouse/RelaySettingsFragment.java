@@ -1,6 +1,5 @@
 package com.example.grey.smarthouse;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,14 +11,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by GREY on 29.04.2018.
  */
 
-public class RelaySetFragment extends Fragment {
+public class RelaySettingsFragment extends Fragment {
 
     private static final String ARG_RELAY_ID = "relay_id";
 
@@ -37,10 +35,10 @@ public class RelaySetFragment extends Fragment {
     private Button mSaveButton;
 
 
-    public static RelaySetFragment newInstance(UUID rId) {
+    public static RelaySettingsFragment newInstance(UUID rId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_RELAY_ID, rId);
-        RelaySetFragment fragment = new RelaySetFragment();
+        RelaySettingsFragment fragment = new RelaySettingsFragment();
         fragment.setArguments(args);
         return fragment;
     }

@@ -1,6 +1,9 @@
 package com.example.grey.smarthouse;
 
+import android.app.Application;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,15 +21,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import retrofit2.Retrofit;
+
 
 /**
  * Created by GREY on 06.05.2018.
  */
 
-public class Requests {
+public class Requests extends AppCompatActivity {
 
     private static final String TAG = "req";
 
+
+
+    private static SmartHouseApi smartHouseApi;
+    private Retrofit retrofit;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://vineryhome.ddns.net:8081")
+                //.addConverterFactory(GsonConverterFactory.create())
+                .build();
+        smartHouseApi = retrofit.create(SmartHouseApi.class);
+    }
+
+    public static SmartHouseApi getApi() {
+        return smartHouseApi;
+    }
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);

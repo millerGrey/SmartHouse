@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomTheme">
-        <activity android:name=".RelaySetActivity">
+        <activity android:name=".RelaySettingsActivity">
            
         </activity>
         <activity android:name=".RelayListActivity">

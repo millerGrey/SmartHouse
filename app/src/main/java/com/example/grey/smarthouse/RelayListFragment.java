@@ -1,6 +1,7 @@
 package com.example.grey.smarthouse;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class RelayListFragment extends Fragment {
     public class RelayHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Relay mRelay;
         private TextView mDescription;
-        private TextView mMode;
+        private ImageView mMode;
         private TextView mFirstParam;
         private TextView mSecondParam;
 
@@ -69,7 +71,7 @@ public class RelayListFragment extends Fragment {
         public RelayHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.list_item_relay,parent, false));
             mDescription = itemView.findViewById(R.id.item_description);
-            mMode = itemView.findViewById(R.id.item_mode);
+            mMode = itemView.findViewById(R.id.item_image_mode);
             mFirstParam = itemView.findViewById(R.id.item_first_param);
             mSecondParam = itemView.findViewById(R.id.item_second_param);
             itemView.setOnClickListener(this);
@@ -81,17 +83,17 @@ public class RelayListFragment extends Fragment {
             mDescription.setText(mRelay.getDescription());
 
             if(mode == Relay.TEMP_MODE){
-                mMode.setText(R.string.temp_mode);
+                mMode.setImageResource(R.drawable.ic_sun);
                 mFirstParam.setText(Integer.toString(mRelay.getTopTemp()));
                 mSecondParam.setText(Integer.toString(mRelay.getBotTemp()));
             }
             else if(mode == Relay.TIME_MODE){
-                mMode.setText(R.string.time_mode);
+                mMode.setImageResource(R.drawable.ic_time);
                 mFirstParam.setText(Integer.toString(mRelay.getPeriodTime()));
                 mSecondParam.setText(Integer.toString(mRelay.getDurationTime()));
             }
             else{
-                mMode.setText(R.string.hand_mode);
+                mMode.setImageResource(R.drawable.ic_hand);
                 mFirstParam.setText("");
                 mFirstParam.setText("");
             }
@@ -99,7 +101,7 @@ public class RelayListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = RelaySetActivity.NewIntent(getActivity(), mRelay.getId());
+            Intent intent = RelaySettingsActivity.NewIntent(getActivity(), mRelay.getId());
             startActivity(intent);
         }
     }
