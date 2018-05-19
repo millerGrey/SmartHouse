@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.grey.smarthouse.Model.Relay;
+import com.example.grey.smarthouse.Model.RelayList;
+
 import java.util.UUID;
 
 /**
@@ -49,6 +52,14 @@ public class RelaySettingsFragment extends Fragment {
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
         mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
 
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RelayList.getInstance(getActivity())
+                .updateRelay(mRelay);
     }
 
     @Override

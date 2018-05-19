@@ -1,4 +1,4 @@
-package com.example.grey.smarthouse;
+package com.example.grey.smarthouse.Model;
 
 import java.util.UUID;
 

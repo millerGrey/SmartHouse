@@ -1,7 +1,6 @@
 package com.example.grey.smarthouse;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.grey.smarthouse.Model.Relay;
+import com.example.grey.smarthouse.Model.RelayList;
+
 import java.util.List;
 
 /**
@@ -62,7 +65,7 @@ public class RelayListFragment extends Fragment {
 
     public class RelayHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Relay mRelay;
-        private TextView mDescription;
+        private TextView mName;
         private ImageView mMode;
         private TextView mFirstParam;
         private TextView mSecondParam;
@@ -70,7 +73,7 @@ public class RelayListFragment extends Fragment {
 
         public RelayHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.list_item_relay,parent, false));
-            mDescription = itemView.findViewById(R.id.item_description);
+            mName = itemView.findViewById(R.id.item_name);
             mMode = itemView.findViewById(R.id.item_image_mode);
             mFirstParam = itemView.findViewById(R.id.item_first_param);
             mSecondParam = itemView.findViewById(R.id.item_second_param);
@@ -80,7 +83,7 @@ public class RelayListFragment extends Fragment {
         public void bind(Relay relay){
             mRelay = relay;
             int mode = mRelay.getMode();
-            mDescription.setText(mRelay.getDescription());
+            mName.setText("Реле "+mRelay.getNumber());
 
             if(mode == Relay.TEMP_MODE){
                 mMode.setImageResource(R.drawable.ic_sun);

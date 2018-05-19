@@ -1,6 +1,4 @@
-package com.example.grey.smarthouse;
-
-import java.util.List;
+package com.example.grey.smarthouse.Retrofit;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
