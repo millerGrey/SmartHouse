@@ -21,7 +21,15 @@ public class RelayBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + RelayTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 RelayTable.Cols.UUID + ", " +
-                RelayTable.Cols.DESCRIPTION +
+                RelayTable.Cols.DESCRIPTION + ", " +
+                RelayTable.Cols.NUMBER + ", " +
+                RelayTable.Cols.MODE + ", " +
+                RelayTable.Cols.HOT + ", " +
+                RelayTable.Cols.TOP_TEMP + ", " +
+                RelayTable.Cols.BOT_TEMP + ", " +
+                RelayTable.Cols.PERIOD_TIME + ", " +
+                RelayTable.Cols.DURATION_TIME + ", " +
+                RelayTable.Cols.SENS_NUM +
                 ")"
         );
     }

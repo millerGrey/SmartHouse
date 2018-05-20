@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.grey.smarthouse.database.RelayBaseHelper;
 import com.example.grey.smarthouse.database.RelayCursorWrapper;
@@ -34,21 +35,35 @@ public class RelayList {
 
         mContext = context.getApplicationContext();
         mDatabase = new RelayBaseHelper(mContext).getWritableDatabase();
-        mRelays = getRelaysfromDB();
-        if(mRelays.size()==0) {
-            for (int i = 0; i < 4; i++) {
-                Relay relay = new Relay();
-                mRelays.add(relay);
-                ContentValues values = getContentValues(relay);
-                mDatabase.insert(RelayTable.NAME, null, values);
-            }
-        }
-        for(Relay relay: mRelays) {
-            relay.setMode(1);
-            relay.setNumber(mRelays.indexOf(relay) + 1);
-        }
+//        mRelays = getRelays();
+//        if(mRelays.size()==0) {
+//            for (int i = 0; i < 4; i++) {
+//                Relay relay = new Relay();
+////                mRelays.add(relay);
+////                relay.setMode(1);
+////                relay.setNumber(mRelays.indexOf(relay) + 1);
+////                ContentValues values = getContentValues(relay);
+////                mDatabase.insert(RelayTable.NAME, null, values);
+//                addRelay(relay);
+//            }
+//        }
     }
 
+
+    private static ContentValues getContentValues(Relay relay) {
+        ContentValues values = new ContentValues();
+        values.put(RelayTable.Cols.UUID, relay.getId().toString());
+        values.put(RelayTable.Cols.DESCRIPTION, relay.getDescription());
+        values.put(RelayTable.Cols.NUMBER, relay.getNumber());
+        values.put(RelayTable.Cols.MODE, relay.getMode());
+        values.put(RelayTable.Cols.HOT, relay.isHot());
+        values.put(RelayTable.Cols.TOP_TEMP, relay.getTopTemp());
+        values.put(RelayTable.Cols.BOT_TEMP, relay.getBotTemp());
+        values.put(RelayTable.Cols.PERIOD_TIME, relay.getPeriodTime());
+        values.put(RelayTable.Cols.DURATION_TIME, relay.getDurationTime());
+        values.put(RelayTable.Cols.SENS_NUM, relay.getSensNum());
+        return values;
+    }
 
     private RelayCursorWrapper queryRelays(String whereClause, String[] whereArgs) {
 
@@ -61,17 +76,16 @@ public class RelayList {
                 null, // having
                 null  // orderBy
         );
+        StackTraceElement[] a = new Throwable().getStackTrace();
+
+            Log.d("tag",a[1].getClassName()+"# "+a[1].getMethodName());
+            Log.d("tag",a[2].getClassName()+"# "+a[2].getMethodName());
+
+
         return new RelayCursorWrapper(cursor);
     }
 
-    private static ContentValues getContentValues(Relay relay) {
-        ContentValues values = new ContentValues();
-        values.put(RelayTable.Cols.UUID, relay.getId().toString());
-        values.put(RelayTable.Cols.DESCRIPTION, relay.getDescription());
-        return values;
-    }
-
-    private List<Relay> getRelaysfromDB()
+    public List<Relay> getRelays()
     {
         List<Relay> relays = new ArrayList<>();
         RelayCursorWrapper cursor = queryRelays(null, null);
@@ -86,12 +100,13 @@ public class RelayList {
         }
         return relays;
     }
-    public List<Relay> getRelays(){
-        return mRelays;
-    }
+//    public List<Relay> getRelays(){
+//        mRelays = getRelaysfromDB();
+//        return mRelays;
+//    }
 
-    public Relay getRelay(UUID id)
-    {
+    public Relay getRelay(UUID id) {
+
         RelayCursorWrapper cursor = queryRelays(
                 RelayTable.Cols.UUID + " = ?",
                 new String[] { id.toString() }
@@ -105,6 +120,7 @@ public class RelayList {
         } finally {
             cursor.close();
         }
+    }
 //        for(Relay relay  : mRelays)
 //        {
 //            if(relay.getId().equals(id))
@@ -113,7 +129,7 @@ public class RelayList {
 //            }
 //        }
 //        return null;
-    }
+//    }
     public void updateRelay(Relay relay) {
         String uuidString = relay.getId().toString();
         ContentValues values = getContentValues(relay);
