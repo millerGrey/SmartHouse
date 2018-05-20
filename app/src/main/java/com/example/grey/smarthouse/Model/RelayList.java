@@ -56,7 +56,7 @@ public class RelayList {
         values.put(RelayTable.Cols.DESCRIPTION, relay.getDescription());
         values.put(RelayTable.Cols.NUMBER, relay.getNumber());
         values.put(RelayTable.Cols.MODE, relay.getMode());
-        values.put(RelayTable.Cols.HOT, relay.isHot());
+        values.put(RelayTable.Cols.HOT, relay.isHot()?1:0);
         values.put(RelayTable.Cols.TOP_TEMP, relay.getTopTemp());
         values.put(RelayTable.Cols.BOT_TEMP, relay.getBotTemp());
         values.put(RelayTable.Cols.PERIOD_TIME, relay.getPeriodTime());

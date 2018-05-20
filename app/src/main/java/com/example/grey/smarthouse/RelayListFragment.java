@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class RelayListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("tag","listFragmentCreate");
     }
 
     @Override
@@ -58,6 +60,7 @@ public class RelayListFragment extends Fragment {
         }
         else
         {
+            mAdapter.setRelays(relays);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -82,6 +85,7 @@ public class RelayListFragment extends Fragment {
 
         public void bind(Relay relay){
             mRelay = relay;
+            Log.d("tag","bindRelay: " + relay.getId().toString());
             int mode = mRelay.getMode();
             mName.setText("Реле "+mRelay.getNumber());
 
@@ -132,6 +136,10 @@ public class RelayListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mRelays.size();
+        }
+        public void setRelays(List<Relay> relays) {
+            mRelays = relays;
+            Log.d("tag","setRelays");
         }
     }
 

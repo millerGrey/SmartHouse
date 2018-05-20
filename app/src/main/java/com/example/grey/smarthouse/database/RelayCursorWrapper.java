@@ -2,6 +2,7 @@ package com.example.grey.smarthouse.database;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.util.Log;
 
 import com.example.grey.smarthouse.Model.Relay;
 import com.example.grey.smarthouse.database.RelayDbSchema.RelayTable;
@@ -23,7 +24,7 @@ public class RelayCursorWrapper extends CursorWrapper{
         String desc = getString(getColumnIndex(RelayTable.Cols.DESCRIPTION));
         int number = getInt(getColumnIndex(RelayTable.Cols.NUMBER));
         int mode = getInt(getColumnIndex(RelayTable.Cols.MODE));
-        boolean hot = (getInt(getColumnIndex(RelayTable.Cols.HOT)) & 0x1)!=0;
+        int hot = getInt(getColumnIndex(RelayTable.Cols.HOT));
         int topTemp = getInt(getColumnIndex(RelayTable.Cols.TOP_TEMP));
         int botTemp  = getInt(getColumnIndex(RelayTable.Cols.BOT_TEMP));
         int periodTime = getInt(getColumnIndex(RelayTable.Cols.PERIOD_TIME));
@@ -34,12 +35,13 @@ public class RelayCursorWrapper extends CursorWrapper{
         relay.setDescription(desc);
         relay.setNumber(number);
         relay.setMode(mode);
-        relay.setHot(hot);
+        relay.setHot(hot!=0);
         relay.setTopTemp(topTemp);
         relay.setBotTemp(botTemp);
         relay.setTopTemp(periodTime);
         relay.setTopTemp(durationTime);
         relay.setBotTemp(sensNum);
+        Log.d("tag","getFromDB: " + relay.getId().toString());
         return relay;
     }
 }
