@@ -47,6 +47,7 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
                 mRelay.setBotTemp(Integer.parseInt(mCconfig.get(3)));
                 mRelay.setPeriodTime(Integer.parseInt(mCconfig.get(4)));
                 mRelay.setDurationTime(Integer.parseInt(mCconfig.get(5)));
+                RelayList.getInstance(RelaySettingsActivity.this).updateRelay(mRelay);
                 addFragment();
             }
 

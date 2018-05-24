@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="description"
+        android:text="Реле"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,33 +22,44 @@
 
 
     <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="desc"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_image_mode"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
         android:id="@+id/item_first_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:text="first"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_image_mode"
-        app:layout_constraintStart_toEndOf="@+id/item_image_mode" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_image_mode"
+        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
 
     <TextView
         android:id="@+id/item_second_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:text="second"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_first_param"
-        app:layout_constraintStart_toEndOf="@+id/item_first_param" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_first_param"
+        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
 
     <ImageView
         android:id="@+id/item_image_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="41dp"
+        android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_name"
         app:srcCompat="@drawable/ic_hand" />

@@ -38,9 +38,9 @@ public class RelayCursorWrapper extends CursorWrapper{
         relay.setHot(hot!=0);
         relay.setTopTemp(topTemp);
         relay.setBotTemp(botTemp);
-        relay.setTopTemp(periodTime);
-        relay.setTopTemp(durationTime);
-        relay.setBotTemp(sensNum);
+        relay.setPeriodTime(periodTime);
+        relay.setDurationTime(durationTime);
+        relay.setSensNum(sensNum);
         Log.d("tag","getFromDB: " + relay.getId().toString());
         return relay;
     }

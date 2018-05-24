@@ -53,16 +53,16 @@ public class RelayListFragment extends Fragment {
     private void updateUI(){
         RelayList relayList = RelayList.getInstance(getActivity());
         List<Relay> relays = relayList.getRelays();
-
+        Log.d("tag",""+getActivity().toString());
         if(mAdapter == null){
             mAdapter = new RelayAdapter(relays);
             mRelayRecyclerView.setAdapter(mAdapter);
         }
         else
         {
-            mAdapter.setRelays(relays);
             mAdapter.notifyDataSetChanged();
         }
+        mAdapter.setRelays(relays);
 
     }
 
@@ -72,11 +72,12 @@ public class RelayListFragment extends Fragment {
         private ImageView mMode;
         private TextView mFirstParam;
         private TextView mSecondParam;
-
+        private TextView mDescription;
 
         public RelayHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.list_item_relay,parent, false));
             mName = itemView.findViewById(R.id.item_name);
+            mDescription = itemView.findViewById(R.id.textDescription);
             mMode = itemView.findViewById(R.id.item_image_mode);
             mFirstParam = itemView.findViewById(R.id.item_first_param);
             mSecondParam = itemView.findViewById(R.id.item_second_param);
@@ -87,8 +88,8 @@ public class RelayListFragment extends Fragment {
             mRelay = relay;
             Log.d("tag","bindRelay: " + relay.getId().toString());
             int mode = mRelay.getMode();
-            mName.setText("Реле "+mRelay.getNumber());
-
+            mName.setText("Реле " + mRelay.getNumber());
+            mDescription.setText(mRelay.getDescription());
             if(mode == Relay.TEMP_MODE){
                 mMode.setImageResource(R.drawable.ic_sun);
                 mFirstParam.setText(Integer.toString(mRelay.getTopTemp()));

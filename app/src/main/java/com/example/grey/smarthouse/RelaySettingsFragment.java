@@ -3,6 +3,8 @@ package com.example.grey.smarthouse;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,14 +56,6 @@ public class RelaySettingsFragment extends Fragment {
 
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        RelayList.getInstance(getActivity())
-                .updateRelay(mRelay);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -70,6 +64,7 @@ public class RelaySettingsFragment extends Fragment {
         mBotTemp.setText(String.valueOf(mRelay.getBotTemp()));
         mPeriodTime.setText(String.valueOf(mRelay.getPeriodTime()));
         mDurationTime.setText(String.valueOf(mRelay.getDurationTime()));
+        mDescriptionField.setText(mRelay.getDescription());
     }
 
     @Override
@@ -79,6 +74,22 @@ public class RelaySettingsFragment extends Fragment {
         mNumber = (TextView) v.findViewById(R.id.relayNumber);
         mNumber.setText(String.format(getResources().getString(R.string.relay_n), mRelay.getNumber()));
         mDescriptionField = (EditText) v.findViewById(R.id.description);
+        mDescriptionField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mRelay.setDescription(s.toString());
+            }
+        });
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
         mBotTemp = (EditText) v.findViewById(R.id.botTemp);
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
@@ -86,7 +97,6 @@ public class RelaySettingsFragment extends Fragment {
         mSaveButton = (Button) v.findViewById(R.id.saveButton);
 
         mHandModeCheckBox = (CheckBox) v.findViewById(R.id.handModeCheckbox);
-
         mHandModeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +120,13 @@ public class RelaySettingsFragment extends Fragment {
                 updateUI(mRelay.getMode());
             }
         });
+        mSaveButton = (Button) v.findViewById(R.id.saveButton);
+        mSaveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                RelayList.getInstance(getActivity()).updateRelay(mRelay);
+            }
+        });
 
         updateUI(mRelay.getMode());
 
@@ -129,8 +146,6 @@ public class RelaySettingsFragment extends Fragment {
         mBotTemp.setEnabled(mTemp);
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
-
-
     }
 
 }

@@ -35,18 +35,15 @@ public class RelayList {
 
         mContext = context.getApplicationContext();
         mDatabase = new RelayBaseHelper(mContext).getWritableDatabase();
-//        mRelays = getRelays();
-//        if(mRelays.size()==0) {
-//            for (int i = 0; i < 4; i++) {
-//                Relay relay = new Relay();
-////                mRelays.add(relay);
-////                relay.setMode(1);
-////                relay.setNumber(mRelays.indexOf(relay) + 1);
-////                ContentValues values = getContentValues(relay);
-////                mDatabase.insert(RelayTable.NAME, null, values);
-//                addRelay(relay);
-//            }
-//        }
+        mRelays = getRelays();
+        if(mRelays.size()==0) {
+            for (int i = 0; i < 4; i++) {
+                Relay relay = new Relay();
+                relay.setMode(2);
+                relay.setNumber(i + 1);
+                addRelay(relay);
+            }
+        }
     }
 
 
@@ -106,7 +103,7 @@ public class RelayList {
 //    }
 
     public Relay getRelay(UUID id) {
-
+    Relay mRelay = new Relay();
         RelayCursorWrapper cursor = queryRelays(
                 RelayTable.Cols.UUID + " = ?",
                 new String[] { id.toString() }
@@ -116,6 +113,7 @@ public class RelayList {
                 return null;
             }
             cursor.moveToFirst();
+            mRelay = cursor.getRelay();
             return cursor.getRelay();
         } finally {
             cursor.close();

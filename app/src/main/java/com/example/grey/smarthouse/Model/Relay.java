@@ -29,7 +29,7 @@ public class Relay {
     }
 
     public Relay(UUID id) {
-        mId = UUID.randomUUID();
+        mId = id;
     }
 
     public void setId(UUID id) {
