@@ -13,4 +13,6 @@
     <string name="period_time">Период:</string>
     <string name="duration_time">Длительность:</string>
     <string name="save">Сохранить</string>
+    <string name="ON">ON</string>
+    <string name="OFF">OFF</string>
 </resources>

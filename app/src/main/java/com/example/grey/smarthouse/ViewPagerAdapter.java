@@ -16,7 +16,7 @@ import com.example.grey.smarthouse.RelayListFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Tab1", "Настройки", "Tab3" };
+    private String tabTitles[] = new String[] { "Главная", "Настройки", "Tab3" };
     private Context context;
 
     public ViewPagerAdapter(FragmentManager fm/*, Context context*/) {

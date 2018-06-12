@@ -31,7 +31,7 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
         UUID relayId = (UUID) getIntent().getSerializableExtra(EXTRA_RELAY_ID);
         mRelay = RelayList.getInstance(this).getRelay(relayId);
         mCconfig = new ArrayList<String>();
-        Requests.RetrofitInit();
+//        Requests.RetrofitInit();
         Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());
         res.enqueue(new Callback<ResponseBody>() {
 
