@@ -14,4 +14,8 @@ public interface SmartHouseApi {
     @GET("/cgi-bin/relay{relayNumber}/config/")
     Call<ResponseBody> configList(@Path("relayNumber") int relayNum);
     //Call<List<PostModel>> getData(@Query("name") String resourceName, @Query("num") int count);
+
+    @GET("/cgi-bin/ds1820/value/")
+    Call<ResponseBody> ds18b20tempList();
+    //Call<List<PostModel>> getData(@Query("name") String resourceName, @Query("num") int count);
 }

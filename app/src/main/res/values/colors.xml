@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorCustomPrimary">#22BB66</color>
-    <color name="colorCustomAccent">#BB3346</color>
+    <color name="colorCustomPrimary">#519600</color>
+    <color name="colorCustomAccent">#9f0013</color>
+    <color name="colorCustomBack">#B5F36D</color>
+    <color name="colorCustomListItem">#71AB2D</color>
 </resources>

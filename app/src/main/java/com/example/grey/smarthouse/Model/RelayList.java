@@ -97,10 +97,6 @@ public class RelayList {
         }
         return relays;
     }
-//    public List<Relay> getRelays(){
-//        mRelays = getRelaysfromDB();
-//        return mRelays;
-//    }
 
     public Relay getRelay(UUID id) {
     Relay mRelay = new Relay();
@@ -119,15 +115,7 @@ public class RelayList {
             cursor.close();
         }
     }
-//        for(Relay relay  : mRelays)
-//        {
-//            if(relay.getId().equals(id))
-//            {
-//                return relay;
-//            }
-//        }
-//        return null;
-//    }
+
     public void updateRelay(Relay relay) {
         String uuidString = relay.getId().toString();
         ContentValues values = getContentValues(relay);
