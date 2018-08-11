@@ -15,4 +15,6 @@
     <string name="save">Сохранить</string>
     <string name="ON">ON</string>
     <string name="OFF">OFF</string>
+    <string name="insertURL">Введите адрес устройства:</string>
+    <string name="insertIP">Введите IP устройства:</string>
 </resources>

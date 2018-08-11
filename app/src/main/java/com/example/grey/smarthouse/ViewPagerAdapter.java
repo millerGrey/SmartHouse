@@ -16,7 +16,7 @@ import com.example.grey.smarthouse.RelayListFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Главная", "Настройки", "Tab3" };
+    private String tabTitles[] = new String[] { "Датчики", "Устройства", "Настройки" };
     private Context context;
 
     public ViewPagerAdapter(FragmentManager fm/*, Context context*/) {
@@ -29,17 +29,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override public Fragment getItem(int position) {
-        switch(position+1)
+        switch(position)
         {
-            case 1:
+            case 0:
                 Log.i("PAGER","1");
                 return MainFragment.newInstance(position);
-            case 2:
+            case 1:
                 Log.i("PAGER","2");
                 return new RelayListFragment();
-            case 3:
+            case 2:
                 Log.i("PAGER","3");
-                return new RelayListFragment();
+                return new SettingsFragment();
         }
         return null;
     }

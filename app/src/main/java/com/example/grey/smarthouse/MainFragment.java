@@ -120,11 +120,13 @@ public class MainFragment extends refreshFragment {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    mTemp = Arrays.asList(response.body().string().split("/"));
-                    Log.i("REPLY","получен ответ");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(response.message().equals("OK")) {
+                    try {
+                        mTemp = Arrays.asList(response.body().string().split("/"));
+                        Log.i("REPLY","получен ответ");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             @Override
@@ -136,11 +138,14 @@ public class MainFragment extends refreshFragment {
         stateReq.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    mState = Arrays.asList(response.body().string().split("/"));
-                    Log.i("REPLY","получен ответ");
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                if(response.message().equals("OK")) {
+                    try {
+                        mState = Arrays.asList(response.body().string().split("/"));
+                        Log.i("REPLY","получен ответ");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             @Override

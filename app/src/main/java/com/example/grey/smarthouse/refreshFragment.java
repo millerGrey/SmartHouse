@@ -39,11 +39,11 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
         responseThread = new Thread(new Runnable(){
             @Override
             public void run() {
-                responseHandler.postDelayed(response,2000);
+                responseHandler.postDelayed(response,0);
             }
         });
         responseThread.start();
-        refreshHandler.postDelayed(this, 1000);
+        refreshHandler.postDelayed(this, 0);
     }
 
     @Override
