@@ -13,6 +13,12 @@
         <item name="colorPrimary">@color/colorCustomPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorCustomAccent</item>
+        <item name="android:textColor">@color/colorCustomPrimary</item>
+        <item name="android:textColorLink">@color/colorCustomPrimary</item>
     </style>
 
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabBackground">@drawable/bg_tablayout</item>
+    </style>
 </resources>

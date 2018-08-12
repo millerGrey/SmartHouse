@@ -4,7 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorCustomPrimary">#519600</color>
-    <color name="colorCustomAccent">#9f0013</color>
+    <!--519600 64AA2B 439400-->
+    <color name="colorCustomMoreDark">#333333</color>
+    <color name="colorCustomDark">#444444</color>
+    <!--<color name="colorCustomAccent">#9f0013</color>-->
+    <color name="colorCustomAccent">#519600</color>
     <color name="colorCustomBack">#B5F36D</color>
     <color name="colorCustomListItem">#71AB2D</color>
+    <color name="colorCustomText">#519600</color>
 </resources>

@@ -6,5 +6,5 @@ package com.example.grey.smarthouse;
 
 public interface Refreshable {
     void handleTickEvent();
-    void periodicResponse();
+    void periodicRequest();
 }

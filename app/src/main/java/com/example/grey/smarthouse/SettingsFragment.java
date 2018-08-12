@@ -12,6 +12,10 @@ import android.widget.EditText;
 import com.example.grey.smarthouse.Retrofit.Requests;
 
 
+/**
+ * Created by GREY on 11.08.2018.
+ */
+
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private EditText mURL;

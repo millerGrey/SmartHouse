@@ -15,10 +15,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Реле"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/colorCustomText"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/item_image_mode"
+        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
 
 
     <TextView
@@ -26,42 +26,61 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="desc"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/item_image_mode"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        android:textColor="@color/colorCustomText"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_first_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
         android:text="first"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/item_image_mode"
-        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
+        android:textColor="@color/colorCustomText"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonState"
+        app:layout_constraintTop_toTopOf="@+id/buttonState" />
 
     <TextView
         android:id="@+id/item_second_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
         android:text="second"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/item_first_param"
-        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
+        android:textColor="@color/colorCustomText"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonState"
+        app:layout_constraintTop_toBottomOf="@+id/item_first_param" />
 
     <ImageView
         android:id="@+id/item_image_mode"
         android:layout_width="41dp"
         android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_name"
+        app:layout_constraintTop_toBottomOf="@+id/textDescription"
         app:srcCompat="@drawable/ic_hand" />
+
+    <ToggleButton
+        android:id="@+id/buttonState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_button"
+        android:textOff="@string/OFF"
+        android:textOn="@string/ON"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
