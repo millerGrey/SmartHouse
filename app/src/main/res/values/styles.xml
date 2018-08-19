@@ -13,8 +13,10 @@
         <item name="colorPrimary">@color/colorCustomPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorCustomAccent</item>
-        <item name="android:textColor">@color/colorCustomPrimary</item>
+        <item name="android:textColor">@color/colorCustomText</item>
         <item name="android:textColorLink">@color/colorCustomPrimary</item>
+        <item name="android:textColorHint">@color/colorCustomPrimary</item>
+        <item name="android:editTextColor">@color/colorCustomText</item>
     </style>
 
 

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.grey.smarthouse.Model.Model;
 import com.example.grey.smarthouse.Model.Relay;
 import com.example.grey.smarthouse.Model.RelayList;
 import com.example.grey.smarthouse.Retrofit.Requests;
@@ -50,6 +51,7 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public void onResume() {
         super.onResume();
+        startProcess();
         updateUI();
     }
 
@@ -69,9 +71,7 @@ public class RelayListFragment extends refreshFragment {
 
 
     private void updateUI(){
-        RelayList relayList = RelayList.getInstance(getActivity());
-        List<Relay> relays = relayList.getRelays();
-//        Log.d("tag",""+getActivity().toString());
+        List<Relay> relays = Model.mRelayConfigs;
         if(mAdapter == null){
             mAdapter = new RelayAdapter(relays);
             mRelayRecyclerView.setAdapter(mAdapter);
@@ -106,7 +106,6 @@ public class RelayListFragment extends refreshFragment {
 
         public void bind(Relay relay){
             mRelay = relay;
-            Log.d("tag","bindRelay: " + relay.getId().toString());
             int mode = mRelay.getMode();
             mName.setText("Реле " + mRelay.getNumber());
             mDescription.setText(mRelay.getDescription());
@@ -138,7 +137,7 @@ public class RelayListFragment extends refreshFragment {
 
                     mMode.setImageResource(R.drawable.ic_hand);
                     mRelay.setMode(Relay.HAND_MODE);
-                    RelayList.getInstance(getActivity()).updateRelay(mRelay);
+                    Model.updateRelay(getActivity(), mRelay);
                     mFirstParam.setText("");
                     mSecondParam.setText("");
 
@@ -250,5 +249,10 @@ public class RelayListFragment extends refreshFragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopProcess();
+    }
 
 }

@@ -15,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Реле"
-        android:textColor="@color/colorCustomText"
+
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/item_image_mode"
         app:layout_constraintTop_toBottomOf="@+id/textDescription" />
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="desc"
-        android:textColor="@color/colorCustomText"
+
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="first"
-        android:textColor="@color/colorCustomText"
+
         android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@+id/buttonState"
         app:layout_constraintTop_toTopOf="@+id/buttonState" />
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="second"
-        android:textColor="@color/colorCustomText"
+
         android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@+id/buttonState"
         app:layout_constraintTop_toBottomOf="@+id/item_first_param" />

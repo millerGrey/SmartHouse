@@ -47,7 +47,7 @@ public class MainFragment extends refreshFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        startProcess();
         if (getArguments() != null) {
             mPage = getArguments().getInt(ARG_PAGE);
         }
@@ -93,7 +93,7 @@ public class MainFragment extends refreshFragment {
     @Override
     public void periodicRequest(){
         Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
-        Log.i("REQEST","запрос");
+        Log.i("MainScreen","запрос");
         tempReq.enqueue(new Callback<ResponseBody>() {
 
             @Override
@@ -101,7 +101,7 @@ public class MainFragment extends refreshFragment {
                 if(response.message().equals("OK")) {
                     try {
                         mTemp = Arrays.asList(response.body().string().split("/"));
-                        Log.i("REPLY","получен ответ");
+                        Log.i("MainScreen","получен ответ");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -115,6 +115,5 @@ public class MainFragment extends refreshFragment {
 
 
     }
-
 
 }

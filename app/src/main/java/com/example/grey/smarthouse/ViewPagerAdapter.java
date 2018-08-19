@@ -36,6 +36,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return MainFragment.newInstance(position);
             case 1:
                 Log.i("PAGER","2");
+//                RelayListFragment.stopProcess();
                 return new RelayListFragment();
             case 2:
                 Log.i("PAGER","3");

@@ -14,6 +14,7 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
     private Handler refreshHandler = new Handler();
     private Handler responseHandler = new Handler();
     private Thread responseThread;
+    private boolean mStop=true;
     Runnable response = new Runnable(){
         @Override
         public void run() {
@@ -38,8 +39,47 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
     @Override
     public void run() {
         handleTickEvent();
-        refreshHandler.postDelayed(this, 5000);
+        if(!mStop)
+        {
+            refreshHandler.postDelayed(this, 2000);
+        }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            // If we are becoming invisible, then...
+            if (!isVisibleToUser) {
+                stopProcess();
+            }else{
+                startProcess();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public void stopProcess()
+    {
+        mStop = true;
+//        refreshHandler = null;
+//        responseHandler = null;
+//        responseThread = null;
+    }
+
+    public void startProcess()
+    {
+        mStop = false;
+        responseHandler.postDelayed(response,0);
+        refreshHandler.postDelayed(this, 0);
+//        refreshHandler = null;
+//        responseHandler = null;
+//        responseThread = null;
+    }
 }

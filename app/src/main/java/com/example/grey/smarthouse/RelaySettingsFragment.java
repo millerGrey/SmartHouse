@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.grey.smarthouse.Model.Model;
 import com.example.grey.smarthouse.Model.Relay;
 import com.example.grey.smarthouse.Model.RelayList;
 
@@ -52,8 +53,8 @@ public class RelaySettingsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
-        mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
-
+//        mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
+        mRelay = Model.getRelay(relayId);
     }
 
     @Override
@@ -124,7 +125,7 @@ public class RelaySettingsFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                RelayList.getInstance(getActivity()).updateRelay(mRelay);
+                Model.updateRelay(getActivity(), mRelay);
             }
         });
 

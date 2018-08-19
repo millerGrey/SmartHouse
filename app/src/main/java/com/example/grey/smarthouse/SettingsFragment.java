@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.grey.smarthouse.Model.Model;
 import com.example.grey.smarthouse.Retrofit.Requests;
 
 
@@ -45,6 +46,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Requests.RetrofitInit(mURL.getText().toString());
+        Model.mDeviceURL = mURL.getText().toString();
+        Requests.RetrofitInit(Model.mDeviceURL);
     }
+
+
+
 }

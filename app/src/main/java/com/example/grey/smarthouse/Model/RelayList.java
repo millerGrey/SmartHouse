@@ -98,23 +98,23 @@ public class RelayList {
         return relays;
     }
 
-    public Relay getRelay(UUID id) {
-    Relay mRelay = new Relay();
-        RelayCursorWrapper cursor = queryRelays(
-                RelayTable.Cols.UUID + " = ?",
-                new String[] { id.toString() }
-        );
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-            cursor.moveToFirst();
-            mRelay = cursor.getRelay();
-            return cursor.getRelay();
-        } finally {
-            cursor.close();
-        }
-    }
+//    public Relay getRelay(UUID id) {
+////    Relay mRelay = new Relay();
+//        RelayCursorWrapper cursor = queryRelays(
+//                RelayTable.Cols.UUID + " = ?",
+//                new String[] { id.toString() }
+//        );
+//        try {
+//            if (cursor.getCount() == 0) {
+//                return null;
+//            }
+//            cursor.moveToFirst();
+////            mRelay = cursor.getRelay();
+//            return cursor.getRelay();
+//        } finally {
+//            cursor.close();
+//        }
+//    }
 
     public void updateRelay(Relay relay) {
         String uuidString = relay.getId().toString();
