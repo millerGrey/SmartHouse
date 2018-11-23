@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import grey.smarthouse.model.Model;
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.R;
+import grey.smarthouse.retrofit.Requests;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -75,22 +84,6 @@ public class RelaySettingsFragment extends Fragment {
         mNumber = (TextView) v.findViewById(R.id.relayNumber);
         mNumber.setText(String.format(getResources().getString(R.string.relay_n), mRelay.getNumber()));
         mDescriptionField = (EditText) v.findViewById(R.id.description);
-        mDescriptionField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mRelay.setDescription(s.toString());
-            }
-        });
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
         mBotTemp = (EditText) v.findViewById(R.id.botTemp);
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
@@ -125,7 +118,7 @@ public class RelaySettingsFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Model.updateRelay(getActivity(), mRelay);
+                setSettingsToRelay();
             }
         });
 
@@ -149,4 +142,48 @@ public class RelaySettingsFragment extends Fragment {
         mDurationTime.setEnabled(mTime);
     }
 
+    private void setSettingsToRelay(){
+        mRelay.setMode(mHandModeCheckBox.isChecked()?2:(mTempModeCheckBox.isChecked()?0:1));
+        mRelay.setTopTemp(Integer.parseInt(mTopTemp.getText().toString()));
+        mRelay.setBotTemp(Integer.parseInt(mBotTemp.getText().toString()));
+        mRelay.setPeriodTime(Integer.parseInt(mPeriodTime.getText().toString()));
+        mRelay.setDurationTime(Integer.parseInt(mDurationTime.getText().toString()));
+        mRelay.setDescription(mDescriptionField.getText().toString());
+        Model.updateRelay(getActivity(), mRelay);
+        int mode = mRelay.getMode();
+        String modeS = null;
+        switch(mode) {
+            case Relay.TEMP_MODE:
+                modeS = "temp";
+                break;
+            case Relay.TIME_MODE:
+                modeS = "time";
+                break;
+            case Relay.HAND_MODE:
+                modeS = "hand";
+                break;
+        }
+        Call<ResponseBody> tempReq = Requests.getApi().relaySetConfig(mRelay.getNumber(),
+                modeS,
+                mRelay.getTopTemp(),
+                mRelay.getBotTemp(),
+                mRelay.getPeriodTime(),
+                mRelay.getDurationTime(),
+                mRelay.getSensNum());
+        tempReq.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.message().equals("OK")) {
+                    Toast.makeText(getContext().getApplicationContext(),"Настройки сохранены",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getContext().getApplicationContext(),"Ошибка сохранения!",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

@@ -20,15 +20,12 @@ public class Model {
         if (sModel == null)
         {
             sModel = new Model(context);
-
         }
         return sModel;
     }
 
     private Model(Context context) {
-
         mRelayConfigs = RelayList.getInstance(context).getRelays();
-
     }
 
     public static Relay getRelay(UUID uuid){

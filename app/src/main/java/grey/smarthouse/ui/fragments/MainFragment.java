@@ -76,7 +76,6 @@ public class MainFragment extends refreshFragment {
     }
     @Override
     public void handleTickEvent(){
-        Log.i("HANDLER", "обновление UI");
         try {
 
             mTempText1.setText(mTemp.get(0) + " °С");
@@ -91,7 +90,6 @@ public class MainFragment extends refreshFragment {
     @Override
     public void periodicRequest(){
         Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
-        Log.i("MainScreen","запрос");
         tempReq.enqueue(new Callback<ResponseBody>() {
 
             @Override
@@ -99,7 +97,6 @@ public class MainFragment extends refreshFragment {
                 if(response.message().equals("OK")) {
                     try {
                         mTemp = Arrays.asList(response.body().string().split("/"));
-                        Log.i("MainScreen","получен ответ");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

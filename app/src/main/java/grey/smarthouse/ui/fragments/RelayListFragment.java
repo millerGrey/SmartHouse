@@ -184,7 +184,6 @@ public class RelayListFragment extends refreshFragment {
         }
         public void setRelays(List<Relay> relays) {
             mRelays = relays;
-            Log.d("tag","setRelays");
         }
     }
 
@@ -233,7 +232,6 @@ public class RelayListFragment extends refreshFragment {
                 if(response.message().equals("OK")) {
                     try {
                         mState = Arrays.asList(response.body().string().split("/"));
-                        Log.i("ListScreen","получен ответ");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
