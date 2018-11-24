@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:thickness="0dp"
-    android:shape="rectangle">
-    <stroke android:width="1dp"
-        android:color="@android:color/white"/>
-    <corners android:radius="0dp" />
-    <gradient
-        android:startColor="@color/colorCustomDark"
-        android:endColor="@color/colorCustomDark"
-        android:type="linear"
-        android:angle="270"/>
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:thickness="0dp"
+            android:shape="rectangle">
+            <stroke android:width="2dp"
+                android:color="@android:color/holo_green_dark"/>
+            <corners android:radius="5dp" />
+            <gradient
+                android:startColor="@color/colorCustomDark"
+                android:endColor="@color/colorCustomDark"
+                android:type="linear"
+                android:angle="270"/>
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:thickness="0dp"
+            android:shape="rectangle">
+            <stroke android:width="2dp"
+                android:color="@android:color/holo_green_dark"/>
+            <corners android:radius="5dp" />
+            <gradient
+                android:startColor="@color/colorCustomEditBgDisabled"
+                android:endColor="@color/colorCustomEditBgDisabled"
+                android:type="linear"
+                android:angle="180"/>
+        </shape>
+    </item>
+</selector>

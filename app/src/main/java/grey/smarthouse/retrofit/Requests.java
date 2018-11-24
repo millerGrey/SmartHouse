@@ -14,7 +14,6 @@ public class Requests  {
     private static SmartHouseApi smartHouseApi;
     private static Retrofit retrofit;
     private static String URL;
-    private static String IP;
 
     public static void Requests(){
     }
@@ -24,6 +23,10 @@ public class Requests  {
     }
 
     public static void RetrofitInit(String url) {
+        if(url.isEmpty())
+        {
+            url = "192.168.0.200";
+        }
         URL = "http://"+url;
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
@@ -34,12 +37,6 @@ public class Requests  {
 
     public static SmartHouseApi getApi() {
         return smartHouseApi;
-    }
-
-
-    public static void SetIP(String ip)
-    {
-        IP = ip;
     }
 
 }

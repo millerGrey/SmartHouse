@@ -3,6 +3,7 @@ package grey.smarthouse.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class RelaySettingsFragment extends Fragment {
     private CheckBox mTempModeCheckBox;
     private CheckBox mTimeModeCheckBox;
     private Button mSaveButton;
+    private SwitchCompat mHotSwitch;
 
 
     public static RelaySettingsFragment newInstance(UUID rId) {
@@ -114,6 +117,18 @@ public class RelaySettingsFragment extends Fragment {
                 updateUI(mRelay.getMode());
             }
         });
+        mHotSwitch = (SwitchCompat) v.findViewById(R.id.hotSwitch);
+        mHotSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    mHotSwitch.setText(R.string.hot);
+                }
+                else{
+                    mHotSwitch.setText(R.string.cool);
+                }
+            }
+        });
         mSaveButton = (Button) v.findViewById(R.id.saveButton);
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -130,8 +145,9 @@ public class RelaySettingsFragment extends Fragment {
     private void updateUI(int mode)
     {
         boolean mTemp = (mode == 0);
-        boolean mTime = ((mode & 0x01)!=0);
-        boolean mHand = ((mode & 0x02)!=0);
+        boolean mTime = (mode == 0x01);
+        boolean mHand = (mode == 0x02);
+        boolean mCool = ((mode == 0x03));
 
         mHandModeCheckBox.setChecked(mHand);
         mTempModeCheckBox.setChecked(mTemp);
@@ -140,6 +156,10 @@ public class RelaySettingsFragment extends Fragment {
         mBotTemp.setEnabled(mTemp);
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
+        mHotSwitch.setChecked(!mCool);
+        int hotText = (mCool)?R.string.cool:R.string.hot;
+        mHotSwitch.setText(hotText);
+        mHotSwitch.setEnabled(mTemp||mCool);
     }
 
     private void setSettingsToRelay(){
@@ -176,6 +196,9 @@ public class RelaySettingsFragment extends Fragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.message().equals("OK")) {
                     Toast.makeText(getContext().getApplicationContext(),"Настройки сохранены",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getContext().getApplicationContext(),"Ошибка сохранения!",Toast.LENGTH_SHORT).show();
                 }
             }
 

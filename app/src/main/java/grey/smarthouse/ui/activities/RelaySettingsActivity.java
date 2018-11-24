@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class RelaySettingsActivity extends SingleFragmentActivity {
     Relay mRelay;
     private static final String EXTRA_RELAY_ID = "grey.smarthouse.relay_id";
-    List<String> mCconfig;
+    List<String> mConfig;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
 //        mRelay = RelayList.getInstance(this).getRelay(relayId);
         mRelay = Model.getRelay(relayId);
 
-        mCconfig = new ArrayList<String>();
+        mConfig = new ArrayList<String>();
 //        Requests.RetrofitInit();
         Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());
         res.enqueue(new Callback<ResponseBody>() {
@@ -41,17 +41,17 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    mCconfig = Arrays.asList(response.body().string().split("/"));
+                    mConfig = Arrays.asList(response.body().string().split("/"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mRelay.setMode(Integer.parseInt(mCconfig.get(1)));
-                mRelay.setTopTemp(Integer.parseInt(mCconfig.get(2)));
-                mRelay.setBotTemp(Integer.parseInt(mCconfig.get(3)));
-                mRelay.setPeriodTime(Integer.parseInt(mCconfig.get(4)));
-                mRelay.setDurationTime(Integer.parseInt(mCconfig.get(5)));
+                mRelay.setMode(Integer.parseInt(mConfig.get(1)));
+                mRelay.setTopTemp(Integer.parseInt(mConfig.get(2)));
+                mRelay.setBotTemp(Integer.parseInt(mConfig.get(3)));
+                mRelay.setPeriodTime(Integer.parseInt(mConfig.get(4)));
+                mRelay.setDurationTime(Integer.parseInt(mConfig.get(5)));
 //                RelayList.getInstance(RelaySettingsActivity.this).updateRelay(mRelay);
-                Model.updateRelay(RelaySettingsActivity.this,mRelay);
+                mModel.updateRelay(RelaySettingsActivity.this,mRelay);
                 addFragment();
             }
 

@@ -14,9 +14,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorCustomAccent</item>
         <item name="android:textColor">@color/colorCustomText</item>
-        <item name="android:textColorLink">@color/colorCustomPrimary</item>
-        <item name="android:textColorHint">@color/colorCustomPrimary</item>
-        <item name="android:editTextColor">@color/colorCustomText</item>
+        <item name="android:textColorPrimary">@color/selector_color_text_primary</item>
+        <item name="colorControlNormal">@color/colorCustomText</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/colorCustomAccent</item>
+        <item name="android:textColorHint">@color/colorCustomEditBgDisabled</item>
+        <!--<item name="editTextBackground">@drawable/edit_text_style</item>-->
     </style>
 
 

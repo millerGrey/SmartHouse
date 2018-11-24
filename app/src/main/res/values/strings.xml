@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SmartHouse</string>
     <string name="relay_n">Реле %1$d</string>
+    <string name="description">Описание</string>
     <string name="hand_mode">Ручной режим</string>
     <string name="temp_mode">Температура</string>
     <string name="hot">Нагрев</string>
@@ -17,4 +18,9 @@
     <string name="OFF">OFF</string>
     <string name="insertURL">Введите адрес устройства:</string>
     <string name="insertIP">Введите IP устройства:</string>
+    <string-array name="sensors">
+        <item>Датчик 1</item>
+        <item>Датчик 2</item>
+        <item>Датчик 3</item>
+    </string-array>
 </resources>

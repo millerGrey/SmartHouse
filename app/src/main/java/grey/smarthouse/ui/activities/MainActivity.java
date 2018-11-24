@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 
 import grey.smarthouse.R;
 import grey.smarthouse.ViewPagerAdapter;
+import grey.smarthouse.model.Model;
 import grey.smarthouse.retrofit.Requests;
 
 /**
@@ -36,6 +37,6 @@ public class MainActivity extends SingleFragmentActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        Requests.RetrofitInit();
+        Requests.RetrofitInit(Model.mDeviceURL);
     }
 }

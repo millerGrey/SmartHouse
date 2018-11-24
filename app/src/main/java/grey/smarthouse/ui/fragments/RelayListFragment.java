@@ -37,7 +37,7 @@ public class RelayListFragment extends refreshFragment {
 
     private RecyclerView mRelayRecyclerView;
     private RelayAdapter mAdapter;
-    private List<String> mState;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startProcess();
+        startProcess(5000,5000);
         updateUI();
     }
 
@@ -57,11 +57,6 @@ public class RelayListFragment extends refreshFragment {
         View v = inflater.inflate(R.layout.fragment_relay_list, container, false);
         mRelayRecyclerView = (RecyclerView)v.findViewById(R.id.relay_recycler_view);
         mRelayRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mState = new ArrayList<String>();
-        for(int i=0;i<5;i++){
-            mState.add(i,"OFF");
-        }
         updateUI();
         return v;
     }
@@ -122,7 +117,7 @@ public class RelayListFragment extends refreshFragment {
                 mSecondParam.setText("");
             }
 
-            if(mState.get(mRelay.getNumber()).equals("1")){
+            if(Model.mRelayStates.get(mRelay.getNumber()).equals("1")){
                 mButtonState.setChecked(true);
             }
             else{
@@ -139,11 +134,11 @@ public class RelayListFragment extends refreshFragment {
                     mSecondParam.setText("");
 
                     if(mButtonState.isChecked()){
-                        mState.set(mRelay.getNumber(),"1");
+                        Model.mRelayStates.set(mRelay.getNumber(),"1");
                         relayOnRequest(mRelay.getNumber());
                     }
                     else {
-                        mState.set(mRelay.getNumber(),"0");
+                        Model.mRelayStates.set(mRelay.getNumber(),"0");
                         relayOffRequest(mRelay.getNumber());
                     }
                 }
@@ -231,7 +226,7 @@ public class RelayListFragment extends refreshFragment {
 
                 if(response.message().equals("OK")) {
                     try {
-                        mState = Arrays.asList(response.body().string().split("/"));
+                        Model.mRelayStates = Arrays.asList(response.body().string().split("/"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

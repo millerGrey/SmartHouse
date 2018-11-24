@@ -26,8 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Описание"
+        android:hint="@string/description"
         android:inputType="text"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,22 +51,25 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/temp_mode"
-        android:textSize="18sp"
         android:textColor="@color/colorCustomText"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/ic_temp"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/hotSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="171dp"
+        android:layout_height="22dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
         android:text="@string/hot"
         android:textColor="@color/colorCustomText"
+        android:textOff="О"
+        android:textOn="Н"
         android:textSize="18sp"
+        app:showText="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
@@ -78,6 +80,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:entries="@array/sensors"
+        android:background="@color/colorCustomDark"
         app:layout_constraintBottom_toTopOf="@+id/hotSwitch"
         app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
@@ -118,7 +122,6 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textSize="18sp"
-        android:textColor="@color/colorCustomText"
         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
         app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
 
@@ -158,7 +161,6 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textSize="18sp"
-        android:textColor="@color/colorCustomText"
         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
         app:layout_constraintTop_toBottomOf="@+id/topTemp" />
 
@@ -169,10 +171,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/time_mode"
-        android:textColor="@color/colorCustomText"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/ic_time"
-        app:layout_constraintTop_toBottomOf="@+id/textBotTemp" />
+        app:layout_constraintTop_toBottomOf="@+id/textBotTemp"/>
 
     <TextView
         android:id="@+id/textPeriodTime"
@@ -209,8 +210,6 @@
         android:inputType="number"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-        android:textColorLink="@android:color/black"
-        android:textColor="@color/colorCustomText"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
         app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
@@ -239,7 +238,6 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:textSize="18sp"
-        android:textColor="@color/colorCustomText"
         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
         app:layout_constraintTop_toBottomOf="@+id/periodTime" />
 
@@ -254,18 +252,6 @@
         app:layout_constraintStart_toEndOf="@+id/durationTime"
         app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
 
-    <TextView
-        android:id="@+id/textCoolSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cool"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/topTemp"
-        app:layout_constraintStart_toEndOf="@+id/hotSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
-
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
@@ -275,7 +261,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/save"
-
+        android:textColor="#000000"
+        android:background="@drawable/bg_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

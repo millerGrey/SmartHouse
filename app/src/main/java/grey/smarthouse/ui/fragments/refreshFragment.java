@@ -16,12 +16,14 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
     private Handler refreshHandler = new Handler();
     private Handler responseHandler = new Handler();
     private Thread responseThread;
+    private int mResponseMs;
+    private int mRefreshMs;
     private boolean mStop=true;
     Runnable response = new Runnable(){
         @Override
         public void run() {
             periodicRequest();
-            responseHandler.postDelayed(this,5000);
+            responseHandler.postDelayed(this,mResponseMs);
         }
     };
 
@@ -43,7 +45,7 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
         handleTickEvent();
         if(!mStop)
         {
-            refreshHandler.postDelayed(this, 2000);
+            refreshHandler.postDelayed(this, mRefreshMs);
         }
     }
 
@@ -57,7 +59,7 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
             if (!isVisibleToUser) {
                 stopProcess();
             }else{
-                startProcess();
+                startProcess(mResponseMs,mRefreshMs);
             }
         }
     }
@@ -75,8 +77,10 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
 //        responseThread = null;
     }
 
-    public void startProcess()
+    public void startProcess(int responseDelayMs,int handleTickDelayMs)
     {
+        mResponseMs = responseDelayMs;
+        mRefreshMs = handleTickDelayMs;
         mStop = false;
         responseHandler.postDelayed(response,0);
         refreshHandler.postDelayed(this, 0);

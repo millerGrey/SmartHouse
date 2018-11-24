@@ -12,4 +12,6 @@
     <color name="colorCustomBack">#B5F36D</color>
     <color name="colorCustomListItem">#71AB2D</color>
     <color name="colorCustomText">#FFFFFF</color>
+    <color name="colorCustomTextDisabled">#AAAAAA</color>
+    <color name="colorCustomEditBgDisabled">#777777</color>
 </resources>
