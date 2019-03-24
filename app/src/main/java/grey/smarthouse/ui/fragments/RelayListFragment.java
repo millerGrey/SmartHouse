@@ -48,7 +48,7 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startProcess(5000,5000);
+        startProcess(5000);
         updateUI();
     }
 

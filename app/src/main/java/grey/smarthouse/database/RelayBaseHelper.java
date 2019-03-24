@@ -24,7 +24,6 @@ public class RelayBaseHelper extends SQLiteOpenHelper {
                 RelayTable.Cols.DESCRIPTION + ", " +
                 RelayTable.Cols.NUMBER + ", " +
                 RelayTable.Cols.MODE + ", " +
-                RelayTable.Cols.HOT + ", " +
                 RelayTable.Cols.TOP_TEMP + ", " +
                 RelayTable.Cols.BOT_TEMP + ", " +
                 RelayTable.Cols.PERIOD_TIME + ", " +

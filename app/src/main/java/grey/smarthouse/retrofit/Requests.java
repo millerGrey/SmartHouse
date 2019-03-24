@@ -27,7 +27,7 @@ public class Requests  {
         {
             url = "192.168.0.200";
         }
-        URL = "http://"+url;
+        URL = "http://" + url;
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 //.addConverterFactory(GsonConverterFactory.create())

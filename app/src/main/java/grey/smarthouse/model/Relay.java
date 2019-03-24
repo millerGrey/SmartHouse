@@ -17,7 +17,6 @@ public class Relay {
 
     private int mNumber;
     private int mMode;
-    private boolean mHot;
     private int mTopTemp;
     private int mBotTemp;
     private int mPeriodTime;
@@ -47,10 +46,6 @@ public class Relay {
 
     public void setMode(int mode) {
         mMode = mode;
-    }
-
-    public void setHot(boolean hot) {
-        mHot = hot;
     }
 
     public void setTopTemp(int topTemp) {
@@ -87,10 +82,6 @@ public class Relay {
 
     public int getMode() {
         return mMode;
-    }
-
-    public boolean isHot() {
-        return mHot;
     }
 
     public int getTopTemp() {

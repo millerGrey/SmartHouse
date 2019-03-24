@@ -50,7 +50,6 @@ public class RelaySettingsFragment extends Fragment {
     private CheckBox mTempModeCheckBox;
     private CheckBox mTimeModeCheckBox;
     private Button mSaveButton;
-    private SwitchCompat mHotSwitch;
 
 
     public static RelaySettingsFragment newInstance(UUID rId) {
@@ -87,6 +86,7 @@ public class RelaySettingsFragment extends Fragment {
         mNumber = (TextView) v.findViewById(R.id.relayNumber);
         mNumber.setText(String.format(getResources().getString(R.string.relay_n), mRelay.getNumber()));
         mDescriptionField = (EditText) v.findViewById(R.id.description);
+        mDescriptionField.setText(mRelay.getDescription());
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
         mBotTemp = (EditText) v.findViewById(R.id.botTemp);
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
@@ -117,18 +117,6 @@ public class RelaySettingsFragment extends Fragment {
                 updateUI(mRelay.getMode());
             }
         });
-        mHotSwitch = (SwitchCompat) v.findViewById(R.id.hotSwitch);
-        mHotSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    mHotSwitch.setText(R.string.hot);
-                }
-                else{
-                    mHotSwitch.setText(R.string.cool);
-                }
-            }
-        });
         mSaveButton = (Button) v.findViewById(R.id.saveButton);
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -156,10 +144,7 @@ public class RelaySettingsFragment extends Fragment {
         mBotTemp.setEnabled(mTemp);
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
-        mHotSwitch.setChecked(!mCool);
         int hotText = (mCool)?R.string.cool:R.string.hot;
-        mHotSwitch.setText(hotText);
-        mHotSwitch.setEnabled(mTemp||mCool);
     }
 
     private void setSettingsToRelay(){

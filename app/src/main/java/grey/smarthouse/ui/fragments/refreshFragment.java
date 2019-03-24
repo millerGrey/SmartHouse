@@ -4,8 +4,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+
+import java.util.concurrent.TimeUnit;
 
 import grey.smarthouse.Refreshable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by GREY on 11.06.2018.
@@ -13,40 +21,86 @@ import grey.smarthouse.Refreshable;
 
 public abstract class refreshFragment extends Fragment implements Runnable, Refreshable {
 
-    private Handler refreshHandler = new Handler();
+    Observable s, s1;
     private Handler responseHandler = new Handler();
     private Thread responseThread;
-    private int mResponseMs;
-    private int mRefreshMs;
+//    private int mResponseMs;
     private boolean mStop=true;
-    Runnable response = new Runnable(){
-        @Override
-        public void run() {
-            periodicRequest();
-            responseHandler.postDelayed(this,mResponseMs);
-        }
-    };
+//    Runnable response = new Runnable(){
+//        @Override
+//        public void run() {
+//            periodicRequest();
+//            responseHandler.postDelayed(this,mResponseMs);
+//        }
+//    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        responseThread = new Thread(new Runnable(){
+//        responseThread = new Thread(new Runnable(){
+//            @Override
+//            public void run() {
+//                responseHandler.postDelayed(response,0);
+//            }
+//        });
+//        responseThread.start();
+        s = Observable.interval(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        s.subscribe(new Observer<Long>() {
             @Override
-            public void run() {
-                responseHandler.postDelayed(response,0);
+            public void onSubscribe(Disposable d) {
+                Log.d("RX","sub");
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                handleTickEvent();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("RX","onError: " + e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("RX","onC: " );
             }
         });
-        responseThread.start();
-        refreshHandler.postDelayed(this, 0);
+
+        s1 = Observable.interval(5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        s1.subscribe(new Observer<Long>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d("RX","sub");
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                periodicRequest();
+                Log.d("RX","req");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("RX","onError: " + e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("RX","onC: " );
+            }
+        });
     }
 
     @Override
     public void run() {
-        handleTickEvent();
-        if(!mStop)
-        {
-            refreshHandler.postDelayed(this, mRefreshMs);
-        }
+
     }
 
     @Override
@@ -59,7 +113,7 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
             if (!isVisibleToUser) {
                 stopProcess();
             }else{
-                startProcess(mResponseMs,mRefreshMs);
+//                startProcess(mResponseMs);
             }
         }
     }
@@ -67,25 +121,20 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
     @Override
     public void onDestroy() {
         super.onDestroy();
+
     }
 
     public void stopProcess()
     {
         mStop = true;
-//        refreshHandler = null;
-//        responseHandler = null;
-//        responseThread = null;
     }
 
-    public void startProcess(int responseDelayMs,int handleTickDelayMs)
+    public void startProcess(int responseDelayMs)
     {
-        mResponseMs = responseDelayMs;
-        mRefreshMs = handleTickDelayMs;
+//        mResponseMs = responseDelayMs;
+
         mStop = false;
-        responseHandler.postDelayed(response,0);
-        refreshHandler.postDelayed(this, 0);
-//        refreshHandler = null;
-//        responseHandler = null;
-//        responseThread = null;
+//        responseHandler.postDelayed(response,0);
+
     }
 }

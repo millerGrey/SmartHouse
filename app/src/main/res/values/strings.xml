@@ -7,8 +7,8 @@
     <string name="hot">Нагрев</string>
     <string name="degree">°С</string>
     <string name="cool">Охлаждение</string>
-    <string name="top_temp">Верхняя:</string>
-    <string name="bot_temp">Нижняя:</string>
+    <string name="temp_off">Отключение:</string>
+    <string name="temp_on">Включение:</string>
     <string name="time_mode">Время</string>
     <string name="minutes">мин.</string>
     <string name="period_time">Период:</string>
@@ -18,6 +18,7 @@
     <string name="OFF">OFF</string>
     <string name="insertURL">Введите адрес устройства:</string>
     <string name="insertIP">Введите IP устройства:</string>
+    <string name="defaultAddress">192.168.0.200</string>
     <string-array name="sensors">
         <item>Датчик 1</item>
         <item>Датчик 2</item>

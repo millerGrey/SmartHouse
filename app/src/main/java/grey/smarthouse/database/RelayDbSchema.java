@@ -13,7 +13,6 @@ public class RelayDbSchema {
             public static final String DESCRIPTION = "description";
             public static final String NUMBER = "number";
             public static final String MODE = "mode";
-            public static final String HOT ="hot";
             public static final String TOP_TEMP="top_temp";
             public static final String BOT_TEMP="bot_temp";
             public static final String PERIOD_TIME="period_time";

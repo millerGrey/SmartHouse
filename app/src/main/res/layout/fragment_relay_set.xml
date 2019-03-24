@@ -56,33 +56,14 @@
         app:layout_constraintStart_toEndOf="@+id/ic_temp"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/hotSwitch"
-        android:layout_width="171dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:paddingEnd="0dp"
-        android:paddingStart="0dp"
-        android:text="@string/hot"
-        android:textColor="@color/colorCustomText"
-        android:textOff="О"
-        android:textOn="Н"
-        android:textSize="18sp"
-        app:showText="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
-
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/sensors"
         android:background="@color/colorCustomDark"
-        app:layout_constraintBottom_toTopOf="@+id/hotSwitch"
+        android:entries="@array/sensors"
         app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
@@ -92,10 +73,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/top_temp"
+        android:text="@string/temp_off"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
     <TextView
         android:id="@+id/textTopDegree"
@@ -106,7 +87,7 @@
         android:text="@string/degree"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/topTemp"
-        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
     <EditText
         android:id="@+id/topTemp"
@@ -123,7 +104,7 @@
         android:paddingRight="2dp"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
-        app:layout_constraintTop_toBottomOf="@+id/hotSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
     <TextView
         android:id="@+id/textBotTemp"
@@ -131,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/bot_temp"
+        android:text="@string/temp_on"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTopTemp" />
