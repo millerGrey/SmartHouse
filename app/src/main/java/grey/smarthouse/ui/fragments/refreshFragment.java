@@ -1,18 +1,15 @@
 package grey.smarthouse.ui.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
-import grey.smarthouse.Refreshable;
+import grey.smarthouse.ui.Refreshable;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -21,81 +18,22 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class refreshFragment extends Fragment implements Runnable, Refreshable {
 
-    Observable s, s1;
-    private Handler responseHandler = new Handler();
-    private Thread responseThread;
-//    private int mResponseMs;
+    Observable<Long> refresh;
     private boolean mStop=true;
-//    Runnable response = new Runnable(){
-//        @Override
-//        public void run() {
-//            periodicRequest();
-//            responseHandler.postDelayed(this,mResponseMs);
-//        }
-//    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        responseThread = new Thread(new Runnable(){
-//            @Override
-//            public void run() {
-//                responseHandler.postDelayed(response,0);
-//            }
-//        });
-//        responseThread.start();
-        s = Observable.interval(2, TimeUnit.SECONDS)
+        refresh = Observable.interval(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
-        s.subscribe(new Observer<Long>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.d("RX","sub");
-            }
+        refresh.subscribe(x->handleTickEvent(),
+                e->e.printStackTrace(),
+                ()->Log.d("RX","complete"),
+                d->Log.d("RX","sub"));
 
-            @Override
-            public void onNext(Long aLong) {
-                handleTickEvent();
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.d("RX","onError: " + e);
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d("RX","onC: " );
-            }
-        });
-
-        s1 = Observable.interval(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-
-        s1.subscribe(new Observer<Long>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.d("RX","sub");
-            }
-
-            @Override
-            public void onNext(Long aLong) {
-                periodicRequest();
-                Log.d("RX","req");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d("RX","onError: " + e);
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d("RX","onC: " );
-            }
-        });
     }
 
     @Override
@@ -131,10 +69,10 @@ public abstract class refreshFragment extends Fragment implements Runnable, Refr
 
     public void startProcess(int responseDelayMs)
     {
-//        mResponseMs = responseDelayMs;
+
 
         mStop = false;
-//        responseHandler.postDelayed(response,0);
+
 
     }
 }

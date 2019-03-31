@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SmartHouse</string>
     <string name="relay_n">Реле %1$d</string>
+
+    <!--Настройки реле-->
     <string name="description">Описание</string>
     <string name="hand_mode">Ручной режим</string>
     <string name="temp_mode">Температура</string>
@@ -14,14 +16,19 @@
     <string name="period_time">Период:</string>
     <string name="duration_time">Длительность:</string>
     <string name="save">Сохранить</string>
-    <string name="ON">ON</string>
-    <string name="OFF">OFF</string>
-    <string name="insertURL">Введите адрес устройства:</string>
-    <string name="insertIP">Введите IP устройства:</string>
-    <string name="defaultAddress">192.168.0.200</string>
     <string-array name="sensors">
         <item>Датчик 1</item>
         <item>Датчик 2</item>
         <item>Датчик 3</item>
     </string-array>
+    <!---->
+
+    <string name="ON">ON</string>
+    <string name="OFF">OFF</string>
+    <string name="insertURL">Введите адрес устройства:</string>
+    <string name="insertIP">Введите IP устройства:</string>
+    <string name="defaultAddress">192.168.0.200</string>
+    <string name="notificationTicker">Превышена температура</string>
+    <string name="notificationTemp">Датчик %1$d: %2$s°С.</string>
+
 </resources>

@@ -8,29 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
-import grey.smarthouse.retrofit.Requests;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import io.reactivex.Observable;
+
+
 /**
  * Created by GREY on 26.05.2018.
  */
@@ -93,7 +79,8 @@ public class MainFragment extends refreshFragment {
     @Override
     public void handleTickEvent(){
         Log.d("RX", "handletick");
-        if(getRequest)
+        mTemp = NetService.getTemp();
+        if(!getRequest)
         {
 //            getRequest = false;
             mTempText1.setVisibility(View.VISIBLE);
@@ -122,42 +109,5 @@ public class MainFragment extends refreshFragment {
 
         }
         cnt++;
-
-
     }
-
-    @Override
-    public void periodicRequest(){
-        Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
-        Log.d("TCP", ">>> " + tempReq.request().toString());
-        tempReq.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.message().equals("OK")) {
-                    try {
-                        getRequest=true;
-                        String resp = response.body().string();
-                        Log.d("TCP", "<<< " + resp);
-                        mTemp = Arrays.asList(resp.split("/"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-
-                    //TODO 404 неправильный адрес
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", t.toString());
-                //TODO проверить соединение или адрес или устройство не в сети
-            }
-        });
-
-
-    }
-
 }

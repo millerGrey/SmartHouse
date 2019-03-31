@@ -175,11 +175,19 @@ public class RelaySettingsFragment extends Fragment {
                 mRelay.getPeriodTime(),
                 mRelay.getDurationTime(),
                 mRelay.getSensNum());
+        Log.d("TCP", ">>> " + tempReq.request().toString());
         tempReq.enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.message().equals("OK")) {
+                    String resp = null;
+                    try {
+                        resp = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("TCP", "<<< " + response.message() +  " " + resp);
                     Toast.makeText(getContext().getApplicationContext(),"Настройки сохранены",Toast.LENGTH_SHORT).show();
                 }
                 else{

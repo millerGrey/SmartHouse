@@ -1,4 +1,4 @@
-package grey.smarthouse;
+package grey.smarthouse.ui;
 
 /**
  * Created by GREY on 11.06.2018.
@@ -6,5 +6,4 @@ package grey.smarthouse;
 
 public interface Refreshable {
     void handleTickEvent();
-    void periodicRequest();
 }

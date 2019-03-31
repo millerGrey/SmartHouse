@@ -102,7 +102,11 @@ public class RelayListFragment extends refreshFragment {
             mName.setText("Реле " + mRelay.getNumber());
             mDescription.setText(mRelay.getDescription());
             if(mode == Relay.TEMP_MODE){
-                mMode.setImageResource(R.drawable.ic_sun);
+                if ((mRelay.getBotTemp() > mRelay.getTopTemp())) {
+                    mMode.setImageResource(R.drawable.ic_snow);
+                } else {
+                    mMode.setImageResource(R.drawable.ic_sun);
+                }
                 mFirstParam.setText(Integer.toString(mRelay.getTopTemp()) + getResources().getString(R.string.degree));
                 mSecondParam.setText(Integer.toString(mRelay.getBotTemp()) + getResources().getString(R.string.degree));
             }
@@ -187,16 +191,13 @@ public class RelayListFragment extends refreshFragment {
         updateUI();
     }
 
-    @Override
-    public void periodicRequest() {
-        relayStateRequest();
-    }
-
     public void relayOnRequest(int num){
         Call<ResponseBody> relayOnReq = Requests.getApi().relayOn(num);
+        Log.d("TCP", ">>> " + relayOnReq.request().toString());
         relayOnReq.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("TCP", "<<< " + response.message());
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -206,10 +207,12 @@ public class RelayListFragment extends refreshFragment {
     }
 
     public void relayOffRequest(int num){
-        Call<ResponseBody> relayOnReq = Requests.getApi().relayOff(num);
-        relayOnReq.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> relayOffReq = Requests.getApi().relayOff(num);
+        Log.d("TCP", ">>> " + relayOffReq.request().toString());
+        relayOffReq.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("TCP", "<<< " + response.message());
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -220,21 +223,25 @@ public class RelayListFragment extends refreshFragment {
 
     public void relayStateRequest(){
         Call<ResponseBody> stateReq = Requests.getApi().relayStateList();
+        Log.d("TCP", ">>> " + stateReq.request().toString());
         stateReq.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                String resp = null;
                 if(response.message().equals("OK")) {
                     try {
-                        Model.mRelayStates = Arrays.asList(response.body().string().split("/"));
+                        resp = response.body().string();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Log.d("TCP", "<<< " + response.message() + " " + resp);
+                    Model.mRelayStates = Arrays.asList(resp.split("/"));
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
+                Log.d("TCP", t.toString());
             }
         });
     }
