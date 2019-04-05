@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
@@ -34,6 +35,7 @@ public class MainFragment extends refreshFragment {
 
     private int mPage;
     private int cnt=0;
+
     public static MainFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -44,7 +46,6 @@ public class MainFragment extends refreshFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startProcess(5000);
         if (getArguments() != null) {
             mPage = getArguments().getInt(ARG_PAGE);
         }
@@ -57,7 +58,7 @@ public class MainFragment extends refreshFragment {
         mTempText2 = (TextView) view.findViewById(R.id.sensorTempText2);
         mTempText3 = (TextView) view.findViewById(R.id.sensorTempText3);
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
-        init();
+//        init();
         return view;
     }
 
@@ -80,18 +81,16 @@ public class MainFragment extends refreshFragment {
     public void handleTickEvent(){
         Log.d("RX", "handletick");
         mTemp = NetService.getTemp();
-        if(!getRequest)
+        if(mTemp!=null)
         {
 //            getRequest = false;
             mTempText1.setVisibility(View.VISIBLE);
             mTempText2.setVisibility(View.VISIBLE);
             mTempText3.setVisibility(View.VISIBLE);
             try {
-
                 mTempText1.setText(mTemp.get(0) + " °С");
                 mTempText2.setText(mTemp.get(1) + " °С");
                 mTempText3.setText(mTemp.get(2) + " °С");
-
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -101,12 +100,11 @@ public class MainFragment extends refreshFragment {
             mTempText1.setVisibility(View.INVISIBLE);
             mTempText2.setVisibility(View.INVISIBLE);
             mTempText3.setVisibility(View.INVISIBLE);
-            if(cnt>2)
+            if(cnt > 5)
             {
-//                Toast.makeText(getContext(),"Проверьте соединение",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Проверьте соединение",Toast.LENGTH_SHORT).show();
                 cnt=0;
             }
-
         }
         cnt++;
     }

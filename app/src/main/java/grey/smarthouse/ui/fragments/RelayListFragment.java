@@ -38,7 +38,6 @@ public class RelayListFragment extends refreshFragment {
     private RecyclerView mRelayRecyclerView;
     private RelayAdapter mAdapter;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +47,6 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startProcess(5000);
         updateUI();
     }
 
@@ -221,35 +219,11 @@ public class RelayListFragment extends refreshFragment {
         });
     }
 
-    public void relayStateRequest(){
-        Call<ResponseBody> stateReq = Requests.getApi().relayStateList();
-        Log.d("TCP", ">>> " + stateReq.request().toString());
-        stateReq.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String resp = null;
-                if(response.message().equals("OK")) {
-                    try {
-                        resp = response.body().string();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d("TCP", "<<< " + response.message() + " " + resp);
-                    Model.mRelayStates = Arrays.asList(resp.split("/"));
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", t.toString());
-            }
-        });
-    }
+
 
     @Override
     public void onPause() {
         super.onPause();
-        stopProcess();
     }
 
 }

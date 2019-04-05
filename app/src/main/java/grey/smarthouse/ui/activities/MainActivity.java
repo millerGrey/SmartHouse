@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
-import grey.smarthouse.ViewPagerAdapter;
+import grey.smarthouse.ui.ViewPagerAdapter;
 import grey.smarthouse.model.Model;
 import grey.smarthouse.retrofit.Requests;
 import io.reactivex.Observable;

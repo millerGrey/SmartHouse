@@ -1,4 +1,4 @@
-package grey.smarthouse;
+package grey.smarthouse.ui;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

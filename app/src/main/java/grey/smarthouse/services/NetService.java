@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
+import grey.smarthouse.model.Model;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
@@ -46,24 +47,20 @@ public class NetService extends Service {
                 e -> e.printStackTrace(),
                 () -> Log.d("RX", "onC: "),
                 d -> Log.d("RX", "sub"));
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My channel",
                     nm.IMPORTANCE_HIGH);
             channel.setDescription("My channel description");
-//            channel.enableLights(true);
-//            channel.setLightColor(Color.RED);
-//            channel.enableVibration(false);
             nm.createNotificationChannel(channel);
         }
-
-
+        nextHandler();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
@@ -110,6 +107,31 @@ public class NetService extends Service {
         });
     }
 
+    public void relayStateRequest(){
+        Call<ResponseBody> stateReq = Requests.getApi().relayStateList();
+        Log.d("TCP", ">>> " + stateReq.request().toString());
+        stateReq.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String resp = null;
+                if(response.message().equals("OK")) {
+                    try {
+                        resp = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("TCP", "<<< " + response.message() + " " + resp);
+                    Model.mRelayStates = Arrays.asList(resp.split("/"));
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TCP", t.toString());
+            }
+        });
+    }
+
     public static List<String> getTemp() {
         return mTemp;
     }
@@ -136,6 +158,7 @@ public class NetService extends Service {
 
     private void nextHandler() {
         ds18b20Request();
+        relayStateRequest();
         try {
             for (int i = 0; i < mTemp.size(); i++) {
                 float t = Float.parseFloat(mTemp.get(i));
