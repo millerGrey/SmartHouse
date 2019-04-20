@@ -2,20 +2,20 @@ package grey.smarthouse.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
+
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 
 /**
@@ -24,17 +24,13 @@ import java.util.List;
 
 public class MainFragment extends refreshFragment {
     public static final String ARG_PAGE = "ARG PAGE";
-    List<String> mTemp;
 
-    TextView mTempText1;
-    TextView mTempText2;
-    TextView mTempText3;
+    private RecyclerView mSensorsRecyclerView;
+    private SensorAdapter mSensorAdapter;
     ProgressBar mProgress;
-
-    private boolean getRequest = false;
-
+    List<String> mTemp = new ArrayList<String>();
     private int mPage;
-    private int cnt=0;
+    private int cnt = 0;
 
     public static MainFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -44,68 +40,100 @@ public class MainFragment extends refreshFragment {
         return fragment;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mPage = getArguments().getInt(ARG_PAGE);
         }
     }
 
-    @Override public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mTempText1 = (TextView) view.findViewById(R.id.sensorTempText1);
-        mTempText2 = (TextView) view.findViewById(R.id.sensorTempText2);
-        mTempText3 = (TextView) view.findViewById(R.id.sensorTempText3);
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
-//        init();
+        mSensorsRecyclerView = (RecyclerView)view.findViewById(R.id.sensor_recycler_view);
+        mSensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        updateUI();
         return view;
     }
 
-    public void init()
-    {
-        mTemp = new ArrayList<String>();
 
-        for(int i=0;i<3;i++){
-            mTemp.add(i,"0");
-        }
-        mTempText1.setText("0 °С");
-        mTempText2.setText("0 °С");
-        mTempText3.setText("0 °С");
-        mTempText1.setVisibility(View.INVISIBLE);
-        mTempText2.setVisibility(View.INVISIBLE);
-        mTempText3.setVisibility(View.INVISIBLE);
-
-    }
     @Override
-    public void handleTickEvent(){
+    public void handleTickEvent() {
         Log.d("RX", "handletick");
+        updateUI();
+    }
+
+    public void updateUI() {
         mTemp = NetService.getTemp();
-        if(mTemp!=null)
-        {
-//            getRequest = false;
-            mTempText1.setVisibility(View.VISIBLE);
-            mTempText2.setVisibility(View.VISIBLE);
-            mTempText3.setVisibility(View.VISIBLE);
-            try {
-                mTempText1.setText(mTemp.get(0) + " °С");
-                mTempText2.setText(mTemp.get(1) + " °С");
-                mTempText3.setText(mTemp.get(2) + " °С");
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+        if(mTemp == null){
+            mProgress.setVisibility(View.VISIBLE);
+        }else{
             mProgress.setVisibility(View.INVISIBLE);
         }
-        else{
-            mTempText1.setVisibility(View.INVISIBLE);
-            mTempText2.setVisibility(View.INVISIBLE);
-            mTempText3.setVisibility(View.INVISIBLE);
-            if(cnt > 5)
-            {
-                Toast.makeText(getContext(),"Проверьте соединение",Toast.LENGTH_SHORT).show();
-                cnt=0;
+        if (mSensorAdapter == null) {
+            mSensorAdapter = new SensorAdapter(mTemp);
+            mSensorsRecyclerView.setAdapter(mSensorAdapter);
+        } else {
+            mSensorAdapter.notifyDataSetChanged();
+        }
+        mSensorAdapter.setSensors(mTemp);
+    }
+
+
+    public class SensorHolder extends RecyclerView.ViewHolder {
+        private TextView mValue;
+
+        public SensorHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_sensor, parent, false));
+            mValue = itemView.findViewById(R.id.text_sensorValue);
+        }
+
+        public void bind(String value) {
+            mValue.setText(value + " °С");
+        }
+
+    }
+
+    private class SensorAdapter extends RecyclerView.Adapter<SensorHolder> {
+        private List<String> mTemp;
+
+        public SensorAdapter(List<String> values) {
+            setSensors(values);
+        }
+
+        @Override
+        public SensorHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new SensorHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(SensorHolder holder, int position) {
+            String value = mTemp.get(position);
+            holder.bind(value);
+        }
+
+        @Override
+        public int getItemCount() {
+            try {
+                return mTemp.size();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
             }
         }
-        cnt++;
+
+        public void setSensors(List<String> values) {
+            mTemp = values;
+        }
     }
 }

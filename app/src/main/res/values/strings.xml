@@ -25,8 +25,12 @@
 
     <string name="ON">ON</string>
     <string name="OFF">OFF</string>
-    <string name="insertURL">Введите адрес устройства:</string>
-    <string name="insertIP">Введите IP устройства:</string>
+
+    <!--Настройки общие-->
+    <string name="settingsTitle">Настройки</string>
+    <string name="netSettings">Настройки сети</string>
+    <string name="deviceURL">Адрес устройства:</string>
+    <string name="insertIP">IP устройства:</string>
     <string name="defaultAddress">192.168.0.200</string>
     <string name="notificationTicker">Превышена температура</string>
     <string name="notificationTemp">Датчик %1$d: %2$s°С.</string>

@@ -1,5 +1,6 @@
 package grey.smarthouse.ui.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class RelaySettingsFragment extends Fragment {
     private CheckBox mHandModeCheckBox;
     private CheckBox mTempModeCheckBox;
     private CheckBox mTimeModeCheckBox;
+    private ImageView mTempIcon;
     private Button mSaveButton;
 
 
@@ -92,6 +95,7 @@ public class RelaySettingsFragment extends Fragment {
         mPeriodTime = (EditText) v.findViewById(R.id.periodTime);
         mDurationTime = (EditText) v.findViewById(R.id.durationTime);
         mSaveButton = (Button) v.findViewById(R.id.saveButton);
+        mTempIcon = (ImageView) v.findViewById((R.id.ic_temp));
 
         mHandModeCheckBox = (CheckBox) v.findViewById(R.id.handModeCheckbox);
         mHandModeCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +126,7 @@ public class RelaySettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setSettingsToRelay();
+                updateUI(mRelay.getMode());
             }
         });
 
@@ -144,7 +149,11 @@ public class RelaySettingsFragment extends Fragment {
         mBotTemp.setEnabled(mTemp);
         mPeriodTime.setEnabled(mTime);
         mDurationTime.setEnabled(mTime);
-        int hotText = (mCool)?R.string.cool:R.string.hot;
+        if(mRelay.getTopTemp()>mRelay.getBotTemp()){
+            mTempIcon.setImageResource(R.drawable.ic_sun);
+        }else{
+            mTempIcon.setImageResource(R.drawable.ic_snow);
+        }
     }
 
     private void setSettingsToRelay(){

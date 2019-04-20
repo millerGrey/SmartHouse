@@ -11,13 +11,13 @@
     <style name="CustomTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorCustomPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorCustomDark</item>
         <item name="colorAccent">@color/colorCustomAccent</item>
         <item name="android:textColor">@color/colorCustomText</item>
         <item name="android:textColorPrimary">@color/selector_color_text_primary</item>
         <item name="colorControlNormal">@color/colorCustomText</item>
         <item name="android:textColorPrimaryDisableOnly">@color/colorCustomAccent</item>
-        <item name="android:textColorHint">@color/colorCustomEditBgDisabled</item>
+        <!--<item name="android:textColorHint">@color/colorCustomEditBgDisabled</item>-->
         <!--<item name="editTextBackground">@drawable/edit_text_style</item>-->
     </style>
 

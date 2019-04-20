@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorCustomDark">
+    <PreferenceCategory
+        android:title="@string/netSettings"
+        android:key="pref_key_storage_settings"
+        android:background="@color/colorCustomDark">
+        <EditTextPreference
+            android:key="pref_device_url"
+            android:title="@string/deviceURL"
+            android:defaultValue="@string/defaultAddress"
+            >
+        </EditTextPreference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

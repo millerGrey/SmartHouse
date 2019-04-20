@@ -11,6 +11,8 @@ import retrofit2.http.Path;
 
 public interface SmartHouseApi {
 
+    @GET("/cgi-bin/reset")
+    Call<ResponseBody> reset();
 
     @GET("/cgi-bin/ds1820/value/")
     Call<ResponseBody> ds18b20tempList();
@@ -36,5 +38,7 @@ public interface SmartHouseApi {
                                      @Path("periodTime") int periodTime,
                                      @Path("actionTime") int actionTimer,
                                      @Path("sensNumber") int sensNumber);
+
+
 }
 ///{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/{desc}/")

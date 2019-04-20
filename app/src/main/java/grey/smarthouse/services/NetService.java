@@ -35,6 +35,7 @@ public class NetService extends Service {
     Observable<Long> netRequest;
     static final int alarmTemp = 27;
     static final String CHANNEL_ID = "ch";
+    static int notifCount=0;
 
     @Override
     public void onCreate() {
@@ -107,6 +108,7 @@ public class NetService extends Service {
         });
     }
 
+
     public void relayStateRequest(){
         Call<ResponseBody> stateReq = Requests.getApi().relayStateList();
         Log.d("TCP", ">>> " + stateReq.request().toString());
@@ -137,6 +139,7 @@ public class NetService extends Service {
     }
 
     void sendNotif(int i) {
+
         Intent resultIntent = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -148,7 +151,8 @@ public class NetService extends Service {
                         .setContentTitle(getResources().getString(R.string.notificationTicker))
                         .setContentText(String.format(getResources().getString(R.string.notificationTemp), i + 1, mTemp.get(i)))
                         .setContentIntent(resultPendingIntent)
-                        .setAutoCancel(true);
+                        .setAutoCancel(true)
+                        .setNumber(notifCount++);
 
         Notification notification = builder.build();
         NotificationManager notificationManager =
