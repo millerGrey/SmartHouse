@@ -1,20 +1,30 @@
 package grey.smarthouse.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
+
 import java.util.UUID;
+
+import grey.smarthouse.database.AppDatabase.*;
 
 /**
  * Created by GREY on 30.04.2018.
  */
-
+@Entity(tableName = "relayTable")
 public class Relay {
 
     public final static int HAND_MODE = 2;
     public final static int TEMP_MODE = 0;
     public final static int TIME_MODE = 1;
 
+    @PrimaryKey
+    @NonNull
+    @TypeConverters({IdConverter.class})
     private UUID mId;
     private String mDescription;
-
     private int mNumber;
     private int mMode;
     private int mTopTemp;

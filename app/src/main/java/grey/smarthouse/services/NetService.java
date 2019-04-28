@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -16,26 +17,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
-import grey.smarthouse.model.Model;
+import grey.smarthouse.model.RelayList;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class NetService extends Service {
 
+    private Requests mRequests;
     public NotificationManager nm;
     static List<String> mTemp;
     static List<Float> lastTemp = new ArrayList<Float>();
     Observable<Long> netRequest;
     static final int alarmTemp = 27;
     static final String CHANNEL_ID = "ch";
-    static int notifCount=0;
+    static int notifCount = 0;
 
     @Override
     public void onCreate() {
@@ -76,63 +75,10 @@ public class NetService extends Service {
     }
 
 
-    private void ds18b20Request() {
-        Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
-        Log.d("TCP", ">>> " + tempReq.request().toString());
-
-        tempReq.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String resp = null;
-                if (response.message().equals("OK")) {
-                    try {
-//                        getRequest=true;
-                        resp = response.body().string();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    mTemp = Arrays.asList(resp.replace(',', '.').split("/"));
-                } else {
-                    //TODO 404 неправильный адрес
-                }
-                Log.d("TCP", "<<< " + response.message() + " " + resp);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", t.toString());
-                //TODO проверить соединение или адрес или устройство не в сети
-            }
-        });
-    }
 
 
-    public void relayStateRequest(){
-        Call<ResponseBody> stateReq = Requests.getApi().relayStateList();
-        Log.d("TCP", ">>> " + stateReq.request().toString());
-        stateReq.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String resp = null;
-                if(response.message().equals("OK")) {
-                    try {
-                        resp = response.body().string();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d("TCP", "<<< " + response.message() + " " + resp);
-                    Model.mRelayStates = Arrays.asList(resp.split("/"));
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", t.toString());
-            }
-        });
-    }
+
+
 
     public static List<String> getTemp() {
         return mTemp;
@@ -145,7 +91,7 @@ public class NetService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this,CHANNEL_ID)
+                new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setTicker(getResources().getString(R.string.notificationTicker))
                         .setSmallIcon(R.drawable.ic_whatshot_black_24dp)
                         .setContentTitle(getResources().getString(R.string.notificationTicker))
@@ -161,8 +107,8 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        ds18b20Request();
-        relayStateRequest();
+        mTemp = mRequests.ds18b20Request();
+        mRequests.relayStateRequest();
         try {
             for (int i = 0; i < mTemp.size(); i++) {
                 float t = Float.parseFloat(mTemp.get(i));
@@ -179,5 +125,14 @@ public class NetService extends Service {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+        boolean isNetworkConnected = isNetworkAvailable &&
+                cm.getActiveNetworkInfo().isConnected();
+        return isNetworkConnected;
     }
 }

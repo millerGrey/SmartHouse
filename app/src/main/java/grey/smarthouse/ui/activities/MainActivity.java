@@ -8,10 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 
+import grey.smarthouse.model.App;
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
 import grey.smarthouse.ui.ViewPagerAdapter;
-import grey.smarthouse.model.Model;
 import grey.smarthouse.retrofit.Requests;
 import io.reactivex.Observable;
 
@@ -41,7 +41,7 @@ public class MainActivity extends SingleFragmentActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        Requests.RetrofitInit(Model.mDeviceURL);
+        Requests.RetrofitInit(App.getInstance().mDeviceURL);
         startService(new Intent(this,NetService.class));
         Observable<String> observable = Observable.just("one",
                 "two", "three");

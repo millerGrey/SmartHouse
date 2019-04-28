@@ -19,9 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import grey.smarthouse.model.Model;
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.R;
+import grey.smarthouse.model.RelayList;
 import grey.smarthouse.retrofit.Requests;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -68,7 +68,7 @@ public class RelaySettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
 //        mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
-        mRelay = Model.getRelay(relayId);
+        mRelay = RelayList.getInstance().getRelay(relayId);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class RelaySettingsFragment extends Fragment {
         mRelay.setPeriodTime(Integer.parseInt(mPeriodTime.getText().toString()));
         mRelay.setDurationTime(Integer.parseInt(mDurationTime.getText().toString()));
         mRelay.setDescription(mDescriptionField.getText().toString());
-        Model.updateRelay(getActivity(), mRelay);
+        RelayList.getInstance().updateRelay(mRelay);
         int mode = mRelay.getMode();
         String modeS = null;
         switch(mode) {

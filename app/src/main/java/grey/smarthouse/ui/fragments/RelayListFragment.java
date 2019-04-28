@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import grey.smarthouse.model.Model;
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.R;
+import grey.smarthouse.model.RelayList;
 import grey.smarthouse.ui.activities.RelaySettingsActivity;
 import grey.smarthouse.retrofit.Requests;
 
@@ -37,11 +37,13 @@ public class RelayListFragment extends refreshFragment {
 
     private RecyclerView mRelayRecyclerView;
     private RelayAdapter mAdapter;
+    private RelayList mRelayList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("tag","listFragmentCreate");
+        mRelayList = RelayList.getInstance();
     }
 
     @Override
@@ -61,7 +63,7 @@ public class RelayListFragment extends refreshFragment {
 
 
     private void updateUI(){
-        List<Relay> relays = Model.mRelayConfigs;
+        List<Relay> relays = mRelayList.getRelays();
         if(mAdapter == null){
             mAdapter = new RelayAdapter(relays);
             mRelayRecyclerView.setAdapter(mAdapter);
@@ -119,7 +121,7 @@ public class RelayListFragment extends refreshFragment {
                 mSecondParam.setText("");
             }
 
-            if(Model.mRelayStates.get(mRelay.getNumber()).equals("1")){
+            if(mRelayList.mRelayStates.get(mRelay.getNumber()).equals("1")){
                 mButtonState.setChecked(true);
             }
             else{
@@ -131,16 +133,16 @@ public class RelayListFragment extends refreshFragment {
 
                     mMode.setImageResource(R.drawable.ic_hand);
                     mRelay.setMode(Relay.HAND_MODE);
-                    Model.updateRelay(getActivity(), mRelay);
+                    mRelayList.updateRelay(mRelay);
                     mFirstParam.setText("");
                     mSecondParam.setText("");
 
                     if(mButtonState.isChecked()){
-                        Model.mRelayStates.set(mRelay.getNumber(),"1");
+                        mRelayList.mRelayStates.set(mRelay.getNumber(),"1");
                         relayOnRequest(mRelay.getNumber());
                     }
                     else {
-                        Model.mRelayStates.set(mRelay.getNumber(),"0");
+                        mRelayList.mRelayStates.set(mRelay.getNumber(),"0");
                         relayOffRequest(mRelay.getNumber());
                     }
                 }

@@ -6,8 +6,9 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 
-import grey.smarthouse.model.Model;
+
 import grey.smarthouse.model.Relay;
+import grey.smarthouse.model.RelayList;
 import grey.smarthouse.ui.fragments.RelaySettingsFragment;
 import grey.smarthouse.retrofit.Requests;
 
@@ -24,6 +25,7 @@ import retrofit2.Response;
 
 public class RelaySettingsActivity extends SingleFragmentActivity {
     Relay mRelay;
+    RelayList mRelayList;
     private static final String EXTRA_RELAY_ID = "grey.smarthouse.relay_id";
     List<String> mConfig;
 
@@ -32,7 +34,8 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getIntent().getSerializableExtra(EXTRA_RELAY_ID);
 //        mRelay = RelayList.getInstance(this).getRelay(relayId);
-        mRelay = Model.getRelay(relayId);
+        mRelayList = RelayList.getInstance();
+        mRelay = mRelayList.getRelay(relayId);
 
         mConfig = new ArrayList<String>();
 //        Requests.RetrofitInit();
@@ -56,7 +59,7 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
                 mRelay.setPeriodTime(Integer.parseInt(mConfig.get(4)));
                 mRelay.setDurationTime(Integer.parseInt(mConfig.get(5)));
 //                RelayList.getInstance(RelaySettingsActivity.this).updateRelay(mRelay);
-                mModel.updateRelay(RelaySettingsActivity.this,mRelay);
+                mRelayList.updateRelay(mRelay);
                 addFragment();
             }
 

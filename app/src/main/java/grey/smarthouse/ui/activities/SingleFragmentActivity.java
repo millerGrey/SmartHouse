@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import grey.smarthouse.model.Model;
+
 import grey.smarthouse.R;
 
 /**
@@ -18,14 +18,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
-    Model mModel;
 
     ProgressBar PBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
-        mModel = Model.getInstance(this);
         PBar = (ProgressBar) findViewById(R.id.progressRelaySettings);
         }
 
