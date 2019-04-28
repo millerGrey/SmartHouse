@@ -11,13 +11,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
-import grey.smarthouse.model.RelayList;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
@@ -73,12 +70,6 @@ public class NetService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-
-
-
-
-
 
     public static List<String> getTemp() {
         return mTemp;
