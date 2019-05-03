@@ -4,11 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.support.v7.widget.SwitchCompat;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import grey.smarthouse.R;
 import grey.smarthouse.model.App;
@@ -25,13 +30,15 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by GREY on 11.08.2018.
  */
 
-public class SettingsFragment extends Fragment implements View.OnClickListener {
+public class SettingsFragment extends Fragment implements TextView.OnEditorActionListener {
 
-    private EditText mURL;
+    private EditText mEditURL;
     private EditText mIP;
-    private Button mSaveURL;
-    private Button mSaveIP;
+    private EditText mEditNotifTemp;
     private Button mReset;
+    private SwitchCompat mNotifOn;
+    private SwitchCompat mTestSet;
+
 
 
     @Override
@@ -43,14 +50,57 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
-        mURL = (EditText)v.findViewById(R.id.URL);
-        mURL.setText(App.getInstance().mDeviceURL);
-        mIP = (EditText)v.findViewById(R.id.IP);
-        mSaveURL = (Button)v.findViewById(R.id.saveURL);
-        mSaveIP = (Button)v.findViewById(R.id.saveIP);
-        mReset = (Button)v.findViewById(R.id.reset);
-        mSaveURL.setOnClickListener(this);
-        mReset.setOnClickListener(new View.OnClickListener(){
+        mEditURL = (EditText) v.findViewById(R.id.URL);
+        mEditURL.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    App.getInstance().mDeviceURL = mEditURL.getText().toString();
+                    Requests.RetrofitInit(App.getInstance().mDeviceURL);
+                    return true;
+                }
+                return false;
+            }
+        });
+        mEditURL.setText(App.getInstance().mDeviceURL);
+
+        mNotifOn = (SwitchCompat) v.findViewById(R.id.switchNotif);
+        mNotifOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                App.getInstance().mIsNotifOn = b;
+            }
+        });
+        mNotifOn.setChecked(App.getInstance().mIsNotifOn);
+
+        mEditNotifTemp = (EditText) v.findViewById(R.id.tempNotif);
+        mEditNotifTemp.setOnEditorActionListener(this);
+        mEditNotifTemp.setText(Integer.toString(App.getInstance().mNotifTemp));
+        mTestSet = (SwitchCompat)v.findViewById(R.id.switchTestSet);
+        mTestSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                App.getInstance().mIsTestSet = b;
+                if (App.getInstance().mIsTestSet) {
+                    mIP.setVisibility(View.VISIBLE);
+                    mReset.setVisibility(View.VISIBLE);
+                } else {
+                    mIP.setVisibility(View.INVISIBLE);
+                    mReset.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mIP = (EditText) v.findViewById(R.id.IP);
+        mReset = (Button) v.findViewById(R.id.reset);
+        if (App.getInstance().mIsTestSet) {
+            mIP.setVisibility(View.VISIBLE);
+            mReset.setVisibility(View.VISIBLE);
+        } else {
+            mIP.setVisibility(View.INVISIBLE);
+            mReset.setVisibility(View.INVISIBLE);
+        }
+        mReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Call<ResponseBody> tempReq = Requests.getApi().reset();
@@ -72,13 +122,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        App.getInstance().mDeviceURL = mURL.getText().toString();
-        Requests.RetrofitInit(App.getInstance().mDeviceURL);
-        App.getInstance().savePref(getActivity().getPreferences(MODE_PRIVATE));
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            App.getInstance().mNotifTemp = Integer.parseInt(mEditNotifTemp.getText().toString());
+            return true;
+        }
+        return false;
     }
 
-
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        App.getInstance().savePref();
+    }
 }
+//getActivity().getPreferences(MODE_PRIVATE)

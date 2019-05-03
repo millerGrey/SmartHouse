@@ -140,7 +140,6 @@ public class RelaySettingsFragment extends Fragment {
         boolean mTemp = (mode == 0);
         boolean mTime = (mode == 0x01);
         boolean mHand = (mode == 0x02);
-        boolean mCool = ((mode == 0x03));
 
         mHandModeCheckBox.setChecked(mHand);
         mTempModeCheckBox.setChecked(mTemp);

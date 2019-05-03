@@ -26,7 +26,7 @@ public class Requests  {
     private static SmartHouseApi smartHouseApi;
     private static Retrofit retrofit;
     private static String URL;
-    List<String> mt;
+    static List<String> mt;
     public static void Requests(){
     }
 
@@ -51,7 +51,7 @@ public class Requests  {
         return smartHouseApi;
     }
 
-    public void relayStateRequest() {
+    public static void relayStateRequest() {
         Call<ResponseBody> stateReq = smartHouseApi.relayStateList();
         Log.d("TCP", ">>> " + stateReq.request().toString());
         stateReq.enqueue(new Callback<ResponseBody>() {
@@ -76,7 +76,7 @@ public class Requests  {
         });
     }
 
-    public List<String> ds18b20Request() {
+    public static List<String> ds18b20Request() {
 
         Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
         Log.d("TCP", ">>> " + tempReq.request().toString());

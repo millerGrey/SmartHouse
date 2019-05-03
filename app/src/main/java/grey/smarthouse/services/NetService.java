@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
+import grey.smarthouse.model.App;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
@@ -29,7 +30,6 @@ public class NetService extends Service {
     static List<String> mTemp;
     static List<Float> lastTemp = new ArrayList<Float>();
     Observable<Long> netRequest;
-    static final int alarmTemp = 27;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
 
@@ -98,23 +98,25 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        mTemp = mRequests.ds18b20Request();
-        mRequests.relayStateRequest();
-        try {
-            for (int i = 0; i < mTemp.size(); i++) {
-                float t = Float.parseFloat(mTemp.get(i));
-                if (lastTemp.size() < mTemp.size()) {
-                    lastTemp.add(t);
+        mTemp = Requests.ds18b20Request();
+        Requests.relayStateRequest();
+        if(App.getInstance().mIsNotifOn) {
+            try{
+                for (int i = 0; i < mTemp.size(); i++) {
+                    float t = Float.parseFloat(mTemp.get(i));
+                    if (lastTemp.size() < mTemp.size()) {
+                        lastTemp.add(t);
+                    }
+                    if (t >= App.getInstance().mNotifTemp && lastTemp.get(i) < App.getInstance().mNotifTemp) {
+                        sendNotif(i);
+                    }
+                    lastTemp.set(i, t);
                 }
-                if (t >= alarmTemp && lastTemp.get(i) < alarmTemp) {
-                    sendNotif(i);
-                }
-                lastTemp.set(i, t);
+            }catch (NumberFormatException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
     }
 
