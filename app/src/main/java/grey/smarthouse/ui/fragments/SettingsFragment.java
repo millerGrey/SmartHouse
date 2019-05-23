@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import grey.smarthouse.R;
@@ -23,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.MODE_PRIVATE;
+
 
 
 /**
@@ -54,10 +53,10 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
         mEditURL.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                if (i==6) {
                     App.getInstance().mDeviceURL = mEditURL.getText().toString();
                     Requests.RetrofitInit(App.getInstance().mDeviceURL);
-                    return true;
+                    return false;
                 }
                 return false;
             }
@@ -123,16 +122,16 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+        if (actionId==6) {
             App.getInstance().mNotifTemp = Integer.parseInt(mEditNotifTemp.getText().toString());
-            return true;
+            return false;
         }
         return false;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         App.getInstance().savePref();
     }
 }

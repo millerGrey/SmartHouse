@@ -31,6 +31,7 @@
         android:inputType="text|textUri"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textInsertURL"
         app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +111,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_style"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         app:layout_constraintStart_toStartOf="@+id/switchNotif"
