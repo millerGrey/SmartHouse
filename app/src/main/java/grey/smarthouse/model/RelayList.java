@@ -1,31 +1,22 @@
 package grey.smarthouse.model;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import grey.smarthouse.database.AppDatabase;
 
 /**
  * Created by GREY on 30.04.2018.
  */
 
 public class RelayList {
-    private static  RelayList sRelayList;
-    private static AppDatabase sDb;
+    private static RelayList sRelayList;
     List<Relay> mRelays;
-    public static List<String>  mRelayStates;
+    public static List<String> mRelayStates;
+
+    private static Repository mRepo;
 
     public static RelayList getInstance() {
-        if (sRelayList == null)
-        {
-            sDb = App.getInstance().getDatabase();
+        if (sRelayList == null) {
             sRelayList = new RelayList();
         }
         return sRelayList;
@@ -34,7 +25,7 @@ public class RelayList {
     private RelayList() {
 
         mRelays = getRelays();
-        if(mRelays.size()==0) {
+        if (mRelays.size() == 0) {
             for (int i = 0; i < 4; i++) {
                 Relay relay = new Relay();
                 relay.setMode(2);
@@ -43,26 +34,29 @@ public class RelayList {
             }
         }
         mRelayStates = new ArrayList<String>();
-        for(int i=0;i<5;i++){
-            mRelayStates.add(i,"OFF");
+        for (int i = 0; i < 5; i++) {
+            mRelayStates.add(i, "OFF");
         }
     }
 
+    public static void setRepo(Repository repo) {
+        mRepo = repo;
+    }
+
     public Relay getRelay(UUID id) {
-        Relay relay = sDb.mRelayDao().getById(id);
+        Relay relay = mRepo.get(id);
         return relay;
     }
 
-    public List<Relay> getRelays()
-    {
-        return sDb.mRelayDao().getAll();
+    public List<Relay> getRelays() {
+        return mRepo.getAll();
     }
 
     public void updateRelay(Relay relay) {
-        sDb.mRelayDao().update(relay);
+        mRepo.update(relay);
     }
 
     public void addRelay(Relay relay) {
-        sDb.mRelayDao().insert(relay);
+        mRepo.insert(relay);
     }
 }

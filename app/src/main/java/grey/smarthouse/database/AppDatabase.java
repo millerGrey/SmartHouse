@@ -4,28 +4,39 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverter;
 
+import java.util.List;
 import java.util.UUID;
 
 import grey.smarthouse.model.Relay;
+import grey.smarthouse.model.Repository;
 
 @Database(entities = {Relay.class}, version = 1)
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class AppDatabase extends RoomDatabase implements Repository {
     public abstract RelayDao mRelayDao();
 
-    public static class IdConverter {
 
-        @TypeConverter
-        public String idToString(UUID id) {
-            if (id == null) {
-                return null;
-            } else {
-                return id.toString();
-            }
-        }
-        @TypeConverter
-        public UUID stringToId(String string){
-            return UUID.fromString(string);
-        }
+    @Override
+    public void insert(Relay relay) {
+        mRelayDao().insert(relay);
+    }
 
+    @Override
+    public void update(Relay relay) {
+        mRelayDao().update(relay);
+    }
+
+    @Override
+    public Relay get(UUID id) {
+        return mRelayDao().getById(id);
+    }
+
+    @Override
+    public List<Relay> getAll() {
+        return mRelayDao().getAll();
+    }
+
+    @Override
+    public void delete(Relay relay) {
+        mRelayDao().delete(relay);
     }
 }

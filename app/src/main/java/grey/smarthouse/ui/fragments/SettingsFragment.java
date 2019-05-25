@@ -44,7 +44,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
         mURL = (EditText)v.findViewById(R.id.URL);
-        mURL.setText(App.getInstance().mDeviceURL);
+        mURL.setText(App.getApp().mDeviceURL);
         mIP = (EditText)v.findViewById(R.id.IP);
         mSaveURL = (Button)v.findViewById(R.id.saveURL);
         mSaveIP = (Button)v.findViewById(R.id.saveIP);
@@ -73,9 +73,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        App.getInstance().mDeviceURL = mURL.getText().toString();
-        Requests.RetrofitInit(App.getInstance().mDeviceURL);
-        App.getInstance().savePref(getActivity().getPreferences(MODE_PRIVATE));
+        App.getApp().mDeviceURL = mURL.getText().toString();
+        Requests.RetrofitInit(App.getApp().mDeviceURL);
+        App.getApp().savePref(getActivity().getPreferences(MODE_PRIVATE));
     }
 
 

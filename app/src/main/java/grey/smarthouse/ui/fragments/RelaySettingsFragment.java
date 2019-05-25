@@ -67,7 +67,7 @@ public class RelaySettingsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getArguments().getSerializable(ARG_RELAY_ID);
-//        mRelay = RelayList.getInstance(getActivity()).getRelay(relayId);
+//        mRelay = RelayList.getApp(getActivity()).getRelay(relayId);
         mRelay = RelayList.getInstance().getRelay(relayId);
     }
 

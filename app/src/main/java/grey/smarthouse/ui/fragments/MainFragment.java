@@ -59,7 +59,7 @@ public class MainFragment extends refreshFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
-        mSensorsRecyclerView = (RecyclerView)view.findViewById(R.id.sensor_recycler_view);
+        mSensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensor_recycler_view);
         mSensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return view;
@@ -74,9 +74,9 @@ public class MainFragment extends refreshFragment {
 
     public void updateUI() {
         mTemp = NetService.getTemp();
-        if(mTemp == null){
+        if (mTemp == null) {
             mProgress.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mProgress.setVisibility(View.INVISIBLE);
         }
         if (mSensorAdapter == null) {
@@ -136,4 +136,5 @@ public class MainFragment extends refreshFragment {
             mTemp = values;
         }
     }
+
 }

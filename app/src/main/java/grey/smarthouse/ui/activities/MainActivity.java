@@ -41,7 +41,7 @@ public class MainActivity extends SingleFragmentActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        Requests.RetrofitInit(App.getInstance().mDeviceURL);
+        Requests.RetrofitInit(App.getApp().mDeviceURL);
         startService(new Intent(this,NetService.class));
         Observable<String> observable = Observable.just("one",
                 "two", "three");

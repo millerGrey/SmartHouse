@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import grey.smarthouse.model.App;
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.R;
 import grey.smarthouse.model.RelayList;
@@ -42,8 +43,9 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("tag","listFragmentCreate");
+        Log.d("tag", "listFragmentCreate");
         mRelayList = RelayList.getInstance();
+
     }
 
     @Override
@@ -55,28 +57,25 @@ public class RelayListFragment extends refreshFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_relay_list, container, false);
-        mRelayRecyclerView = (RecyclerView)v.findViewById(R.id.relay_recycler_view);
+        mRelayRecyclerView = (RecyclerView) v.findViewById(R.id.relay_recycler_view);
         mRelayRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return v;
     }
 
 
-    private void updateUI(){
+    private void updateUI() {
         List<Relay> relays = mRelayList.getRelays();
-        if(mAdapter == null){
+        if (mAdapter == null) {
             mAdapter = new RelayAdapter(relays);
             mRelayRecyclerView.setAdapter(mAdapter);
-        }
-        else
-        {
+        } else {
             mAdapter.notifyDataSetChanged();
         }
         mAdapter.setRelays(relays);
-
     }
 
-    public class RelayHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RelayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Relay mRelay;
         private TextView mName;
         private ImageView mMode;
@@ -85,8 +84,8 @@ public class RelayListFragment extends refreshFragment {
         private TextView mDescription;
         private ToggleButton mButtonState;
 
-        public RelayHolder(LayoutInflater inflater, ViewGroup parent){
-            super(inflater.inflate(R.layout.list_item_relay,parent, false));
+        public RelayHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_relay, parent, false));
             mName = itemView.findViewById(R.id.item_name);
             mDescription = itemView.findViewById(R.id.textDescription);
             mMode = itemView.findViewById(R.id.item_image_mode);
@@ -96,12 +95,12 @@ public class RelayListFragment extends refreshFragment {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Relay relay){
+        public void bind(Relay relay) {
             mRelay = relay;
             int mode = mRelay.getMode();
             mName.setText("Реле " + mRelay.getNumber());
             mDescription.setText(mRelay.getDescription());
-            if(mode == Relay.TEMP_MODE){
+            if (mode == Relay.TEMP_MODE) {
                 if ((mRelay.getBotTemp() > mRelay.getTopTemp())) {
                     mMode.setImageResource(R.drawable.ic_snow);
                 } else {
@@ -109,22 +108,19 @@ public class RelayListFragment extends refreshFragment {
                 }
                 mFirstParam.setText(Integer.toString(mRelay.getTopTemp()) + getResources().getString(R.string.degree));
                 mSecondParam.setText(Integer.toString(mRelay.getBotTemp()) + getResources().getString(R.string.degree));
-            }
-            else if(mode == Relay.TIME_MODE){
+            } else if (mode == Relay.TIME_MODE) {
                 mMode.setImageResource(R.drawable.ic_time);
-                mFirstParam.setText(Integer.toString(mRelay.getPeriodTime()) +" "+  getResources().getString(R.string.minutes));
-                mSecondParam.setText(Integer.toString(mRelay.getDurationTime()) +" "+  getResources().getString(R.string.minutes));
-            }
-            else{
+                mFirstParam.setText(Integer.toString(mRelay.getPeriodTime()) + " " + getResources().getString(R.string.minutes));
+                mSecondParam.setText(Integer.toString(mRelay.getDurationTime()) + " " + getResources().getString(R.string.minutes));
+            } else {
                 mMode.setImageResource(R.drawable.ic_hand);
                 mFirstParam.setText("");
                 mSecondParam.setText("");
             }
 
-            if(mRelayList.mRelayStates.get(mRelay.getNumber()).equals("1")){
+            if (mRelayList.mRelayStates.get(mRelay.getNumber()).equals("1")) {
                 mButtonState.setChecked(true);
-            }
-            else{
+            } else {
                 mButtonState.setChecked(false);
             }
             mButtonState.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +133,11 @@ public class RelayListFragment extends refreshFragment {
                     mFirstParam.setText("");
                     mSecondParam.setText("");
 
-                    if(mButtonState.isChecked()){
-                        mRelayList.mRelayStates.set(mRelay.getNumber(),"1");
+                    if (mButtonState.isChecked()) {
+                        mRelayList.mRelayStates.set(mRelay.getNumber(), "1");
                         relayOnRequest(mRelay.getNumber());
-                    }
-                    else {
-                        mRelayList.mRelayStates.set(mRelay.getNumber(),"0");
+                    } else {
+                        mRelayList.mRelayStates.set(mRelay.getNumber(), "0");
                         relayOffRequest(mRelay.getNumber());
                     }
                 }
@@ -158,7 +153,7 @@ public class RelayListFragment extends refreshFragment {
     }
 
 
-    private class RelayAdapter extends RecyclerView.Adapter<RelayHolder>{
+    private class RelayAdapter extends RecyclerView.Adapter<RelayHolder> {
         private List<Relay> mRelays;
 
         public RelayAdapter(List<Relay> relays) {
@@ -181,6 +176,7 @@ public class RelayListFragment extends refreshFragment {
         public int getItemCount() {
             return mRelays.size();
         }
+
         public void setRelays(List<Relay> relays) {
             mRelays = relays;
         }
@@ -191,7 +187,7 @@ public class RelayListFragment extends refreshFragment {
         updateUI();
     }
 
-    public void relayOnRequest(int num){
+    public void relayOnRequest(int num) {
         Call<ResponseBody> relayOnReq = Requests.getApi().relayOn(num);
         Log.d("TCP", ">>> " + relayOnReq.request().toString());
         relayOnReq.enqueue(new Callback<ResponseBody>() {
@@ -199,6 +195,7 @@ public class RelayListFragment extends refreshFragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("TCP", "<<< " + response.message());
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
@@ -206,7 +203,7 @@ public class RelayListFragment extends refreshFragment {
         });
     }
 
-    public void relayOffRequest(int num){
+    public void relayOffRequest(int num) {
         Call<ResponseBody> relayOffReq = Requests.getApi().relayOff(num);
         Log.d("TCP", ">>> " + relayOffReq.request().toString());
         relayOffReq.enqueue(new Callback<ResponseBody>() {
@@ -214,6 +211,7 @@ public class RelayListFragment extends refreshFragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("TCP", "<<< " + response.message());
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
@@ -221,11 +219,14 @@ public class RelayListFragment extends refreshFragment {
         });
     }
 
-
-
     @Override
-    public void onPause() {
-        super.onPause();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            List<Relay> relays = mRelayList.getRelays();
+            for (Relay r : relays) {
+                Requests.relayConfigRequest(r, mRelayList);
+            }
+        }
     }
-
 }

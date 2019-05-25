@@ -10,27 +10,28 @@ import grey.smarthouse.database.AppDatabase;
 
 public class App extends Application {
     final static String SAVED_URL = "saved_url";
-    private static App instance;
-    private AppDatabase database;
+    private static App sApp;
+    private static AppDatabase sDatabase;
     private static SharedPreferences sPreferences;
     public static String mDeviceURL;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        sApp = this;
         sPreferences = this.getSharedPreferences("Preferenses", MODE_PRIVATE);
         loadPref();
-        database = Room.databaseBuilder(this, AppDatabase.class, "database")
+        sDatabase = Room.databaseBuilder(this, AppDatabase.class, "sDatabase")
             .allowMainThreadQueries()
             .build();
+        RelayList.setRepo(getDatabase());
     }
-    public static App getInstance() {
-        return instance;
+    public static App getApp() {
+        return sApp;
     }
 
     public AppDatabase getDatabase() {
-        return database;
+        return sDatabase;
     }
 
     public static void savePref(SharedPreferences sPref){

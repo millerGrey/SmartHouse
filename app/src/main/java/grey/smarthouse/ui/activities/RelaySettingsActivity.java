@@ -33,42 +33,43 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID relayId = (UUID) getIntent().getSerializableExtra(EXTRA_RELAY_ID);
-//        mRelay = RelayList.getInstance(this).getRelay(relayId);
+
         mRelayList = RelayList.getInstance();
         mRelay = mRelayList.getRelay(relayId);
 
         mConfig = new ArrayList<String>();
 //        Requests.RetrofitInit();
-        Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());
-        Log.d("TCP", ">>> " + res.request().toString());
-        res.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String resp = null;
-                try {
-                    resp = response.body().string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.d("TCP", "<<< " + response.message() + " " + resp);
-                mConfig = Arrays.asList(resp.split("/"));
-                mRelay.setMode(Integer.parseInt(mConfig.get(1)));
-                mRelay.setTopTemp(Integer.parseInt(mConfig.get(2)));
-                mRelay.setBotTemp(Integer.parseInt(mConfig.get(3)));
-                mRelay.setPeriodTime(Integer.parseInt(mConfig.get(4)));
-                mRelay.setDurationTime(Integer.parseInt(mConfig.get(5)));
-//                RelayList.getInstance(RelaySettingsActivity.this).updateRelay(mRelay);
-                mRelayList.updateRelay(mRelay);
-                addFragment();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-            }
-
-        });
+        addFragment();
+//        Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());
+//        Log.d("TCP", ">>> " + res.request().toString());
+//        res.enqueue(new Callback<ResponseBody>() {
+//
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                String resp = null;
+//                try {
+//                    resp = response.body().string();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                Log.d("TCP", "<<< " + response.message() + " " + resp);
+//                mConfig = Arrays.asList(resp.split("/"));
+//                mRelay.setMode(Integer.parseInt(mConfig.get(1)));
+//                mRelay.setTopTemp(Integer.parseInt(mConfig.get(2)));
+//                mRelay.setBotTemp(Integer.parseInt(mConfig.get(3)));
+//                mRelay.setPeriodTime(Integer.parseInt(mConfig.get(4)));
+//                mRelay.setDurationTime(Integer.parseInt(mConfig.get(5)));
+////                RelayList.getApp(RelaySettingsActivity.this).updateRelay(mRelay);
+//                mRelayList.updateRelay(mRelay);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//
+//        });
     }
 
     @Override
@@ -77,8 +78,7 @@ public class RelaySettingsActivity extends SingleFragmentActivity {
         return RelaySettingsFragment.newInstance(relayId);
     }
 
-    public static Intent NewIntent(Context packageContext, UUID relayId)
-    {
+    public static Intent NewIntent(Context packageContext, UUID relayId) {
         Intent intent = new Intent(packageContext, RelaySettingsActivity.class);
         intent.putExtra(EXTRA_RELAY_ID, relayId);
         return intent;

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import grey.smarthouse.model.Relay;
-
+import grey.smarthouse.database.converters.*;
 
 @Dao
 public interface RelayDao {
@@ -19,7 +19,7 @@ public interface RelayDao {
     List<Relay> getAll();
 
     @Query("SELECT * FROM relayTable WHERE mId = :id")
-    Relay getById(@TypeConverters({AppDatabase.IdConverter.class}) UUID id);
+    Relay getById(@TypeConverters({IdConverter.class}) UUID id);
 
     @Insert
     void insert(Relay relay);

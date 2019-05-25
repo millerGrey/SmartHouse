@@ -11,13 +11,13 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import grey.smarthouse.R;
-import grey.smarthouse.model.RelayList;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
@@ -75,11 +75,6 @@ public class NetService extends Service {
     }
 
 
-
-
-
-
-
     public static List<String> getTemp() {
         return mTemp;
     }
@@ -107,8 +102,8 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        mTemp = mRequests.ds18b20Request();
-        mRequests.relayStateRequest();
+        mTemp = Requests.ds18b20Request();
+        Requests.relayStateRequest();
         try {
             for (int i = 0; i < mTemp.size(); i++) {
                 float t = Float.parseFloat(mTemp.get(i));
@@ -127,12 +122,4 @@ public class NetService extends Service {
         }
     }
 
-    private boolean isNetworkAvailableAndConnected() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
-        boolean isNetworkConnected = isNetworkAvailable &&
-                cm.getActiveNetworkInfo().isConnected();
-        return isNetworkConnected;
-    }
 }

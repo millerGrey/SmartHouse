@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
-import grey.smarthouse.database.AppDatabase.*;
+import grey.smarthouse.database.converters.*;
 
 /**
  * Created by GREY on 30.04.2018.
