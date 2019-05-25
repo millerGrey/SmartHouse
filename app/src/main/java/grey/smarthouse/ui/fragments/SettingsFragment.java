@@ -54,33 +54,33 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i==6) {
-                    App.getInstance().mDeviceURL = mEditURL.getText().toString();
-                    Requests.RetrofitInit(App.getInstance().mDeviceURL);
+                    App.getApp().mDeviceURL = mEditURL.getText().toString();
+                    Requests.RetrofitInit(App.getApp().mDeviceURL);
                     return false;
                 }
                 return false;
             }
         });
-        mEditURL.setText(App.getInstance().mDeviceURL);
+        mEditURL.setText(App.getApp().mDeviceURL);
 
         mNotifOn = (SwitchCompat) v.findViewById(R.id.switchNotif);
         mNotifOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                App.getInstance().mIsNotifOn = b;
+                App.getApp().mIsNotifOn = b;
             }
         });
-        mNotifOn.setChecked(App.getInstance().mIsNotifOn);
+        mNotifOn.setChecked(App.getApp().mIsNotifOn);
 
         mEditNotifTemp = (EditText) v.findViewById(R.id.tempNotif);
         mEditNotifTemp.setOnEditorActionListener(this);
-        mEditNotifTemp.setText(Integer.toString(App.getInstance().mNotifTemp));
+        mEditNotifTemp.setText(Integer.toString(App.getApp().mNotifTemp));
         mTestSet = (SwitchCompat)v.findViewById(R.id.switchTestSet);
         mTestSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                App.getInstance().mIsTestSet = b;
-                if (App.getInstance().mIsTestSet) {
+                App.getApp().mIsTestSet = b;
+                if (App.getApp().mIsTestSet) {
                     mIP.setVisibility(View.VISIBLE);
                     mReset.setVisibility(View.VISIBLE);
                 } else {
@@ -92,7 +92,7 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
 
         mIP = (EditText) v.findViewById(R.id.IP);
         mReset = (Button) v.findViewById(R.id.reset);
-        if (App.getInstance().mIsTestSet) {
+        if (App.getApp().mIsTestSet) {
             mIP.setVisibility(View.VISIBLE);
             mReset.setVisibility(View.VISIBLE);
         } else {
@@ -123,7 +123,7 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId==6) {
-            App.getInstance().mNotifTemp = Integer.parseInt(mEditNotifTemp.getText().toString());
+            App.getApp().mNotifTemp = Integer.parseInt(mEditNotifTemp.getText().toString());
             return false;
         }
         return false;

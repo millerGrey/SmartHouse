@@ -101,14 +101,14 @@ public class NetService extends Service {
     private void nextHandler() {
         mTemp = Requests.ds18b20Request();
         Requests.relayStateRequest();
-        if(App.getInstance().mIsNotifOn) {
+        if(App.getApp().mIsNotifOn) {
             try{
                 for (int i = 0; i < mTemp.size(); i++) {
                     float t = Float.parseFloat(mTemp.get(i));
                     if (lastTemp.size() < mTemp.size()) {
                         lastTemp.add(t);
                     }
-                    if (t >= App.getInstance().mNotifTemp && lastTemp.get(i) < App.getInstance().mNotifTemp) {
+                    if (t >= App.getApp().mNotifTemp && lastTemp.get(i) < App.getApp().mNotifTemp) {
                         sendNotif(i);
                     }
                     lastTemp.set(i, t);

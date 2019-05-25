@@ -13,7 +13,7 @@ public class App extends Application {
     final static String SAVED_NOTIF_ON = "saved_notif_on";
     final static String SAVED_NOTIF_TEMP = "saved_notif_temp";
     final static String SAVED_TEST_SET = "saved_test_set";
-    private static App instance;
+    private static App sApp;
     private AppDatabase database;
     private static SharedPreferences sPreferences;
     public static String mDeviceURL;
@@ -24,15 +24,16 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        sApp = this;
         sPreferences = this.getSharedPreferences("Preferenses", MODE_PRIVATE);
         loadPref();
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
             .allowMainThreadQueries()
             .build();
+        RelayList.setRepo(getDatabase());
     }
-    public static App getInstance() {
-        return instance;
+    public static App getApp() {
+        return sApp;
     }
 
     public AppDatabase getDatabase() {

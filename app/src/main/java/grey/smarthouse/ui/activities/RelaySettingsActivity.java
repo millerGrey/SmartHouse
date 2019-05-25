@@ -4,72 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-
-
 import grey.smarthouse.model.Relay;
-import grey.smarthouse.model.RelayList;
 import grey.smarthouse.ui.fragments.RelaySettingsFragment;
-import grey.smarthouse.retrofit.Requests;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class RelaySettingsActivity extends SingleFragmentActivity {
-    Relay mRelay;
-    RelayList mRelayList;
+
     private static final String EXTRA_RELAY_ID = "grey.smarthouse.relay_id";
-    List<String> mConfig;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID relayId = (UUID) getIntent().getSerializableExtra(EXTRA_RELAY_ID);
-
-        mRelayList = RelayList.getInstance();
-        mRelay = mRelayList.getRelay(relayId);
-
-        mConfig = new ArrayList<String>();
-//        Requests.RetrofitInit();
         addFragment();
-//        Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());
-//        Log.d("TCP", ">>> " + res.request().toString());
-//        res.enqueue(new Callback<ResponseBody>() {
-//
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                String resp = null;
-//                try {
-//                    resp = response.body().string();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                Log.d("TCP", "<<< " + response.message() + " " + resp);
-//                mConfig = Arrays.asList(resp.split("/"));
-//                mRelay.setMode(Integer.parseInt(mConfig.get(1)));
-//                mRelay.setTopTemp(Integer.parseInt(mConfig.get(2)));
-//                mRelay.setBotTemp(Integer.parseInt(mConfig.get(3)));
-//                mRelay.setPeriodTime(Integer.parseInt(mConfig.get(4)));
-//                mRelay.setDurationTime(Integer.parseInt(mConfig.get(5)));
-////                RelayList.getApp(RelaySettingsActivity.this).updateRelay(mRelay);
-//                mRelayList.updateRelay(mRelay);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//
-//        });
     }
 
     @Override
