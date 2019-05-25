@@ -23,67 +23,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/edit_text_style"
         android:ems="10"
         android:hint="@string/defaultAddress"
         android:inputType="text|textUri"
-        android:paddingStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/saveURL"
-        app:layout_constraintEnd_toStartOf="@+id/saveURL"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/saveURL" />
-
-
-    <Button
-        android:id="@+id/saveURL"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/bg_button"
-        android:text="@string/save"
-        android:textColor="#000000"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInsertURL" />
+        app:layout_constraintStart_toEndOf="@+id/textInsertURL"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textInsertIP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/insertIP"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveURL" />
 
     <EditText
         android:id="@+id/IP"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/edit_text_style"
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/saveIP"
-        app:layout_constraintEnd_toStartOf="@+id/saveIP"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/saveIP" />
-
-    <Button
-        android:id="@+id/saveIP"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/bg_button"
-        android:text="@string/save"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInsertIP" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/reset"
@@ -97,4 +62,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchNotif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Уведомления при"
+        android:textColor="@color/colorCustomText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/URL" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/degree"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tempNotif"
+        app:layout_constraintTop_toBottomOf="@+id/URL" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchTestSet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Служебные настройки"
+        android:textColor="@color/colorCustomText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchNotif" />
+
+    <EditText
+        android:id="@+id/tempNotif"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text_style"
+        android:ems="10"
+        android:inputType="number"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        app:layout_constraintStart_toStartOf="@+id/switchNotif"
+        app:layout_constraintTop_toBottomOf="@+id/URL" />
+
 </android.support.constraint.ConstraintLayout>

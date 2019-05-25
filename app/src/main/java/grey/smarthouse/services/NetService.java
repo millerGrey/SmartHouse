@@ -11,13 +11,11 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import grey.smarthouse.R;
+import grey.smarthouse.model.App;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
@@ -74,7 +72,6 @@ public class NetService extends Service {
         return null;
     }
 
-
     public static List<String> getTemp() {
         return mTemp;
     }
@@ -104,22 +101,32 @@ public class NetService extends Service {
     private void nextHandler() {
         mTemp = Requests.ds18b20Request();
         Requests.relayStateRequest();
-        try {
-            for (int i = 0; i < mTemp.size(); i++) {
-                float t = Float.parseFloat(mTemp.get(i));
-                if (lastTemp.size() < mTemp.size()) {
-                    lastTemp.add(t);
+        if(App.getInstance().mIsNotifOn) {
+            try{
+                for (int i = 0; i < mTemp.size(); i++) {
+                    float t = Float.parseFloat(mTemp.get(i));
+                    if (lastTemp.size() < mTemp.size()) {
+                        lastTemp.add(t);
+                    }
+                    if (t >= App.getInstance().mNotifTemp && lastTemp.get(i) < App.getInstance().mNotifTemp) {
+                        sendNotif(i);
+                    }
+                    lastTemp.set(i, t);
                 }
-                if (t >= alarmTemp && lastTemp.get(i) < alarmTemp) {
-                    sendNotif(i);
-                }
-                lastTemp.set(i, t);
+            }catch (NumberFormatException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
     }
 
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+        boolean isNetworkConnected = isNetworkAvailable &&
+                cm.getActiveNetworkInfo().isConnected();
+        return isNetworkConnected;
+    }
 }

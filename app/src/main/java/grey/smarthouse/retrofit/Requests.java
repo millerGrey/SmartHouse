@@ -19,7 +19,7 @@ import retrofit2.Retrofit;
  * Created by GREY on 06.05.2018.
  */
 
-public class Requests {
+public class Requests  {
 
     private static final String TAG = "req";
 
@@ -29,7 +29,7 @@ public class Requests {
     private static List<String> mt;
     private static List<String> mConfig;
 
-    public static void Requests() {
+    public static void Requests(){
     }
 
     public static void RetrofitInit() {
@@ -69,7 +69,6 @@ public class Requests {
                     RelayList.mRelayStates = Arrays.asList(resp.split("/"));
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
