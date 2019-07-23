@@ -182,7 +182,8 @@ public class RelaySettingsFragment extends Fragment {
                 mRelay.getBotTemp(),
                 mRelay.getPeriodTime(),
                 mRelay.getDurationTime(),
-                mRelay.getSensNum());
+                mRelay.getSensNum(),
+                mRelay.getDescription());
         Log.d("TCP", ">>> " + tempReq.request().toString());
         tempReq.enqueue(new Callback<ResponseBody>() {
 

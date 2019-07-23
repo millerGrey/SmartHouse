@@ -13,6 +13,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import grey.smarthouse.R;
 import grey.smarthouse.model.App;
@@ -32,13 +33,13 @@ import retrofit2.Response;
 public class SettingsFragment extends Fragment implements TextView.OnEditorActionListener {
 
     private EditText mEditURL;
-    private EditText mIP;
+    private EditText mEditIP;
     private EditText mEditNotifTemp;
     private Button mReset;
     private SwitchCompat mNotifOn;
     private SwitchCompat mTestSet;
 
-
+    boolean lastVisibleState = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,27 +77,58 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
         mEditNotifTemp.setOnEditorActionListener(this);
         mEditNotifTemp.setText(Integer.toString(App.getApp().mNotifTemp));
         mTestSet = (SwitchCompat)v.findViewById(R.id.switchTestSet);
+        mTestSet.setChecked(App.getApp().mIsTestSet);
         mTestSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 App.getApp().mIsTestSet = b;
                 if (App.getApp().mIsTestSet) {
-                    mIP.setVisibility(View.VISIBLE);
+                    mEditIP.setVisibility(View.VISIBLE);
                     mReset.setVisibility(View.VISIBLE);
                 } else {
-                    mIP.setVisibility(View.INVISIBLE);
+                    mEditIP.setVisibility(View.INVISIBLE);
                     mReset.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        mIP = (EditText) v.findViewById(R.id.IP);
+
+        mEditIP = (EditText) v.findViewById(R.id.IP);
+
+        mEditIP.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i==6) {
+                    Call<ResponseBody> tempReq = Requests.getApi().setIP(mEditIP.getText().toString());
+                    Log.d("TCP", ">>> " + tempReq.request().toString());
+                    tempReq.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.message().equals("OK")) {
+                                Log.d("TCP", "<<< " + response.message());
+                                Toast.makeText(getContext().getApplicationContext(), "Настройки сохранены", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getContext().getApplicationContext(),"Ошибка сохранения!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(getContext().getApplicationContext(),"Ошибка сохранения!",Toast.LENGTH_SHORT).show();
+                            t.printStackTrace();
+                        }
+                    });
+                    return false;
+                }
+                return false;
+            }
+        });
         mReset = (Button) v.findViewById(R.id.reset);
         if (App.getApp().mIsTestSet) {
-            mIP.setVisibility(View.VISIBLE);
+            mEditIP.setVisibility(View.VISIBLE);
             mReset.setVisibility(View.VISIBLE);
         } else {
-            mIP.setVisibility(View.INVISIBLE);
+            mEditIP.setVisibility(View.INVISIBLE);
             mReset.setVisibility(View.INVISIBLE);
         }
         mReset.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +161,20 @@ public class SettingsFragment extends Fragment implements TextView.OnEditorActio
         return false;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
 
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            lastVisibleState = true;
+        }else{
+            if(lastVisibleState && !isVisibleToUser){
+                App.getApp().savePref();
+            }
+            lastVisibleState = false;
+        }
+
+    }
 
 
 }

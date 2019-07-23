@@ -25,12 +25,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetService extends Service {
 
-    private Requests mRequests;
     public NotificationManager nm;
     static List<String> mTemp;
     static List<Float> lastTemp = new ArrayList<Float>();
     Observable<Long> netRequest;
-    static final int alarmTemp = 27;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
 

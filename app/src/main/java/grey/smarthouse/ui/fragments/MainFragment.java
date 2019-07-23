@@ -1,7 +1,10 @@
 package grey.smarthouse.ui.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import grey.smarthouse.model.App;
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
+import grey.smarthouse.ui.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,18 +94,26 @@ public class MainFragment extends refreshFragment {
     }
 
 
-    public class SensorHolder extends RecyclerView.ViewHolder {
+    public class SensorHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mValue;
 
         public SensorHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_sensor, parent, false));
             mValue = itemView.findViewById(R.id.text_sensorValue);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(String value) {
             mValue.setText(value + " °С");
         }
 
+        @Override
+        public void onClick(View v) {
+//            FragmentManager manager = getFragmentManager();
+//            Dialog dialog = new Dialog(App.getApp());
+////            dialog.setTargetFragment(MainFragment.this, 0);
+//            dialog.show();
+        }
     }
 
     private class SensorAdapter extends RecyclerView.Adapter<SensorHolder> {

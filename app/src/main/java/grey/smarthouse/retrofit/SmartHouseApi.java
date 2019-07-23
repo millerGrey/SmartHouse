@@ -14,6 +14,9 @@ public interface SmartHouseApi {
     @GET("/cgi-bin/reset")
     Call<ResponseBody> reset();
 
+    @GET("/cgi-bin/ip/set/{ipAddr}")
+    Call<ResponseBody> setIP(@Path("ipAddr") String ipAddr);
+
     @GET("/cgi-bin/ds1820/value/")
     Call<ResponseBody> ds18b20tempList();
 
@@ -30,14 +33,15 @@ public interface SmartHouseApi {
     Call<ResponseBody> configList(@Path("relayNumber") int relayNum);
     //Call<List<PostModel>> getData(@Query("name") String resourceName, @Query("num") int count);
 
-    @GET("/cgi-bin/relay{relayNumber}/{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/")
+    @GET("/cgi-bin/relay{relayNumber}/{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/desc/{desc}")
     Call<ResponseBody> relaySetConfig(@Path("relayNumber") int relayNum,
                                      @Path("mode") String mode,
                                      @Path("tempHigh") int tempHigh,
                                      @Path("tempLow") int tempLow,
                                      @Path("periodTime") int periodTime,
                                      @Path("actionTime") int actionTimer,
-                                     @Path("sensNumber") int sensNumber);
+                                     @Path("sensNumber") int sensNumber,
+                                     @Path("desc") String desc);
 
 
 }

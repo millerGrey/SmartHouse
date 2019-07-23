@@ -15,11 +15,11 @@ public class App extends Application {
     final static String SAVED_TEST_SET = "saved_test_set";
     private static App sApp;
     private AppDatabase database;
-    private static SharedPreferences sPreferences;
-    public static String mDeviceURL;
-    public static int mNotifTemp;
-    public static Boolean mIsNotifOn;
-    public static Boolean mIsTestSet;
+    private SharedPreferences sPreferences;
+    public String mDeviceURL;
+    public int mNotifTemp;
+    public Boolean mIsNotifOn;
+    public Boolean mIsTestSet;
 
     @Override
     public void onCreate() {
@@ -40,7 +40,7 @@ public class App extends Application {
         return database;
     }
 
-    public static void savePref(){
+    public void savePref(){
         SharedPreferences.Editor ed = sPreferences.edit();
         ed.putString(SAVED_URL, mDeviceURL);
         ed.putInt(SAVED_NOTIF_TEMP, mNotifTemp);
@@ -49,7 +49,7 @@ public class App extends Application {
         ed.commit();
 
     }
-    public static void loadPref() {
+    public  void loadPref() {
         mDeviceURL = sPreferences.getString(SAVED_URL, "");
         mNotifTemp = sPreferences.getInt(SAVED_NOTIF_TEMP, 25);
         mIsNotifOn = sPreferences.getBoolean(SAVED_NOTIF_ON, false);
