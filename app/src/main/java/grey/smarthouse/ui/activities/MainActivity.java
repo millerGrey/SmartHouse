@@ -24,7 +24,8 @@ public class MainActivity extends SingleFragmentActivity {
 
 
     private ViewPager mViewPager;
-
+    private final static String NOTIFICATION_FLAG =  "nFlag";
+    private final static String NOTIFICATION_TEMP =  "nTemp";
     @Override
     protected Fragment createFragment() {
         //return MainFragment.newInstance(mPage);
@@ -42,7 +43,10 @@ public class MainActivity extends SingleFragmentActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         Requests.RetrofitInit(App.getApp().mDeviceURL);
-        startService(new Intent(this,NetService.class));
+        Intent intent = new Intent(getApplicationContext(), NetService.class);
+        intent.putExtra(NOTIFICATION_FLAG,  App.getApp().mIsNotifOn);
+        intent.putExtra(NOTIFICATION_TEMP,  App.getApp().mNotifTemp);
+        startService(intent);
         Observable<String> observable = Observable.just("one",
                 "two", "three");
 

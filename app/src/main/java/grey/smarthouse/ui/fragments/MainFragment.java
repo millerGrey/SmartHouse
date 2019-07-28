@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class MainFragment extends refreshFragment {
     List<String> mTemp = new ArrayList<String>();
     private int mPage;
     private int cnt = 0;
+    DialogFragment dialog;
 
     public static MainFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -66,6 +68,7 @@ public class MainFragment extends refreshFragment {
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
         mSensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensor_recycler_view);
         mSensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        dialog = new SensorDialog();
         updateUI();
         return view;
     }
@@ -107,12 +110,10 @@ public class MainFragment extends refreshFragment {
             mValue.setText(value + " °С");
         }
 
+
         @Override
         public void onClick(View v) {
-//            FragmentManager manager = getFragmentManager();
-//            Dialog dialog = new Dialog(App.getApp());
-////            dialog.setTargetFragment(MainFragment.this, 0);
-//            dialog.show();
+           dialog.show(getFragmentManager(),"sdf");
         }
     }
 

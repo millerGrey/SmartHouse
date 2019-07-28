@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +26,8 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class NetService extends Service {
-
+    private static Boolean isNotif = false;
+    private static int notifTemp = 0;
     public NotificationManager nm;
     static List<String> mTemp;
     static List<Float> lastTemp = new ArrayList<Float>();
@@ -35,6 +38,7 @@ public class NetService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         netRequest = Observable.interval(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
@@ -55,6 +59,9 @@ public class NetService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("Service", "onStart");
+        isNotif = (Boolean) intent.getExtras().get("nFlag");
+        notifTemp = (int) intent.getExtras().get("nTemp");
         return super.onStartCommand(intent, flags, startId);
 
     }
@@ -76,8 +83,8 @@ public class NetService extends Service {
 
     void sendNotif(int i) {
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
+        Intent resultIntent = new Intent(this, NetService.class);
+        PendingIntent resultPendingIntent = PendingIntent.getService(this, 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder =
@@ -99,14 +106,14 @@ public class NetService extends Service {
     private void nextHandler() {
         mTemp = Requests.ds18b20Request();
         Requests.relayStateRequest();
-        if(App.getApp().mIsNotifOn) {
+        if(isNotif==true) {
             try{
                 for (int i = 0; i < mTemp.size(); i++) {
                     float t = Float.parseFloat(mTemp.get(i));
                     if (lastTemp.size() < mTemp.size()) {
                         lastTemp.add(t);
                     }
-                    if (t >= App.getApp().mNotifTemp && lastTemp.get(i) < App.getApp().mNotifTemp) {
+                    if (t >= notifTemp && lastTemp.get(i) < notifTemp) {
                         sendNotif(i);
                     }
                     lastTemp.set(i, t);
@@ -119,12 +126,4 @@ public class NetService extends Service {
         }
     }
 
-    private boolean isNetworkAvailableAndConnected() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
-        boolean isNetworkConnected = isNetworkAvailable &&
-                cm.getActiveNetworkInfo().isConnected();
-        return isNetworkConnected;
-    }
 }
