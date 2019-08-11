@@ -1,19 +1,14 @@
 package grey.smarthouse.ui.fragments;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -88,7 +82,7 @@ public class RelaySettingsFragment extends Fragment {
 
         mNumber = (TextView) v.findViewById(R.id.relayNumber);
         mNumber.setText(String.format(getResources().getString(R.string.relay_n), mRelay.getNumber()));
-        mDescriptionField = (EditText) v.findViewById(R.id.description);
+        mDescriptionField = (EditText) v.findViewById(R.id.relayDescription);
         mDescriptionField.setText(mRelay.getDescription());
         mTopTemp = (EditText) v.findViewById(R.id.topTemp);
         mBotTemp = (EditText) v.findViewById(R.id.botTemp);

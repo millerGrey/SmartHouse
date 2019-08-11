@@ -1,5 +1,6 @@
 package grey.smarthouse.ui.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import grey.smarthouse.model.App;
 import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
 import grey.smarthouse.ui.activities.MainActivity;
@@ -69,6 +69,7 @@ public class MainFragment extends refreshFragment {
         mSensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensor_recycler_view);
         mSensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         dialog = new SensorDialog();
+//        DatePickerDialog d =new DatePickerDialog();
         updateUI();
         return view;
     }

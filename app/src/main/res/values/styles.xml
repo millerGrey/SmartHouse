@@ -17,12 +17,37 @@
         <item name="android:textColorPrimary">@color/selector_color_text_primary</item>
         <item name="colorControlNormal">@color/colorCustomText</item>
         <item name="android:textColorPrimaryDisableOnly">@color/colorCustomAccent</item>
+        <item name="editTextStyle">@style/CustomEditText</item>
+        <item name="alertDialogTheme">@style/CustomAlertDialog</item>
+        <item name="dialogTheme">@style/CustomDialog</item>
+        <item name="spinnerStyle">@style/CustomSpinner</item>
         <!--<item name="android:textColorHint">@color/colorCustomEditBgDisabled</item>-->
         <!--<item name="editTextBackground">@drawable/edit_text_style</item>-->
     </style>
 
 
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/colorCustomMoreDark</item>
+    </style>
+
+
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
         <item name="tabBackground">@drawable/bg_tablayout</item>
+    </style>
+    <style name="CustomEditText" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text_style</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+    </style>
+    <style name="CustomButton" parent="android:Widget.Button">
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="CustomSpinner" parent="android:Widget.Spinner">
+        <item name="android:popupBackground">@color/colorCustomDark</item>
+        <item name="android:background">@color/colorCustomDark</item>
+    </style>
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">@color/colorCustomMoreDark</item>
     </style>
 </resources>

@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
-        android:id="@+id/description"
+        android:id="@+id/relayDescription"
         android:layout_width="322dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -42,7 +42,7 @@
         android:textColor="@color/colorCustomText"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/ic_hand"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/relayDescription" />
 
     <CheckBox
         android:id="@+id/tempModeCheckbox"
@@ -58,12 +58,14 @@
 
     <Spinner
         android:id="@+id/spinner"
+
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorCustomDark"
+
         android:entries="@array/sensors"
+
         app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
@@ -277,7 +279,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintTop_toBottomOf="@+id/relayDescription"
         app:srcCompat="@drawable/ic_hand" />
 
 </android.support.constraint.ConstraintLayout>
