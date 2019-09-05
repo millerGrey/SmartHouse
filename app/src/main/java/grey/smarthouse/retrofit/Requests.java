@@ -46,6 +46,7 @@ public class Requests  {
                 //.addConverterFactory(GsonConverterFactory.create())
                 .build();
         smartHouseApi = retrofit.create(SmartHouseApi.class);
+        Log.d("SH","retrofit init");
     }
 
     public static SmartHouseApi getApi() {
@@ -72,43 +73,11 @@ public class Requests  {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
-                Log.d("TCP", t.toString());
+                Log.d("TCP", call.toString());
             }
         });
     }
 
-    public static List<String> ds18b20Request() {
-
-        Call<ResponseBody> tempReq = Requests.getApi().ds18b20tempList();
-        Log.d("TCP", ">>> " + tempReq.request().toString());
-        tempReq.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                String resp = null;
-                if (response.message().equals("OK")) {
-                    try {
-                        resp = response.body().string();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    mt = Arrays.asList(resp.replace(',', '.').split("/"));
-
-                } else {
-                    //TODO 404 неправильный адрес
-                }
-                Log.d("TCP", "<<< " + response.message() + " " + resp);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", t.toString());
-                //TODO проверить соединение или адрес или устройство не в сети
-            }
-        });
-        return mt;
-    }
 
     public static void relayConfigRequest(Relay mRelay, RelayList mRL) {
         Call<ResponseBody> res = Requests.getApi().configList(mRelay.getNumber());

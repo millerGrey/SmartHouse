@@ -14,15 +14,21 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
 import grey.smarthouse.model.App;
 import grey.smarthouse.retrofit.Requests;
+import grey.smarthouse.retrofit.SmartHouseApi;
 import grey.smarthouse.ui.activities.MainActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class NetService extends Service {
@@ -34,6 +40,7 @@ public class NetService extends Service {
     Observable<Long> netRequest;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
+    static private SmartHouseApi smartHouseApi;
 
     @Override
     public void onCreate() {
@@ -53,22 +60,23 @@ public class NetService extends Service {
             channel.setDescription("My channel description");
             nm.createNotificationChannel(channel);
         }
-        nextHandler();
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("Service", "onStart");
-        isNotif = (Boolean) intent.getExtras().get("nFlag");
-        notifTemp = (int) intent.getExtras().get("nTemp");
+        Log.d("SH", "Service startCommand");
+//        try{
+            isNotif = App.getApp().mIsNotifOn;
+            notifTemp = App.getApp().mNotifTemp;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+        Log.d("SH","notif temp " + Integer.toString(notifTemp));
+        Requests.RetrofitInit();
+        smartHouseApi = Requests.getApi();
+        Log.d("SH","smartHouse " + smartHouseApi.toString());
+        nextHandler();
         return super.onStartCommand(intent, flags, startId);
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Nullable
@@ -104,7 +112,7 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        mTemp = Requests.ds18b20Request();
+        ds18b20Request();
         Requests.relayStateRequest();
         if(isNotif==true) {
             try{
@@ -125,5 +133,44 @@ public class NetService extends Service {
             }
         }
     }
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.i("SH", "Service: onTaskRemoved");
+    }
+
+
+    public static void ds18b20Request() {
+        Call<ResponseBody> tempReq = smartHouseApi.ds18b20tempList();
+        Log.d("TCP", ">>> " + tempReq.request().toString());
+        tempReq.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                String resp = null;
+                if (response.message().equals("OK")) {
+                    try {
+                        resp = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d("TCP", response.body().toString());
+                    }
+                    mTemp = Arrays.asList(resp.replace(',', '.').split("/"));
+
+                } else {
+                    //TODO 404 неправильный адрес
+                }
+                Log.d("TCP", "<<< " + response.message() + " " + resp);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TCP", call.toString());
+                //TODO проверить соединение или адрес или устройство не в сети
+            }
+        });
+    }
+
+
 
 }
