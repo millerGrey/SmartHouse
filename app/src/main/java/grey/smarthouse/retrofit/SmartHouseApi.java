@@ -20,7 +20,7 @@ public interface SmartHouseApi {
     @GET("/cgi-bin/ds1820/value/")
     Call<ResponseBody> ds18b20tempList();
 
-    @GET("/cgi-bin/state/")
+    @GET("/cgi-bin/state")
     Call<ResponseBody> relayStateList();
 
     @GET("/cgi-bin/relay{relayNumber}/on/")
