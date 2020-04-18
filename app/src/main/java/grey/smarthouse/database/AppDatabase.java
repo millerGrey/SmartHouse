@@ -1,8 +1,8 @@
 package grey.smarthouse.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+import androidx.room.TypeConverter;
 
 import java.util.List;
 import java.util.UUID;

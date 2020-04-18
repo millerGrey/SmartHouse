@@ -44,5 +44,12 @@ public interface SmartHouseApi {
                                      @Path("desc") String desc);
 
 
+    @GET("/cgi-bin/ds1820/desc/{sensNum}/{desc}")
+    Call<ResponseBody> setSensorDesc(@Path("sensNum") int sensNum,
+                                     @Path("desc") String desc);
+
+
+    @GET("/data/ds18b20/dsList.csv")
+    Call<ResponseBody> getSensorsList();
 }
 ///{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/{desc}/")

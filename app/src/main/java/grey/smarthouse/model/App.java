@@ -1,7 +1,7 @@
 package grey.smarthouse.model;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.SharedPreferences;
 
 import grey.smarthouse.database.AppDatabase;

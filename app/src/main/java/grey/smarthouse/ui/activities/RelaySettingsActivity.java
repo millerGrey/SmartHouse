@@ -2,9 +2,9 @@ package grey.smarthouse.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
-import grey.smarthouse.model.Relay;
+
 import grey.smarthouse.ui.fragments.RelaySettingsFragment;
 import java.util.UUID;
 

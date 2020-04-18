@@ -2,9 +2,9 @@ package grey.smarthouse.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import grey.smarthouse.model.App;
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.R;
 import grey.smarthouse.model.RelayList;
 import grey.smarthouse.ui.activities.RelaySettingsActivity;
 import grey.smarthouse.retrofit.Requests;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.ResponseBody;
