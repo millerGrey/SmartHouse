@@ -1,8 +1,9 @@
 package grey.smarthouse.model;
 
 import android.app.Application;
-import androidx.room.Room;
 import android.content.SharedPreferences;
+
+import androidx.room.Room;
 
 import grey.smarthouse.database.AppDatabase;
 

@@ -2,7 +2,6 @@ package grey.smarthouse.database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 
 import java.util.List;
 import java.util.UUID;

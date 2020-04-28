@@ -1,14 +1,13 @@
 package grey.smarthouse.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-import androidx.annotation.NonNull;
 
 import java.util.UUID;
 
-import grey.smarthouse.database.converters.*;
+import grey.smarthouse.database.converters.IdConverter;
 
 /**
  * Created by GREY on 30.04.2018.

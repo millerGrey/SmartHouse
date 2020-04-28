@@ -1,44 +1,47 @@
-package grey.smarthouse.ui.fragments;
+package grey.smarthouse.ui.mainScreen;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import grey.smarthouse.services.NetService;
-import grey.smarthouse.R;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import grey.smarthouse.R;
+import grey.smarthouse.services.NetService;
+import grey.smarthouse.ui.RefreshFragment;
+import grey.smarthouse.ui.SensorDialog;
 
 
 /**
  * Created by GREY on 26.05.2018.
  */
 
-public class MainFragment extends refreshFragment {
+public class SensorListFragment extends RefreshFragment {
     public static final String ARG_PAGE = "ARG PAGE";
 
     private RecyclerView mSensorsRecyclerView;
     private SensorAdapter mSensorAdapter;
-    ProgressBar mProgress;
+    LinearLayout mProgress;
+    TextView mProgressText;
     List<String> mTemp = new ArrayList<String>();
     private int mPage;
     private int cnt = 0;
     DialogFragment dialog;
 
-    public static MainFragment newInstance(int page) {
+    public static SensorListFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        MainFragment fragment = new MainFragment();
+        SensorListFragment fragment = new SensorListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,12 +63,14 @@ public class MainFragment extends refreshFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mProgress = (ProgressBar) view.findViewById(R.id.progress);
-        mSensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensor_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
+        mProgress =  view.findViewById(R.id.progressLayout);
+        mProgressText = view.findViewById(R.id.textProgressMessage);
+        mSensorsRecyclerView = view.findViewById(R.id.sensor_recycler_view);
         mSensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         dialog = new SensorDialog();
-//        DatePickerDialog d =new DatePickerDialog();
+        mSensorAdapter = new SensorAdapter(mTemp);
+        mSensorsRecyclerView.setAdapter(mSensorAdapter);
         updateUI();
         return view;
     }
@@ -78,19 +83,23 @@ public class MainFragment extends refreshFragment {
     }
 
     public void updateUI() {
+
         mTemp = NetService.getTemp();
         if (mTemp == null) {
             mProgress.setVisibility(View.VISIBLE);
+            if(cnt > 3) {
+                mProgressText.setText(R.string.checkAdress);
+            } else {
+                mProgressText.setText(R.string.connection);
+            }
+            cnt++;
+            return;
         } else {
             mProgress.setVisibility(View.INVISIBLE);
         }
-        if (mSensorAdapter == null) {
-            mSensorAdapter = new SensorAdapter(mTemp);
-            mSensorsRecyclerView.setAdapter(mSensorAdapter);
-        } else {
-            mSensorAdapter.notifyDataSetChanged();
-        }
+        cnt =0;
         mSensorAdapter.setSensors(mTemp);
+        mSensorAdapter.notifyDataSetChanged();
     }
 
 
@@ -110,7 +119,7 @@ public class MainFragment extends refreshFragment {
 
         @Override
         public void onClick(View v) {
-           dialog.show(getFragmentManager(),"sdf");
+
         }
     }
 

@@ -1,11 +1,13 @@
-package grey.smarthouse.ui.fragments;
+package grey.smarthouse.ui;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
-import grey.smarthouse.ui.Refreshable;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -14,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GREY on 11.06.2018.
  */
 
-public abstract class refreshFragment extends Fragment implements Refreshable {
+public abstract class RefreshFragment extends Fragment implements Refreshable {
 
     Observable<Long> refresh;
 

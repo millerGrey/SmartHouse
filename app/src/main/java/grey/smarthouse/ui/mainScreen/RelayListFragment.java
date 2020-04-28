@@ -1,10 +1,7 @@
-package grey.smarthouse.ui.fragments;
+package grey.smarthouse.ui.mainScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import grey.smarthouse.model.Relay;
-import grey.smarthouse.R;
-import grey.smarthouse.model.RelayList;
-import grey.smarthouse.ui.activities.RelaySettingsActivity;
-import grey.smarthouse.retrofit.Requests;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import grey.smarthouse.R;
+import grey.smarthouse.model.Relay;
+import grey.smarthouse.model.RelayList;
+import grey.smarthouse.retrofit.Requests;
+import grey.smarthouse.ui.RefreshFragment;
+import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +31,7 @@ import retrofit2.Response;
  * Created by GREY on 30.04.2018.
  */
 
-public class RelayListFragment extends refreshFragment {
+public class RelayListFragment extends RefreshFragment {
 
     private RecyclerView mRelayRecyclerView;
     private RelayAdapter mAdapter;

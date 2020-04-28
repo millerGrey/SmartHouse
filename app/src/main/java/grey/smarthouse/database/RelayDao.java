@@ -10,8 +10,8 @@ import androidx.room.Update;
 import java.util.List;
 import java.util.UUID;
 
+import grey.smarthouse.database.converters.IdConverter;
 import grey.smarthouse.model.Relay;
-import grey.smarthouse.database.converters.*;
 
 @Dao
 public interface RelayDao {

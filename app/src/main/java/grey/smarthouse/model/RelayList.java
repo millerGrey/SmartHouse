@@ -1,6 +1,7 @@
 package grey.smarthouse.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 public class RelayList {
     private static RelayList sRelayList;
     List<Relay> mRelays;
+    List<Sensor> mSensors = Collections.emptyList();
     public static List<String> mRelayStates;
 
     private static Repository mRepo;

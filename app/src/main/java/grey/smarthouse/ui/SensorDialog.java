@@ -1,21 +1,22 @@
-package grey.smarthouse.ui.fragments;
+package grey.smarthouse.ui;
 
 import android.annotation.TargetApi;
-//import android.app.AlertDialog;
-import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-//import android.support.v7.app.AppCompatDialogFragment;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.content.DialogInterface.OnClickListener;
-import androidx.annotation.Nullable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+
 import grey.smarthouse.R;
+
+//import android.app.AlertDialog;
+//import android.support.v7.app.AppCompatDialogFragment;
 
 public class SensorDialog extends DialogFragment implements OnClickListener {
 

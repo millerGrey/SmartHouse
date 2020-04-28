@@ -8,6 +8,7 @@ import java.util.List;
 
 import grey.smarthouse.model.Relay;
 import grey.smarthouse.model.RelayList;
+import grey.smarthouse.model.SensorList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,9 +33,10 @@ public class Requests  {
     public static void Requests(){
     }
 
-    public static void RetrofitInit() {
-        RetrofitInit("vineryhome.ddns.net:8081");
-    }
+//    public static void RetrofitInit() {
+////        RetrofitInit("vineryhome.ddns.net:8081");
+//        RetrofitInit("192.168.0.200");
+//    }
 
     public static void RetrofitInit(String url) {
         if (url.isEmpty()) {
@@ -109,6 +111,40 @@ public class Requests  {
                 t.printStackTrace();
             }
 
+        });
+    }
+
+    public static void ds18b20Request(SensorList temp) {
+        Call<ResponseBody> tempReq = smartHouseApi.ds18b20tempList();
+        Log.d("TCP", ">>> " + tempReq.request().toString());
+        tempReq.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                String resp = null;
+                if (response.message().equals("OK")) {
+
+                    try {
+                        resp = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d("TCP", response.body().toString());
+                    }
+                    temp.setList(Arrays.asList(resp.replace(',', '.').split("/")));
+
+
+                } else {
+                    //TODO 404 неправильный адрес
+                }
+                Log.d("TCP", "<<< " + response.message() + " " + resp);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TCP", call.toString());
+                //TODO проверить соединение или адрес или устройство не в сети
+            }
         });
     }
 }

@@ -1,8 +1,6 @@
-package grey.smarthouse.ui.fragments;
+package grey.smarthouse.ui.relaySettingsScreen;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import grey.smarthouse.model.Relay;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import java.io.IOException;
+import java.util.UUID;
+
 import grey.smarthouse.R;
+import grey.smarthouse.model.Relay;
 import grey.smarthouse.model.RelayList;
 import grey.smarthouse.retrofit.Requests;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.io.IOException;
-import java.util.UUID;
 
 /**
  * Created by GREY on 29.04.2018.

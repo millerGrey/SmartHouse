@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomTheme">
-        <activity android:name=".ui.activities.RelaySettingsActivity"></activity>
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.relaySettingsScreen.RelaySettingsActivity"></activity>
+        <activity android:name=".ui.mainScreen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

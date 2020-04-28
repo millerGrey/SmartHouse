@@ -7,38 +7,35 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.IOException;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import grey.smarthouse.R;
 import grey.smarthouse.model.App;
+import grey.smarthouse.model.SensorList;
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.retrofit.SmartHouseApi;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class NetService extends Service {
     private static Boolean isNotif = false;
     private static int notifTemp = 0;
     public NotificationManager nm;
-    static List<String> mTemp;
     static List<Float> lastTemp = new ArrayList<Float>();
     Observable<Long> netRequest;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
     static private SmartHouseApi smartHouseApi;
+    static private SensorList mTemp;
 
     @Override
     public void onCreate() {
@@ -69,8 +66,8 @@ public class NetService extends Service {
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
-        Log.d("SH","notif temp " + Integer.toString(notifTemp));
-        Requests.RetrofitInit();
+        Log.d("SH","notif temp " + notifTemp);
+        Requests.RetrofitInit(App.getApp().mDeviceURL);
         smartHouseApi = Requests.getApi();
         Log.d("SH","smartHouse " + smartHouseApi.toString());
         nextHandler();
@@ -84,11 +81,10 @@ public class NetService extends Service {
     }
 
     public static List<String> getTemp() {
-        return mTemp;
+        return mTemp.getList();
     }
 
     void sendNotif(int i) {
-
         Intent resultIntent = new Intent(this, NetService.class);
         PendingIntent resultPendingIntent = PendingIntent.getService(this, 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -98,7 +94,7 @@ public class NetService extends Service {
                         .setTicker(getResources().getString(R.string.notificationTicker))
                         .setSmallIcon(R.drawable.ic_whatshot_black_24dp)
                         .setContentTitle(getResources().getString(R.string.notificationTicker))
-                        .setContentText(String.format(getResources().getString(R.string.notificationTemp), i + 1, mTemp.get(i)))
+                        .setContentText(String.format(getResources().getString(R.string.notificationTemp), i + 1, mTemp.getList().get(i)))
                         .setContentIntent(resultPendingIntent)
                         .setAutoCancel(true)
                         .setNumber(notifCount++);
@@ -110,13 +106,14 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        ds18b20Request();
+        Requests.ds18b20Request(mTemp);
         Requests.relayStateRequest();
+        List<String> list = mTemp.getList();
         if(isNotif==true) {
             try{
-                for (int i = 0; i < mTemp.size(); i++) {
-                    float t = Float.parseFloat(mTemp.get(i));
-                    if (lastTemp.size() < mTemp.size()) {
+                for (int i = 0; i < list.size(); i++) {
+                    float t = Float.parseFloat(list.get(i));
+                    if (lastTemp.size() < list.size()) {
                         lastTemp.add(t);
                     }
                     if (t >= notifTemp && lastTemp.get(i) < notifTemp) {
@@ -135,40 +132,4 @@ public class NetService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         Log.i("SH", "Service: onTaskRemoved");
     }
-
-
-    public static void ds18b20Request() {
-        Call<ResponseBody> tempReq = smartHouseApi.ds18b20tempList();
-        Log.d("TCP", ">>> " + tempReq.request().toString());
-        tempReq.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                String resp = null;
-                if (response.message().equals("OK")) {
-                    try {
-                        resp = response.body().string();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.d("TCP", response.body().toString());
-                    }
-                    mTemp = Arrays.asList(resp.replace(',', '.').split("/"));
-
-                } else {
-                    //TODO 404 неправильный адрес
-                }
-                Log.d("TCP", "<<< " + response.message() + " " + resp);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TCP", call.toString());
-                //TODO проверить соединение или адрес или устройство не в сети
-            }
-        });
-    }
-
-
-
 }

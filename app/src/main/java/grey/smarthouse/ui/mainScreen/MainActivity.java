@@ -1,18 +1,19 @@
-package grey.smarthouse.ui.activities;
+package grey.smarthouse.ui.mainScreen;
 
 import android.content.Intent;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 
-import grey.smarthouse.model.App;
-import grey.smarthouse.services.NetService;
 import grey.smarthouse.R;
-import grey.smarthouse.ui.ViewPagerAdapter;
+import grey.smarthouse.model.App;
 import grey.smarthouse.retrofit.Requests;
+import grey.smarthouse.services.NetService;
+import grey.smarthouse.ui.SingleFragmentActivity;
 import io.reactivex.Observable;
 
 /**
@@ -28,7 +29,7 @@ public class MainActivity extends SingleFragmentActivity {
     private final static String NOTIFICATION_TEMP =  "nTemp";
     @Override
     protected Fragment createFragment() {
-        //return MainFragment.newInstance(mPage);
+        //return SensorListFragment.newInstance(mPage);
         return null;
     }
 

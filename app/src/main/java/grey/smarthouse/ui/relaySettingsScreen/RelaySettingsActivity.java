@@ -1,12 +1,14 @@
-package grey.smarthouse.ui.activities;
+package grey.smarthouse.ui.relaySettingsScreen;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 
-import grey.smarthouse.ui.fragments.RelaySettingsFragment;
+import androidx.fragment.app.Fragment;
+
 import java.util.UUID;
+
+import grey.smarthouse.ui.SingleFragmentActivity;
 
 public class RelaySettingsActivity extends SingleFragmentActivity {
 

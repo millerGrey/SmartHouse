@@ -1,14 +1,11 @@
-package grey.smarthouse.ui;
+package grey.smarthouse.ui.mainScreen;
 
 import android.content.Context;
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import android.util.Log;
-
-import grey.smarthouse.ui.fragments.MainFragment;
-import grey.smarthouse.ui.fragments.RelayListFragment;
-import grey.smarthouse.ui.fragments.SettingsFragment;
 
 /**
  * Created by GREY on 26.05.2018.
@@ -34,7 +31,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         {
             case 0:
                 Log.i("PAGER","1");
-                return MainFragment.newInstance(position);
+                return SensorListFragment.newInstance(position);
             case 1:
                 Log.i("PAGER","2");
 //                RelayListFragment.stopProcess();
