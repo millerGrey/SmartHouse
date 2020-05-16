@@ -1,3 +1,4 @@
+
 package grey.smarthouse.services;
 
 import android.app.Notification;
@@ -19,11 +20,13 @@ import java.util.concurrent.TimeUnit;
 import grey.smarthouse.R;
 import grey.smarthouse.model.App;
 import grey.smarthouse.model.SensorList;
+
 import grey.smarthouse.retrofit.Requests;
 import grey.smarthouse.retrofit.SmartHouseApi;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
 
 
 public class NetService extends Service {
@@ -35,7 +38,7 @@ public class NetService extends Service {
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
     static private SmartHouseApi smartHouseApi;
-    static private SensorList mTemp;
+    static private SensorList mTemp = new SensorList();
 
     @Override
     public void onCreate() {
@@ -61,14 +64,14 @@ public class NetService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("SH", "Service startCommand");
 //        try{
-            isNotif = App.getApp().mIsNotifOn;
-            notifTemp = App.getApp().mNotifTemp;
+        isNotif = App.Companion.getApp().getMIsNotifOn();
+        notifTemp = App.Companion.getApp().getMNotifTemp();
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
         Log.d("SH","notif temp " + notifTemp);
-        Requests.RetrofitInit(App.getApp().mDeviceURL);
-        smartHouseApi = Requests.getApi();
+        Requests.INSTANCE.retrofitInit(App.Companion.getApp().getMDeviceURL());
+        smartHouseApi = Requests.INSTANCE.getApi();
         Log.d("SH","smartHouse " + smartHouseApi.toString());
         nextHandler();
         return super.onStartCommand(intent, flags, startId);
@@ -106,8 +109,8 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        Requests.ds18b20Request(mTemp);
-        Requests.relayStateRequest();
+        Requests.INSTANCE.ds18b20Request(mTemp);
+        Requests.INSTANCE.relayStateRequest();
         List<String> list = mTemp.getList();
         if(isNotif==true) {
             try{
