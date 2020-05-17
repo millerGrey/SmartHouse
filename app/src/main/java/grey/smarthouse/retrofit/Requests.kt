@@ -139,4 +139,48 @@ object Requests {
             }
         })
     }
+
+
+        fun updateRelaySet(relay: Relay) {
+
+        val mode = relay.mode
+        var modeS: String = ""
+        when (mode) {
+            Relay.TEMP_MODE -> modeS = "temp"
+            Relay.TIME_MODE -> modeS = "time"
+            Relay.HAND_MODE -> modeS = "hand"
+        }
+        val tempReq = Requests.api?.relaySetConfig(relay.number,
+                modeS,
+                relay.topTemp,
+                relay.botTemp,
+                relay.periodTime,
+                relay.durationTime,
+                relay.sensNum,
+                relay.description)
+        Log.d("TCP", ">>> " + tempReq.request().toString())
+        tempReq.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.message() == "OK") {
+                    var resp: String? = null
+                    try {
+                        resp = response.body()!!.string()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    Log.d("TCP", "<<< " + response.message() + " " + resp)
+//                    Toast.makeText(context!!.applicationContext, "Настройки сохранены", Toast.LENGTH_SHORT).show()
+                } else {
+//                    Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+//                Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 }

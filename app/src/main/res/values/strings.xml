@@ -47,4 +47,10 @@
     <string name="location">Локация</string>
     <string name="sensorDesc">Описание датчика</string>
 
+
+<!--    Константы-->
+    <string name="EXTRA_RELAY_ID">grey.smarthouse.relay_id</string>
+
+
+
 </resources>

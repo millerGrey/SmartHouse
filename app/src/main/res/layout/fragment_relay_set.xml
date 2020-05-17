@@ -1,285 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="0dp"
-    android:padding="0dp"
-    android:background="@color/colorCustomDark">
-    <!--android:background="@color/colorCustomBack">-->
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/relayNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/relay_n"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <data>
+        <import type="grey.smarthouse.model.RelayMode"/>
+        <variable
+            name="viewModel"
+            type="grey.smarthouse.RelaySettingsVM" />
+    </data>
 
-    <EditText
-        android:id="@+id/relayDescription"
-        android:layout_width="322dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/description"
-        android:inputType="text"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relayNumber" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:background="@color/colorCustomDark">
+        <!--android:background="@color/colorCustomBack">-->
 
-    <CheckBox
-        android:id="@+id/handModeCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/hand_mode"
-        android:textColor="@color/colorCustomText"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/ic_hand"
-        app:layout_constraintTop_toBottomOf="@+id/relayDescription" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/tempModeCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/temp_mode"
-        android:textColor="@color/colorCustomText"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/ic_temp"
-        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/spinner"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+                    <TextView
+                        android:id="@+id/relayNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@{String.format(@string/relay_n, viewModel.num)}"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-        android:entries="@array/sensors"
 
-        app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
-        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
+                    <EditText
+                        android:id="@+id/relayDescription"
+                        android:layout_width="322dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/description"
+                        android:inputType="text"
+                        android:text="@{viewModel.description}"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/relayNumber" />
 
-    <TextView
-        android:id="@+id/textTopTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/temp_off"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+                    <ImageView
+                        android:id="@+id/ic_hand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/relayDescription"
+                        app:srcCompat="@drawable/ic_hand" />
 
-    <TextView
-        android:id="@+id/textTopDegree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/degree"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/topTemp"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+                    <CheckBox
+                        android:id="@+id/handModeCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:checked="@{viewModel.mode == 2}"
+                        android:onClick="@{_ -> viewModel.updateCheckBoxes(2)}"
+                        android:text="@string/hand_mode"
+                        android:textColor="@color/colorCustomText"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/ic_hand"
+                        app:layout_constraintTop_toBottomOf="@+id/relayDescription" />
 
-    <EditText
-        android:id="@+id/topTemp"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:allowUndo="false"
-        android:background="@drawable/edit_text_style"
-        android:ems="5"
-        android:hint="0"
-        android:inputType="number"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textTopTemp"
-        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
+                    <ImageView
+                        android:id="@+id/ic_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox"
+                        app:icon="@{viewModel.isTempUp}" />
 
-    <TextView
-        android:id="@+id/textBotTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/temp_on"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTopTemp" />
+                    <CheckBox
+                        android:id="@+id/tempModeCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:checked="@{viewModel.mode == 0}"
+                        android:onClick="@{_ -> viewModel.updateCheckBoxes(0)}"
+                        android:text="@string/temp_mode"
+                        android:textColor="@color/colorCustomText"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/ic_temp"
+                        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
-    <TextView
-        android:id="@+id/textBotDegree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/degree"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/botTemp"
-        app:layout_constraintTop_toBottomOf="@+id/textTopDegree" />
+                    <Spinner
+                        android:id="@+id/spinner"
 
-    <EditText
-        android:id="@+id/botTemp"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:allowUndo="false"
-        android:background="@drawable/edit_text_style"
-        android:ems="10"
-        android:hint="0"
-        android:inputType="number"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textTopTemp"
-        app:layout_constraintTop_toBottomOf="@+id/topTemp" />
+                        android:layout_width="145dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
 
-    <CheckBox
-        android:id="@+id/timeModeCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorCustomText"
-        android:text="@string/time_mode"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/ic_time"
-        app:layout_constraintTop_toBottomOf="@+id/textBotTemp"/>
+                        android:entries="@array/sensors"
 
-    <TextView
-        android:id="@+id/textPeriodTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/period_time"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+                        app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
+                        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 
-    <TextView
-        android:id="@+id/textPeriodMin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/minutes"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/periodTime"
-        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+                    <TextView
+                        android:id="@+id/textTopTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/temp_off"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
-    <EditText
-        android:id="@+id/periodTime"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:allowUndo="false"
-        android:background="@drawable/edit_text_style"
-        android:ems="5"
-        android:hint="0"
-        android:inputType="number"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textDurationTime"
-        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+                    <EditText
+                        android:id="@+id/topTemp"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:allowUndo="false"
+                        android:background="@drawable/edit_text_style"
+                        android:ems="5"
+                        android:enabled="@{viewModel.mode == 0}"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="2dp"
+                        android:text="@={viewModel.topTemp}"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/textTopTemp"
+                        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
-    <TextView
-        android:id="@+id/textDurationTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/duration_time"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPeriodTime" />
+                    <TextView
+                        android:id="@+id/textTopDegree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/degree"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/topTemp"
+                        app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
 
-    <EditText
-        android:id="@+id/durationTime"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/edit_text_style"
-        android:ems="10"
-        android:hint="0"
-        android:inputType="number"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textDurationTime"
-        app:layout_constraintTop_toBottomOf="@+id/periodTime" />
+                    <TextView
+                        android:id="@+id/textBotTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/temp_on"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textTopTemp" />
 
-    <TextView
-        android:id="@+id/textDurationMin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/minutes"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/durationTime"
-        app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
+                    <EditText
+                        android:id="@+id/botTemp"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:allowUndo="false"
+                        android:background="@drawable/edit_text_style"
+                        android:ems="10"
+                        android:enabled="@{viewModel.mode == 0}"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="2dp"
+                        android:text="@={viewModel.botTemp}"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/textTopTemp"
+                        app:layout_constraintTop_toBottomOf="@+id/topTemp" />
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/save"
-        android:textColor="#000000"
-        android:background="@drawable/bg_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDurationTime" />
+                    <TextView
+                        android:id="@+id/textBotDegree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/degree"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/botTemp"
+                        app:layout_constraintTop_toBottomOf="@+id/textTopDegree" />
 
-    <ImageView
-        android:id="@+id/ic_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBotTemp"
-        app:srcCompat="@drawable/ic_time" />
+                    <ImageView
+                        android:id="@+id/ic_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textBotTemp"
+                        app:srcCompat="@drawable/ic_time" />
 
-    <ImageView
-        android:id="@+id/ic_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox"
-        app:srcCompat="@drawable/ic_sun" />
+                    <CheckBox
+                        android:id="@+id/timeModeCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:checked="@{viewModel.mode == 1}"
+                        android:onClick="@{_ -> viewModel.updateCheckBoxes(1)}"
+                        android:text="@string/time_mode"
+                        android:textColor="@color/colorCustomText"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/ic_time"
+                        app:layout_constraintTop_toBottomOf="@+id/textBotTemp" />
 
-    <ImageView
-        android:id="@+id/ic_hand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relayDescription"
-        app:srcCompat="@drawable/ic_hand" />
+                    <TextView
+                        android:id="@+id/textPeriodTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/period_time"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        android:id="@+id/periodTime"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:allowUndo="false"
+                        android:background="@drawable/edit_text_style"
+                        android:ems="5"
+                        android:enabled="@{viewModel.mode == 1}"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="2dp"
+                        android:text="@={viewModel.periodTime}"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/textDurationTime"
+                        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+
+                    <TextView
+                        android:id="@+id/textPeriodMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/minutes"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/periodTime"
+                        app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
+
+                    <TextView
+                        android:id="@+id/textDurationTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/duration_time"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textPeriodTime" />
+
+                    <EditText
+                        android:id="@+id/durationTime"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_style"
+                        android:ems="10"
+                        android:enabled="@{viewModel.mode == 1}"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="2dp"
+                        android:text="@={viewModel.durationTime}"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/textDurationTime"
+                        app:layout_constraintTop_toBottomOf="@+id/periodTime" />
+
+                    <TextView
+                        android:id="@+id/textDurationMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/minutes"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/durationTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button"
+                        android:onClick="@{(view)->viewModel.setSettingsToRelay()}"
+                        android:text="@string/save"
+                        android:textColor="#000000"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textDurationTime" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

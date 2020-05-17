@@ -13,14 +13,10 @@ import grey.smarthouse.R
 
 abstract class SingleFragmentActivity : AppCompatActivity() {
 
-
-    internal lateinit var PBar: ProgressBar
-
     protected abstract fun createFragment(): Fragment?
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_default)
-        PBar = findViewById<View>(R.id.progressRelaySettings) as ProgressBar
     }
 
     protected fun addFragment() {
@@ -34,7 +30,6 @@ abstract class SingleFragmentActivity : AppCompatActivity() {
                         .commit()
             }
         }
-        PBar.visibility = View.INVISIBLE
     }
 
 }

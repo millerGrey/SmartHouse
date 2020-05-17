@@ -7,6 +7,8 @@ interface Repository {
 
     fun get(id: UUID): Relay
 
+    fun get(num: Int): Relay
+
     fun getAll(): List<Relay>
 
     fun insert(relay: Relay)

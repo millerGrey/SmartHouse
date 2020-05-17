@@ -7,6 +7,13 @@ import java.util.*
 /**
  * Created by GREY on 30.04.2018.
  */
+
+
+enum class RelayMode(val value: Int){
+    TEMP(0),
+    TIME(1),
+    HAND(2),
+}
 @Entity(tableName = "relayTable")
 
 data class Relay(

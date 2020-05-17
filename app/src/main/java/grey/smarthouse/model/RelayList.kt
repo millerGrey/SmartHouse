@@ -7,7 +7,7 @@ import java.util.*
  */
 
 class RelayList private constructor() {
-    internal var mRelays: List<Relay>
+    private var mRelays: List<Relay>
     internal var mSensors = emptyList<Sensor>()
 
     val relays: List<Relay>
@@ -32,6 +32,10 @@ class RelayList private constructor() {
 
     fun getRelay(id: UUID): Relay {
         return mRepo!!.get(id)
+    }
+
+    fun getRelay(num: Int): Relay {
+        return mRepo!!.get(num)
     }
 
     fun updateRelay(relay: Relay) {

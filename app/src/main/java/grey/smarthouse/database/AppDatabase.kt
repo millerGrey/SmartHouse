@@ -26,6 +26,10 @@ abstract class AppDatabase : RoomDatabase(), Repository {
         return mRelayDao().getById(id)
     }
 
+    override fun get(num: Int): Relay {
+        return mRelayDao().getByNum(num)
+    }
+
     override fun getAll(): List<Relay> {
         return mRelayDao().getAll()
     }

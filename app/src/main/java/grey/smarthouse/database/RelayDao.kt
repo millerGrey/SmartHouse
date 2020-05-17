@@ -13,6 +13,9 @@ interface RelayDao {
     @Query("SELECT * FROM relayTable WHERE id = :id")
     fun getById(@TypeConverters(IdConverter::class) id: UUID): Relay
 
+    @Query("SELECT * FROM relayTable WHERE number = :num")
+    fun getByNum(@TypeConverters(IdConverter::class) num: Int): Relay
+
     @Insert
     fun insert(relay: Relay)
 

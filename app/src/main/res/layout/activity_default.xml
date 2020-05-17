@@ -16,18 +16,4 @@
 
     </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/progressRelaySettings"
-
-        android:layout_width="76dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
-        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintStart_toStartOf="@+id/fragment_container"
-        app:layout_constraintTop_toTopOf="@+id/fragment_container" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

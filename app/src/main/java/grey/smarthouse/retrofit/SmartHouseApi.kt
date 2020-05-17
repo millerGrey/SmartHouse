@@ -1,5 +1,6 @@
 package grey.smarthouse.retrofit
 
+import grey.smarthouse.model.Relay
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -52,4 +53,3 @@ interface SmartHouseApi {
     fun setSensorDesc(@Path("sensNum") sensNum: Int,
                       @Path("desc") desc: String): Call<ResponseBody>
 }
-///{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/{desc}/")
