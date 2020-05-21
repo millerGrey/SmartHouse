@@ -1,16 +1,18 @@
-package grey.smarthouse.database
+package grey.smarthouse.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import grey.smarthouse.database.converters.IdConverter
-import grey.smarthouse.model.Relay
-import grey.smarthouse.model.Repository
+import grey.smarthouse.data.DataSource
+import grey.smarthouse.data.Relay
+import grey.smarthouse.data.Sensor
+import grey.smarthouse.data.SensorConfig
+import grey.smarthouse.data.local.converters.IdConverter
 import java.util.*
 
 @Database(entities = [Relay::class], version = 1)
 @TypeConverters(IdConverter::class)
-abstract class AppDatabase : RoomDatabase(), Repository {
+abstract class AppDatabase : RoomDatabase(), DataSource {
     abstract fun mRelayDao(): RelayDao
 
 
@@ -36,5 +38,9 @@ abstract class AppDatabase : RoomDatabase(), Repository {
 
     override fun delete(relay: Relay) {
         mRelayDao().delete(relay)
+    }
+
+    override fun getSensorList(): List<SensorConfig> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

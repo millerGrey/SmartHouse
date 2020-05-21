@@ -1,4 +1,4 @@
-package grey.smarthouse.database.converters
+package grey.smarthouse.data.local.converters
 
 import androidx.room.TypeConverter
 import java.util.*

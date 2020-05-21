@@ -11,9 +11,9 @@ import android.widget.ToggleButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import grey.smarthouse.R
-import grey.smarthouse.model.Relay
+import grey.smarthouse.data.Relay
+import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.model.RelayList
-import grey.smarthouse.retrofit.Requests
 import grey.smarthouse.ui.RefreshFragment
 import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity
 import okhttp3.ResponseBody
@@ -96,7 +96,7 @@ class RelayListFragment : RefreshFragment() {
                 mFirstParam.text = Integer.toString(mRelay.topTemp) + resources.getString(R.string.degree)
                 mSecondParam.text = Integer.toString(mRelay.botTemp) + resources.getString(R.string.degree)
             } else if (mode == Relay.TIME_MODE) {
-                mMode.setImageResource(R.drawable.ic_time)
+                mMode.setImageResource(R.drawable.ic_time_white_24dp)
                 mFirstParam.text = Integer.toString(mRelay.periodTime) + " " + resources.getString(R.string.minutes)
                 mSecondParam.text = Integer.toString(mRelay.durationTime) + " " + resources.getString(R.string.minutes)
             } else {
@@ -191,7 +191,7 @@ class RelayListFragment : RefreshFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            val relays = mRelayList!!.relays
+            val relays = mRelayList.relays
             for (r in relays) {
                 Requests.relayConfigRequest(r, mRelayList)
             }

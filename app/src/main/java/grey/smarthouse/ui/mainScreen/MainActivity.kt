@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import grey.smarthouse.R
 import grey.smarthouse.model.App
-import grey.smarthouse.retrofit.Requests
+import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.services.NetService
 import grey.smarthouse.ui.SingleFragmentActivity
 

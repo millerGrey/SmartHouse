@@ -1,9 +1,9 @@
-package grey.smarthouse.model
+package grey.smarthouse.data
 
 import java.util.*
 
 
-interface Repository {
+interface DataSource {
 
     fun get(id: UUID): Relay
 
@@ -16,4 +16,7 @@ interface Repository {
     fun update(relay: Relay)
 
     fun delete(relay: Relay)
+
+    fun getSensorList(): List<SensorConfig>
+
 }

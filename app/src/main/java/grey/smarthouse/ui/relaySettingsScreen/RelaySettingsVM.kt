@@ -1,15 +1,15 @@
-package grey.smarthouse
+package grey.smarthouse.ui.relaySettingsScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import grey.smarthouse.model.Relay
+import grey.smarthouse.data.DataSource
+import grey.smarthouse.data.Relay
 import grey.smarthouse.model.RelayList
-import grey.smarthouse.retrofit.Requests
 import java.util.*
 
 
-class RelaySettingsVM: ViewModel() {
+class RelaySettingsVM(val repository: DataSource): ViewModel() {
 
 
     private val _mode = MutableLiveData<Int>(2)
@@ -50,13 +50,10 @@ class RelaySettingsVM: ViewModel() {
         relay.durationTime = Integer.parseInt(durationTime)
         relay.description = description
 
-        RelayList.instance.updateRelay(relay)//TODO local repo
-        Requests.updateRelaySet(relay)//TODO remote repo
+        repository.update(relay)
     }
 
     fun updateCheckBoxes(mode: Int){ //TODO isChecked
-        if(this.mode.value != mode){
-            _mode.value = mode
-        }
+        _mode.value = mode
     }
 }

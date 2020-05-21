@@ -1,7 +1,10 @@
-package grey.smarthouse.retrofit
+package grey.smarthouse.data.remote
 
 import android.util.Log
-import grey.smarthouse.model.Relay
+import grey.smarthouse.data.DataSource
+import grey.smarthouse.data.Relay
+import grey.smarthouse.data.Sensor
+import grey.smarthouse.data.SensorConfig
 import grey.smarthouse.model.RelayList
 import grey.smarthouse.model.SensorList
 import okhttp3.ResponseBody
@@ -17,7 +20,7 @@ import java.util.*
  * Created by GREY on 06.05.2018.
  */
 
-object Requests {
+object Requests: DataSource {
 
     private val TAG = "req"
 
@@ -28,12 +31,6 @@ object Requests {
     private val mt: List<String>? = null
     private var mConfig: List<String>? = null
 
-    fun Requests() {}
-
-    //    public static void retrofitInit() {
-    ////        retrofitInit("vineryhome.ddns.net:8081");
-    //        retrofitInit("192.168.0.200");
-    //    }
 
     fun retrofitInit(url: String) {
         var url = url
@@ -76,7 +73,7 @@ object Requests {
 
 
     fun relayConfigRequest(mRelay: Relay, mRL: RelayList) {
-        val res = Requests.api!!.configList(mRelay.number)
+        val res = api.configList(mRelay.number)
         Log.d("TCP", ">>> " + res.request().toString())
 
         res.enqueue(object : Callback<ResponseBody> {
@@ -141,16 +138,16 @@ object Requests {
     }
 
 
-        fun updateRelaySet(relay: Relay) {
+    override fun update(relay: Relay) {
 
         val mode = relay.mode
         var modeS: String = ""
         when (mode) {
-            Relay.TEMP_MODE -> modeS = "temp"
+            Relay.TEMP_MODE -> modeS = "value"
             Relay.TIME_MODE -> modeS = "time"
             Relay.HAND_MODE -> modeS = "hand"
         }
-        val tempReq = Requests.api?.relaySetConfig(relay.number,
+        val tempReq = api.relaySetConfig(relay.number,
                 modeS,
                 relay.topTemp,
                 relay.botTemp,
@@ -183,4 +180,81 @@ object Requests {
             }
         })
     }
+
+    override fun get(id: UUID): Relay {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun get(num: Int): Relay {
+        val relay = Relay()
+        val res = api.configList(num)
+        Log.d("TCP", ">>> " + res.request().toString())
+
+        res.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                lateinit var resp: String
+
+                try {
+                    resp = response.body()!!.string()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                Log.d("TCP", "<<< " + response.message() + " " + resp)
+                mConfig = resp.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+                relay.mode = Integer.parseInt(mConfig!![1])
+                relay.topTemp = Integer.parseInt(mConfig!![2])
+                relay.botTemp = Integer.parseInt(mConfig!![3])
+                relay.periodTime = Integer.parseInt(mConfig!![4])
+                relay.durationTime = Integer.parseInt(mConfig!![5])
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+            }
+
+        })
+        return relay
+    }
+
+    override fun getAll(): List<Relay> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun insert(relay: Relay) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun delete(relay: Relay) {
+        return
+    }
+
+
+    override fun getSensorList(): List<SensorConfig>{
+        var list = emptyList<SensorConfig>().toMutableList()
+        val res =api.getSensors()
+        res.enqueue(object : Callback<ResponseBody>{
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val config = response.body()?.string()
+                for(line in config?.split("\r\n")!!){
+                    if(line!="")
+                        list.add(parceSensor(line))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+        return list
+    }
+    fun parceSensor(str: String): SensorConfig{
+        val ar = str.split(",")
+
+        return SensorConfig(ar[0].toInt(), ar[1], ar[2])
+    }
+
 }
+

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="grey.smarthouse.model.RelayMode"/>
+        <import type="grey.smarthouse.data.RelayMode"/>
         <variable
             name="viewModel"
-            type="grey.smarthouse.RelaySettingsVM" />
+            type="grey.smarthouse.ui.relaySettingsScreen.RelaySettingsVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -207,7 +207,7 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textBotTemp"
-                        app:srcCompat="@drawable/ic_time" />
+                        app:srcCompat="@drawable/ic_time_white_24dp" />
 
                     <CheckBox
                         android:id="@+id/timeModeCheckbox"

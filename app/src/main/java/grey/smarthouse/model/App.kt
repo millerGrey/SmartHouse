@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 
 import androidx.room.Room
 
-import grey.smarthouse.database.AppDatabase
+import grey.smarthouse.data.local.AppDatabase
 
 
 class App : Application() {

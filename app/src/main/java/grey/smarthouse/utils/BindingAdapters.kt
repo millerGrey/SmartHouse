@@ -3,8 +3,11 @@ package grey.smarthouse.utils
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 
 import grey.smarthouse.R
+import grey.smarthouse.data.Sensor
+import grey.smarthouse.ui.mainScreen.SensorListFragment
 
 //object IconItemBindingAdapter {
 //
@@ -36,4 +39,15 @@ object IconTempAdapter{
             }
 
         }
+}
+
+object ListBindingAdapter {
+
+    @BindingAdapter("app:items")
+    @JvmStatic fun setItems(listView: RecyclerView, items: List<String>) {
+        with(listView.adapter as RecyclerViewAdapter) {
+            android.util.Log.d("RV","Refresh")
+            setSensors(items)
+        }
+    }
 }

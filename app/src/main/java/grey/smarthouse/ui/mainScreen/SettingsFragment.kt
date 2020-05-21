@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 
 import grey.smarthouse.R
 import grey.smarthouse.model.App
-import grey.smarthouse.retrofit.Requests
+import grey.smarthouse.data.remote.Requests
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

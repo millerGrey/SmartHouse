@@ -1,8 +1,8 @@
-package grey.smarthouse.database
+package grey.smarthouse.data.local
 
 import androidx.room.*
-import grey.smarthouse.database.converters.IdConverter
-import grey.smarthouse.model.Relay
+import grey.smarthouse.data.local.converters.IdConverter
+import grey.smarthouse.data.Relay
 import java.util.*
 
 @Dao

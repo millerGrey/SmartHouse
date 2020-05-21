@@ -28,8 +28,8 @@
     <string name="OFF">OFF</string>
     <string name="OK">ОК</string>
     <string name="cancel">Отмена</string>
-    <string name="connection">Идет соединение...</string>
-    <string name="checkAdress">Сервер недоступен.\nПроверьте адрес сервера.</string>
+    <string name="refreshData">Обновление данных...</string>
+    <string name="checkAdress">Сервер недоступен.\nПроверьте наличие соединения и адрес сервера.</string>
 
     <!--Настройки общие-->
     <string name="settingsTitle">Настройки</string>

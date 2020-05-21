@@ -1,5 +1,8 @@
 package grey.smarthouse.model
 
+import grey.smarthouse.data.Sensor
+import grey.smarthouse.data.DataSource
+import grey.smarthouse.data.Relay
 import java.util.*
 
 /**
@@ -50,7 +53,7 @@ class RelayList private constructor() {
         private var sRelayList: RelayList? = null
         lateinit var mRelayStates: MutableList<String>
 
-        private var mRepo: Repository? = null
+        private var mRepo: DataSource? = null
 
         val instance: RelayList
             get() {
@@ -60,7 +63,7 @@ class RelayList private constructor() {
                 return sRelayList as RelayList
             }
 
-        fun setRepo(repo: Repository) {
+        fun setRepo(repo: DataSource) {
             mRepo = repo
         }
     }

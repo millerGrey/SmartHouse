@@ -1,6 +1,5 @@
-package grey.smarthouse.retrofit
+package grey.smarthouse.data.remote
 
-import grey.smarthouse.model.Relay
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -49,7 +48,6 @@ interface SmartHouseApi {
                        @Path("desc") desc: String): Call<ResponseBody>
 
 
-    @GET("/cgi-bin/ds1820/desc/{sensNum}/{desc}")
-    fun setSensorDesc(@Path("sensNum") sensNum: Int,
-                      @Path("desc") desc: String): Call<ResponseBody>
+    @GET("/data/dsList.csv")
+    fun getSensors(): Call<ResponseBody>
 }

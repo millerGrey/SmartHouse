@@ -21,8 +21,8 @@ import grey.smarthouse.R;
 import grey.smarthouse.model.App;
 import grey.smarthouse.model.SensorList;
 
-import grey.smarthouse.retrofit.Requests;
-import grey.smarthouse.retrofit.SmartHouseApi;
+import grey.smarthouse.data.remote.Requests;
+import grey.smarthouse.data.remote.SmartHouseApi;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -69,7 +69,7 @@ public class NetService extends Service {
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
-        Log.d("SH","notif temp " + notifTemp);
+        Log.d("SH","notif value " + notifTemp);
         Requests.INSTANCE.retrofitInit(App.Companion.getApp().getMDeviceURL());
         smartHouseApi = Requests.INSTANCE.getApi();
         Log.d("SH","smartHouse " + smartHouseApi.toString());
