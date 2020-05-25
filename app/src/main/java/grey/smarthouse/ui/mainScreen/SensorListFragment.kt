@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import grey.smarthouse.SensorsVM
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentSensorListBinding
 import grey.smarthouse.utils.RecyclerViewAdapter
 
@@ -20,7 +17,7 @@ import grey.smarthouse.utils.RecyclerViewAdapter
 
 class SensorListFragment : Fragment() {
 
-    val sensorsVM by lazy{ ViewModelProviders.of(this).get(SensorsVM::class.java)}
+    val sensorsVM by lazy{ ViewModelProviders.of(requireActivity()).get(SensorsVM::class.java)}
     lateinit var binding: FragmentSensorListBinding
     private var mPage: Int = 0
 
@@ -36,7 +33,7 @@ class SensorListFragment : Fragment() {
 
         binding = FragmentSensorListBinding.inflate(inflater, container, false)
         binding.viewModel = sensorsVM
-        binding.sensorRecyclerView.adapter = RecyclerViewAdapter(emptyList())
+        binding.sensorRecyclerView.adapter = RecyclerViewAdapter(sensorsVM, sensorsVM.RVmap)
         binding.sensorRecyclerView.layoutManager = GridLayoutManager(requireActivity(),2)
         binding.lifecycleOwner = requireActivity()
         sensorsVM.updateConfig()

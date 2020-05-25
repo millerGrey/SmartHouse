@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
 import grey.smarthouse.R
-import grey.smarthouse.ViewModelFactory
+import grey.smarthouse.utils.ViewModelFactory
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentRelaySetBinding
 import grey.smarthouse.model.App
-import kotlinx.android.synthetic.main.fragment_relay_set.*
 import java.util.*
 
 /**

@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="grey.smarthouse.SensorsVM" />
+            type="grey.smarthouse.ui.mainScreen.SensorsVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

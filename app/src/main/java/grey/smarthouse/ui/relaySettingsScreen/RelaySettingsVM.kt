@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
-import grey.smarthouse.model.RelayList
 import java.util.*
 
 
@@ -30,7 +29,7 @@ class RelaySettingsVM(val repository: DataSource): ViewModel() {
     var relay = Relay()
 
     fun start(id: UUID){
-        relay  = RelayList.instance.getRelay(id)
+        relay  = repository.get(id)
         num = relay.number
         description = relay.description
         _mode.value = relay.mode

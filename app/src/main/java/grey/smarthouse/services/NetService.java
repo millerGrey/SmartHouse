@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ import grey.smarthouse.data.remote.Requests;
 import grey.smarthouse.data.remote.SmartHouseApi;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -34,7 +36,7 @@ public class NetService extends Service {
     private static int notifTemp = 0;
     public NotificationManager nm;
     static List<Float> lastTemp = new ArrayList<Float>();
-    Observable<Long> netRequest;
+    Disposable netRequest;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
     static private SmartHouseApi smartHouseApi;
@@ -45,14 +47,27 @@ public class NetService extends Service {
         super.onCreate();
 
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        netRequest = Observable.interval(5, TimeUnit.SECONDS)
+        netRequest =  Observable.interval(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-        netRequest.subscribe(x -> nextHandler(),
-                e -> e.printStackTrace(),
-                () -> Log.d("RX", "onC: "),
-                d -> Log.d("RX", "sub"));
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(x -> {
+                            nextHandler();
+                            Log.d("RX", "onN:  "+ Thread.currentThread().getName());
+
+                        },
+                        e -> e.printStackTrace(),
+                        () -> Log.d("RX", "onC: "),
+                        d -> Log.d("RX", "sub"));
+////                .
+//        netRequest.subscribe(x -> {
+//                    nextHandler();
+//                    Log.d("RX", "onN:  "+ Thread.currentThread().getName());
+//                    Thread.sleep(10000);
+//                },
+//                e -> e.printStackTrace(),
+//                () -> Log.d("RX", "onC: "),
+//                d -> Log.d("RX", "sub"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My channel",
                     nm.IMPORTANCE_HIGH);
             channel.setDescription("My channel description");
@@ -73,7 +88,7 @@ public class NetService extends Service {
         Requests.INSTANCE.retrofitInit(App.Companion.getApp().getMDeviceURL());
         smartHouseApi = Requests.INSTANCE.getApi();
         Log.d("SH","smartHouse " + smartHouseApi.toString());
-        nextHandler();
+//        nextHandler();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -110,7 +125,8 @@ public class NetService extends Service {
 
     private void nextHandler() {
         Requests.INSTANCE.ds18b20Request(mTemp);
-        Requests.INSTANCE.relayStateRequest();
+        Log.d("NET", Thread.currentThread().getName());
+//        Requests.INSTANCE.relayStateRequest();
         List<String> list = mTemp.getList();
         if(isNotif==true) {
             try{

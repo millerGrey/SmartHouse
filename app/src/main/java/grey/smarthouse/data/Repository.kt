@@ -9,6 +9,9 @@ class Repository(val local: DataSource, val remote: DataSource): DataSource {
 
     override fun get(num: Int): Relay {
 
+        val res = remote.get(num)
+        if(res.number > 0)
+            return res
         return local.get(num)
     }
 

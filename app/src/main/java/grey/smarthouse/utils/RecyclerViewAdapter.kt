@@ -1,54 +1,112 @@
 package grey.smarthouse.utils
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import grey.smarthouse.BR
 import grey.smarthouse.R
+import grey.smarthouse.ui.mainScreen.RelaysVM
+import grey.smarthouse.ui.mainScreen.SensorsVM
+import grey.smarthouse.databinding.ListItemRelayBinding
+import grey.smarthouse.databinding.ListItemSensorBinding
 
 
-class RecyclerViewAdapter(list: List<String>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-    private var mTemp: List<String>
-    private lateinit var binding: ViewDataBinding
+class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, Int>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
-    init{
-        mTemp = list
+
+    abstract class ViewHolder(v: View): RecyclerView.ViewHolder(v){
+        abstract fun bind(pos: Int)
     }
+
+    class SensorViewHolder(v: View, private val vm: ViewModel): ViewHolder(v){
+        private val binding = ListItemSensorBinding.bind(v)
+        override fun bind(pos: Int) {
+
+           (vm as SensorsVM).sensorsList.value?.let{ list->
+               binding.value = list[pos]
+               Log.d("RV","bind sensor $pos ${list[pos]}")
+           }
+            binding.executePendingBindings()
+        }
+    }
+    class RelayViewHolder(v: View, private val vm: ViewModel): ViewHolder(v){
+        private val binding = ListItemRelayBinding.bind(v)
+        override fun bind(pos: Int) {
+
+            with(vm as RelaysVM) {
+                relayList.value?.let { list ->
+                    binding.relay = list[pos]
+                    binding.buttonClickListener  = View.OnClickListener { vm.relayToggle(list[pos]) }
+                    binding.itemClickListener  = View.OnClickListener { vm.openRelay(list[pos].id) }
+                }
+                relayValueList.value?.let { list ->
+                    if (list.size > pos) {
+                        when (list[pos]) {
+                            "0" -> binding.state = false
+                            "1" -> binding.state = true
+                        }
+                    }
+                    Log.d("RV", "bind relay $pos ${list[pos]}")
+                }
+            }
+            binding.executePendingBindings()
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_sensor, parent, false)
-        binding = DataBindingUtil.bind(view)!!
-        return ViewHolder(binding)
+        lateinit var view: View
+        Log.d("RV","$viewType")
+        return when(viewType){
+            SENSOR_LIST_TYPE-> {
+                view = layoutInflater.inflate(R.layout.list_item_sensor, parent, false)
+                Log.d("RV","CREATE sensor")
+                SensorViewHolder(view, viewModel)
+            }
+            RELAY_LIST_TYPE-> {
+                view = layoutInflater.inflate(R.layout.list_item_relay, parent, false)
+                Log.d("RV","CREATE relay")
+                RelayViewHolder(view, viewModel)
+            }
+            else -> SensorViewHolder(view, viewModel)
+        }
+
+//        binding = delegate.createBinding(viewModel, view)
+
+//        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mTemp[position])
+//        delegate.bind(position)
+            holder.bind(position)
     }
     override fun getItemCount(): Int {
         try {
-            return mTemp.size
+            return map.keys.size
         } catch (e: Exception) {
             e.printStackTrace()
             return 0
         }
-
     }
 
-    fun setSensors(values: List<String>) {
-        mTemp = values
+    override fun getItemViewType(position: Int): Int {
+        Log.d("RV","get viewtype")
+        return map[position]?:0
+    }
+
+    fun refresh(){
+        Log.d("RV","refresh")
         notifyDataSetChanged()
+    }
+//    fun setSensors(values: List<String>) {
+////        mTemp = values
+//        notifyDataSetChanged()
+//    }
+    companion object{
+        val SENSOR_LIST_TYPE = 0
+        val RELAY_LIST_TYPE = 1
 
     }
-
-    class ViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root){
-
-        fun bind(value: String) {
-            binding.setVariable(BR.value,value)
-            binding.executePendingBindings()
-        }
-
-    }
-
 }

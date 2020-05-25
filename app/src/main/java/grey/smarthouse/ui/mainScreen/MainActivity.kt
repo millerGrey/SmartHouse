@@ -3,13 +3,19 @@ package grey.smarthouse.ui.mainScreen
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import grey.smarthouse.R
+import grey.smarthouse.utils.ViewModelFactory
+import grey.smarthouse.data.Repository
 import grey.smarthouse.model.App
 import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.services.NetService
 import grey.smarthouse.ui.SingleFragmentActivity
+import androidx.lifecycle.observe
+import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity
+import java.util.*
 
 /**
  * Created by GREY on 26.05.2018.
@@ -17,7 +23,7 @@ import grey.smarthouse.ui.SingleFragmentActivity
 
 class MainActivity : SingleFragmentActivity() {
 
-
+    val relayVM by lazy {ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(RelaysVM::class.java)}
     private var mViewPager: ViewPager? = null
     override fun createFragment(): Fragment? {
         return null
@@ -37,10 +43,21 @@ class MainActivity : SingleFragmentActivity() {
         intent.putExtra(NOTIFICATION_FLAG, App.app.mIsNotifOn)
         intent.putExtra(NOTIFICATION_TEMP, App.app.mNotifTemp)
         startService(intent)
+        relayVM.openRelayEvent.observe(this){
+            it?.let{
+                openRelaySettings(it)
+            }
+        }
+
     }
 
     companion object {
         private val NOTIFICATION_FLAG = "nFlag"
         private val NOTIFICATION_TEMP = "nTemp"
+    }
+
+    private fun openRelaySettings(id: UUID){
+        val intent = RelaySettingsActivity.NewIntent(this, id)
+        startActivity(intent)
     }
 }

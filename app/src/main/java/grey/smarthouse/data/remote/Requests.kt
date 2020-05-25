@@ -3,7 +3,6 @@ package grey.smarthouse.data.remote
 import android.util.Log
 import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
-import grey.smarthouse.data.Sensor
 import grey.smarthouse.data.SensorConfig
 import grey.smarthouse.model.RelayList
 import grey.smarthouse.model.SensorList
@@ -46,29 +45,40 @@ object Requests: DataSource {
         Log.d("SH", "retrofit init")
     }
 
-    fun relayStateRequest() {
-        val stateReq = api!!.relayStateList()
+    fun relayStateRequest(): List<String> {
+        var list: List<String> = emptyList()
+        val stateReq = api.relayStateList()
         Log.d("TCP", ">>> " + stateReq.request().toString())
-        stateReq.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                var resp: String? = null
-                if (response.message() == "OK") {
-                    try {
-                        resp = response.body()!!.string()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
+        try {
+            val resp = stateReq.execute()
+            val log = resp.body()!!.string()
+            list = log.split("/".toRegex()).dropLastWhile { it.isEmpty() }.subList(1,9)
+            Log.d("TCP", "<<< " + resp.message() + " | " + log)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
-                    Log.d("TCP", "<<< " + response.message() + " " + resp)
-                    RelayList.mRelayStates = Arrays.asList(*resp!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-                Log.d("TCP", call.toString())
-            }
-        })
+//        stateReq.enqueue(object : Callback<ResponseBody> {
+//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                var resp: String? = null
+//                if (response.message() == "OK") {
+//                    try {
+//                        resp = response.body()!!.string()
+//                    } catch (e: IOException) {
+//                        e.printStackTrace()
+//                    }
+//
+//                    Log.d("TCP", "<<< " + response.message() + " " + resp)
+//                    list = resp!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                t.printStackTrace()
+//                Log.d("TCP", call.toString())
+//            }
+//        })
+        return list
     }
 
 
@@ -88,7 +98,7 @@ object Requests: DataSource {
                 }
 
                 Log.d("TCP", "<<< " + response.message() + " " + resp)
-                mConfig = Arrays.asList(*resp!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+                mConfig = resp!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
                 mRelay.mode = Integer.parseInt(mConfig!![1])
                 mRelay.topTemp = Integer.parseInt(mConfig!![2])
                 mRelay.botTemp = Integer.parseInt(mConfig!![3])
@@ -105,7 +115,7 @@ object Requests: DataSource {
     }
 
     fun ds18b20Request(temp: SensorList) {
-        val tempReq = api!!.ds18b20tempList()
+        val tempReq = api.ds18b20tempList()
         Log.d("TCP", ">>> " + tempReq.request().toString())
         tempReq.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -120,7 +130,7 @@ object Requests: DataSource {
                         Log.d("TCP", response.body()!!.toString())
                     }
 
-                    temp.list = Arrays.asList(*resp!!.replace(',', '.').split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+                    temp.list = resp!!.replace(',', '.').split("/".toRegex()).dropLastWhile { it.isEmpty() }
 
 
                 } else {
@@ -143,7 +153,7 @@ object Requests: DataSource {
         val mode = relay.mode
         var modeS: String = ""
         when (mode) {
-            Relay.TEMP_MODE -> modeS = "value"
+            Relay.TEMP_MODE -> modeS = "temp"
             Relay.TIME_MODE -> modeS = "time"
             Relay.HAND_MODE -> modeS = "hand"
         }
@@ -256,5 +266,33 @@ object Requests: DataSource {
         return SensorConfig(ar[0].toInt(), ar[1], ar[2])
     }
 
+
+    fun relayOnRequest(num: Int) {
+        val relayOnReq = Requests.api.relayOn(num)
+        Log.d("TCP", ">>> " + relayOnReq.request().toString())
+        relayOnReq.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("TCP", "<<< " + response.message())
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
+
+    fun relayOffRequest(num: Int) {
+        val relayOffReq = Requests.api.relayOff(num)
+        Log.d("TCP", ">>> " + relayOffReq.request().toString())
+        relayOffReq.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("TCP", "<<< " + response.message())
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
 }
 
