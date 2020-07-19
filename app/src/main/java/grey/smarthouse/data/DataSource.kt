@@ -5,7 +5,7 @@ import java.util.*
 
 interface DataSource {
 
-    fun get(id: UUID): Relay
+//    fun get(id: UUID): Relay
 
     fun get(num: Int): Relay
 

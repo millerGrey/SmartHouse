@@ -19,8 +19,8 @@ import kotlin.collections.LinkedHashMap
 
 class RelaysVM(val repository: DataSource) : ViewModel() {
 
-    private var _openRelayEvent = MutableLiveData<UUID?>(null)
-    val openRelayEvent: LiveData<UUID?>
+    private var _openRelayEvent = MutableLiveData<Int?>(null)
+    val openRelayEvent: LiveData<Int?>
         get() = _openRelayEvent
 
     private var _relayList = MutableLiveData<List<Relay>>(emptyList())
@@ -38,6 +38,17 @@ class RelaysVM(val repository: DataSource) : ViewModel() {
     var refresh: Disposable
     init{
         _relayList.value = repository.getAll()
+        if (_relayList.value?.size == 0) {
+            for (i in 0..3) {
+                val relay = Relay()
+                relay.mode = 2
+                relay.number = i + 1
+                repository.insert(relay)
+            }
+            _relayList.value = repository.getAll()
+        }
+
+
         RVmapFill()
         refresh = Observable.interval(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
@@ -74,18 +85,18 @@ class RelaysVM(val repository: DataSource) : ViewModel() {
     }
 
 
-    fun openRelay(id: UUID){
-        _openRelayEvent.value = id
+    fun openRelay(num: Int){
+        _openRelayEvent.value = num
         _openRelayEvent.value = null
     }
 
     fun updateConfig(){
-        val relays = relayList.value
-        relays?.let {
-            for (r in it) {
-                repository.get(r.number)
-            }
-        }
+//        val relays = relayList.value
+//        relays?.let {
+//            for (r in it) {
+                _relayList.postValue(repository.getAll())
+//            }
+//        }
     }
 
 }

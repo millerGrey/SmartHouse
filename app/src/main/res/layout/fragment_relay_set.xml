@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="0dp"
-        android:padding="0dp"
-        android:background="@color/colorCustomDark">
+        android:padding="0dp">
         <!--android:background="@color/colorCustomBack">-->
 
         <ScrollView
@@ -111,9 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-
                         android:entries="@array/sensors"
-
                         app:layout_constraintStart_toEndOf="@+id/tempModeCheckbox"
                         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox" />
 

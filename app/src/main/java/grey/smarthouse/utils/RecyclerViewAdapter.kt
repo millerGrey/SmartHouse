@@ -39,7 +39,7 @@ class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, In
                 relayList.value?.let { list ->
                     binding.relay = list[pos]
                     binding.buttonClickListener  = View.OnClickListener { vm.relayToggle(list[pos]) }
-                    binding.itemClickListener  = View.OnClickListener { vm.openRelay(list[pos].id) }
+                    binding.itemClickListener  = View.OnClickListener { vm.openRelay(list[pos].number) }
                 }
                 relayValueList.value?.let { list ->
                     if (list.size > pos) {

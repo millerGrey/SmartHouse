@@ -28,8 +28,8 @@ class RelaySettingsVM(val repository: DataSource): ViewModel() {
     var durationTime = ""
     var relay = Relay()
 
-    fun start(id: UUID){
-        relay  = repository.get(id)
+    fun start(number: Int){
+        relay  = repository.get(number)
         num = relay.number
         description = relay.description
         _mode.value = relay.mode

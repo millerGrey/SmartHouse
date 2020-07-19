@@ -18,9 +18,8 @@ enum class RelayMode(val value: Int){
 
 data class Relay(
         @PrimaryKey
-        var id: UUID = UUID.randomUUID(),
-        var description: String = "",
         var number: Int = 0,
+        var description: String = "",
         var mode: Int = 0,
         var topTemp: Int = 0,
         var botTemp: Int = 0,

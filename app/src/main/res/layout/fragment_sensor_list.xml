@@ -19,7 +19,6 @@
             android:id="@+id/sensor_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorCustomDark"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp"
             tools:listitem="@layout/list_item_sensor"

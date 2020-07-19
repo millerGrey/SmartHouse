@@ -56,8 +56,8 @@ class MainActivity : SingleFragmentActivity() {
         private val NOTIFICATION_TEMP = "nTemp"
     }
 
-    private fun openRelaySettings(id: UUID){
-        val intent = RelaySettingsActivity.NewIntent(this, id)
+    private fun openRelaySettings(num: Int){
+        val intent = RelaySettingsActivity.NewIntent(this, num)
         startActivity(intent)
     }
 }

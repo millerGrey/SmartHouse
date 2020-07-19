@@ -4,7 +4,6 @@ import android.util.Log
 import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
 import grey.smarthouse.data.SensorConfig
-import grey.smarthouse.model.RelayList
 import grey.smarthouse.model.SensorList
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -34,7 +33,7 @@ object Requests: DataSource {
     fun retrofitInit(url: String) {
         var url = url
         if (url.isEmpty()) {
-            url = "192.168.0.200"
+            url = "192.168.0.201"
         }
         URL = "http://$url"
         retrofit = Retrofit.Builder()
@@ -82,38 +81,6 @@ object Requests: DataSource {
     }
 
 
-    fun relayConfigRequest(mRelay: Relay, mRL: RelayList) {
-        val res = api.configList(mRelay.number)
-        Log.d("TCP", ">>> " + res.request().toString())
-
-        res.enqueue(object : Callback<ResponseBody> {
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                var resp: String? = null
-
-                try {
-                    resp = response.body()!!.string()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-
-                Log.d("TCP", "<<< " + response.message() + " " + resp)
-                mConfig = resp!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                mRelay.mode = Integer.parseInt(mConfig!![1])
-                mRelay.topTemp = Integer.parseInt(mConfig!![2])
-                mRelay.botTemp = Integer.parseInt(mConfig!![3])
-                mRelay.periodTime = Integer.parseInt(mConfig!![4])
-                mRelay.durationTime = Integer.parseInt(mConfig!![5])
-                mRL.updateRelay(mRelay)
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-        })
-    }
-
     fun ds18b20Request(temp: SensorList) {
         val tempReq = api.ds18b20tempList()
         Log.d("TCP", ">>> " + tempReq.request().toString())
@@ -145,99 +112,6 @@ object Requests: DataSource {
                 //TODO проверить соединение или адрес или устройство не в сети
             }
         })
-    }
-
-
-    override fun update(relay: Relay) {
-
-        val mode = relay.mode
-        var modeS: String = ""
-        when (mode) {
-            Relay.TEMP_MODE -> modeS = "temp"
-            Relay.TIME_MODE -> modeS = "time"
-            Relay.HAND_MODE -> modeS = "hand"
-        }
-        val tempReq = api.relaySetConfig(relay.number,
-                modeS,
-                relay.topTemp,
-                relay.botTemp,
-                relay.periodTime,
-                relay.durationTime,
-                relay.sensNum,
-                relay.description)
-        Log.d("TCP", ">>> " + tempReq.request().toString())
-        tempReq.enqueue(object : Callback<ResponseBody> {
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.message() == "OK") {
-                    var resp: String? = null
-                    try {
-                        resp = response.body()!!.string()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-
-                    Log.d("TCP", "<<< " + response.message() + " " + resp)
-//                    Toast.makeText(context!!.applicationContext, "Настройки сохранены", Toast.LENGTH_SHORT).show()
-                } else {
-//                    Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-//                Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    override fun get(id: UUID): Relay {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun get(num: Int): Relay {
-        val relay = Relay()
-        val res = api.configList(num)
-        Log.d("TCP", ">>> " + res.request().toString())
-
-        res.enqueue(object : Callback<ResponseBody> {
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                lateinit var resp: String
-
-                try {
-                    resp = response.body()!!.string()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-
-                Log.d("TCP", "<<< " + response.message() + " " + resp)
-                mConfig = resp.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                relay.mode = Integer.parseInt(mConfig!![1])
-                relay.topTemp = Integer.parseInt(mConfig!![2])
-                relay.botTemp = Integer.parseInt(mConfig!![3])
-                relay.periodTime = Integer.parseInt(mConfig!![4])
-                relay.durationTime = Integer.parseInt(mConfig!![5])
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-        })
-        return relay
-    }
-
-    override fun getAll(): List<Relay> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun insert(relay: Relay) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun delete(relay: Relay) {
-        return
     }
 
 
@@ -294,5 +168,126 @@ object Requests: DataSource {
             }
         })
     }
+
+  //  ----------------------------------------------------------------------------
+
+
+//    override fun get(id: UUID): Relay {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+
+
+    override fun get(num: Int): Relay {
+        val relay = Relay()
+        val res = api.configList(num)
+        Log.d("TCP", ">>> " + res.request().toString())
+        try{
+            val resp = res.execute()
+            val log = resp.body()!!.string()
+            mConfig =log.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+            relay.number = Integer.parseInt(mConfig!![0])
+            relay.mode = Integer.parseInt(mConfig!![1])
+            relay.topTemp = Integer.parseInt(mConfig!![2])
+            relay.botTemp = Integer.parseInt(mConfig!![3])
+            relay.periodTime = Integer.parseInt(mConfig!![4])
+            relay.durationTime = Integer.parseInt(mConfig!![5])
+            Log.d("TCP", "<<< " + resp.message() + " | " + log)
+
+        }catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+
+//        res.enqueue(object : Callback<ResponseBody> {
+//
+//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                lateinit var resp: String
+//
+//                try {
+//                    resp = response.body()!!.string()
+//                } catch (e: IOException) {
+//                    e.printStackTrace()
+//                }
+//
+//                Log.d("TCP", "<<< " + response.message() + " " + resp)
+//                mConfig = resp.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+//                relay.mode = Integer.parseInt(mConfig!![1])
+//                relay.topTemp = Integer.parseInt(mConfig!![2])
+//                relay.botTemp = Integer.parseInt(mConfig!![3])
+//                relay.periodTime = Integer.parseInt(mConfig!![4])
+//                relay.durationTime = Integer.parseInt(mConfig!![5])
+//            }
+//
+//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                t.printStackTrace()
+//            }
+//        })
+        return relay
+    }
+
+
+    override fun getAll(): List<Relay> {
+
+        val relayList = emptyList<Relay>().toMutableList()
+        relayList.add(get(1))
+        relayList.add(get(2))
+        relayList.add(get(3))
+        relayList.add(get(4))
+        return relayList
+    }
+
+    override fun insert(relay: Relay) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun update(relay: Relay) {
+
+        val mode = relay.mode
+        var modeS: String = ""
+        when (mode) {
+            Relay.TEMP_MODE -> modeS = "temp"
+            Relay.TIME_MODE -> modeS = "time"
+            Relay.HAND_MODE -> modeS = "hand"
+        }
+        val tempReq = api.relaySetConfig(relay.number,
+                modeS,
+                relay.topTemp,
+                relay.botTemp,
+                relay.periodTime,
+                relay.durationTime,
+                relay.sensNum,
+                relay.description)
+        Log.d("TCP", ">>> " + tempReq.request().toString())
+        tempReq.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.message() == "OK") {
+                    var resp: String? = null
+                    try {
+                        resp = response.body()!!.string()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    Log.d("TCP", "<<< " + response.message() + " " + resp)
+//                    Toast.makeText(context!!.applicationContext, "Настройки сохранены", Toast.LENGTH_SHORT).show()
+                } else {
+//                    Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+//                Toast.makeText(context!!.applicationContext, "Ошибка сохранения!", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    override fun delete(relay: Relay) {
+        return
+    }
+
+
+
+
 }
 

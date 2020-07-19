@@ -27,8 +27,8 @@ class RelaySettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val relayId = arguments?.getSerializable(ARG_RELAY_ID) as UUID
-        viewModel.start(relayId)
+        val relayNum = arguments?.getSerializable(ARG_RELAY_ID) as Int
+        viewModel.start(relayNum)
     }
 
     override fun onResume() {
@@ -48,9 +48,9 @@ class RelaySettingsFragment : Fragment() {
 
         private val ARG_RELAY_ID = "relay_id"
 
-        fun newInstance(rId: UUID): RelaySettingsFragment {
+        fun newInstance(rNum: Int): RelaySettingsFragment {
             val args = Bundle()
-            args.putSerializable(ARG_RELAY_ID, rId)
+            args.putSerializable(ARG_RELAY_ID, rNum)
             val fragment = RelaySettingsFragment()
             fragment.arguments = args
             return fragment

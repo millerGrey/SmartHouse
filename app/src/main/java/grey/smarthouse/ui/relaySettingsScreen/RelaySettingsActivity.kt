@@ -19,14 +19,14 @@ class RelaySettingsActivity : SingleFragmentActivity() {
     }
 
     override fun createFragment(): Fragment? {
-        val relayId = intent.getSerializableExtra(R.string.EXTRA_RELAY_ID.toString()) as UUID
-        return RelaySettingsFragment.newInstance(relayId)
+        val relayNum = intent.getSerializableExtra(R.string.EXTRA_RELAY_ID.toString()) as Int
+        return RelaySettingsFragment.newInstance(relayNum)
     }
 
     companion object {
-        fun NewIntent(packageContext: Context, relayId: UUID): Intent {
+        fun NewIntent(packageContext: Context, num: Int): Intent {
             val intent = Intent(packageContext, RelaySettingsActivity::class.java)
-            intent.putExtra(R.string.EXTRA_RELAY_ID.toString(), relayId)
+            intent.putExtra(R.string.EXTRA_RELAY_ID.toString(), num)
             return intent
         }
     }

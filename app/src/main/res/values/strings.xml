@@ -8,12 +8,14 @@
     <string name="hand_mode">Ручной режим</string>
     <string name="temp_mode">Температура</string>
     <string name="hot">Нагрев</string>
-    <string name="degree">%d °С</string>
+    <string name="degree">°С</string>
+    <string name="degree_with_digital">%d °С</string>
     <string name="cool">Охлаждение</string>
     <string name="temp_off">Отключение:</string>
     <string name="temp_on">Включение:</string>
     <string name="time_mode">Время</string>
-    <string name="minutes">%d мин.</string>
+    <string name="minutes">мин.</string>
+    <string name="minutes_with_digital">%d мин.</string>
     <string name="period_time">Период:</string>
     <string name="duration_time">Длительность:</string>
     <string name="save">Сохранить</string>

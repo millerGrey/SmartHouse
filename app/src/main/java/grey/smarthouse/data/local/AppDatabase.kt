@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
-import grey.smarthouse.data.Sensor
 import grey.smarthouse.data.SensorConfig
 import grey.smarthouse.data.local.converters.IdConverter
 import java.util.*
@@ -13,6 +12,7 @@ import java.util.*
 @Database(entities = [Relay::class], version = 1)
 @TypeConverters(IdConverter::class)
 abstract class AppDatabase : RoomDatabase(), DataSource {
+
     abstract fun mRelayDao(): RelayDao
 
 
@@ -24,9 +24,9 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
         mRelayDao().update(relay)
     }
 
-    override fun get(id: UUID): Relay {
-        return mRelayDao().getById(id)
-    }
+//    override fun get(id: UUID): Relay {
+//        return mRelayDao().getById(id)
+//    }
 
     override fun get(num: Int): Relay {
         return mRelayDao().getByNum(num)

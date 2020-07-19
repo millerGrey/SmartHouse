@@ -26,7 +26,6 @@ class App : Application() {
         database = Room.databaseBuilder(this, AppDatabase::class.java, "database.db")
                 .allowMainThreadQueries()
                 .build()
-        RelayList.setRepo(database)
     }
 
 
