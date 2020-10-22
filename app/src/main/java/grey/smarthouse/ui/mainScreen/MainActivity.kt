@@ -14,8 +14,8 @@ import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.services.NetService
 import grey.smarthouse.ui.SingleFragmentActivity
 import androidx.lifecycle.observe
+import grey.smarthouse.ui.mainScreen.relays.RelaysVM
 import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity
-import java.util.*
 
 /**
  * Created by GREY on 26.05.2018.

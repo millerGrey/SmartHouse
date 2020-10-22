@@ -3,6 +3,8 @@ package grey.smarthouse.ui.mainScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import grey.smarthouse.ui.mainScreen.relays.RelayListFragment
+import grey.smarthouse.ui.mainScreen.sensors.SensorListFragment
 
 /**
  * Created by GREY on 26.05.2018.

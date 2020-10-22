@@ -26,14 +26,14 @@ class SensorDialog : DialogFragment(), OnClickListener {
 
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
-        super.onDismiss(dialog)
-    }
-
-    override fun onCancel(dialog: DialogInterface?) {
-        super.onCancel(dialog)
-        Log.d("dialog", "Dialog 1: onCancel")
-    }
+//    override fun onDismiss(dialog: DialogInterface?) {
+//        super.onDismiss(dialog)
+//    }
+//
+//    override fun onCancel(dialog: DialogInterface?) {
+//        super.onCancel(dialog)
+//        Log.d("dialog", "Dialog 1: onCancel")
+//    }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dismiss()

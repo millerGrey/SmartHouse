@@ -1,4 +1,4 @@
-package grey.smarthouse.ui.mainScreen
+package grey.smarthouse.ui.mainScreen.relays
 
 import android.os.Bundle
 import android.util.Log

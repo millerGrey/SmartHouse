@@ -1,0 +1,77 @@
+@startuml
+
+package View{
+    class MainActivity
+    class RelaySettingsActivity
+    abstract class SingleFragmentActivity
+    class SensorListFragment
+    class SettingsFragment
+    class RelaySettingsFragment
+    class ViewPagerAdapter
+    class RelayListFragment
+}
+
+package model{
+    class Relay{
+        num
+        id
+        mode
+        topTemp
+        botTemp
+        sensorNum
+        actionPeriod
+        durationPeriod
+        description
+        locationName
+    }
+    class Sensor{
+        num
+        id
+        type
+        locationName
+
+    }
+    class location{
+        num
+        id
+        name
+        List<Sensor>
+        List<Relay>
+    }
+}
+
+
+
+
+
+
+class RelayVM
+class SensorVM
+class Repository
+interface DataSource
+interface LocalDataSource
+interface RemoteDataSource
+class Requests
+class AppDatabase
+Relay <|.. RelayListFragment
+Relay <|. RelaySettingsFragment
+Relay <|.. RelaySettingsActivity
+SingleFragmentActivity <|. RelaySettingsActivity
+SingleFragmentActivity <|. MainActivity
+RelaySettingsFragment <|.. RelaySettingsActivity
+RelaySettingsActivity <|.. RelayListFragment
+SettingsFragment <|.. ViewPagerAdapter
+SensorListFragment <|.. ViewPagerAdapter
+RelayListFragment <|.. ViewPagerAdapter
+ViewPagerAdapter <|.. MainActivity
+RelayVM <|.. RelayListFragment
+SensorVM <|.. SensorListFragment
+Repository <|.. RelayVM
+Repository <|.. SensorVM
+LocalDataSource <|.. DataSource
+RemoteDataSource <|.. DataSource
+LocalDataSource <|.. Repository
+RemoteDataSource <|.. Repository
+AppDatabase ..|> LocalDataSource
+Requests ..|> RemoteDataSource
+@enduml

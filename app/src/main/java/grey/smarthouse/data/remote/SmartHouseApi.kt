@@ -34,7 +34,7 @@ interface SmartHouseApi {
     fun relayOff(@Path("relayNumber") relayNum: Int): Call<ResponseBody>
 
     @GET("/cgi-bin/relay{relayNumber}/config/")
-    fun configList(@Path("relayNumber") relayNum: Int): Call<ResponseBody>
+    suspend fun configList(@Path("relayNumber") relayNum: Int): ResponseBody
     //Call<List<PostModel>> getData(@Query("name") String resourceName, @Query("num") int count);
 
     @GET("/cgi-bin/relay{relayNumber}/{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/desc/{desc}")

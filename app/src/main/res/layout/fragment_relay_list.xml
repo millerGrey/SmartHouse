@@ -4,14 +4,14 @@
     <data>
         <variable
             name="viewModel"
-            type="grey.smarthouse.ui.mainScreen.RelaysVM" />
+            type="grey.smarthouse.ui.mainScreen.relays.RelaysVM" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/relay_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:items="@{viewModel.relayValueList}">
+        app:items="@{viewModel.relays}">
 
     </androidx.recyclerview.widget.RecyclerView>
 </layout>

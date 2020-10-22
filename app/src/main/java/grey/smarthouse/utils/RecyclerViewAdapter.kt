@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import grey.smarthouse.R
-import grey.smarthouse.ui.mainScreen.RelaysVM
-import grey.smarthouse.ui.mainScreen.SensorsVM
+import grey.smarthouse.ui.mainScreen.relays.RelaysVM
+import grey.smarthouse.ui.mainScreen.sensors.SensorsVM
 import grey.smarthouse.databinding.ListItemRelayBinding
 import grey.smarthouse.databinding.ListItemSensorBinding
 

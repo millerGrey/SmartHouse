@@ -1,55 +1,57 @@
-package grey.smarthouse.ui.mainScreen
+package grey.smarthouse.ui.mainScreen.relays
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import grey.smarthouse.data.DataSource
+import androidx.lifecycle.*
 import grey.smarthouse.data.Relay
-import grey.smarthouse.data.remote.Requests
+import grey.smarthouse.data.Repository
 import grey.smarthouse.utils.RecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import kotlin.collections.LinkedHashMap
 
 
-class RelaysVM(val repository: DataSource) : ViewModel() {
+class RelaysVM(val repository: Repository) : ViewModel() {
 
     private var _openRelayEvent = MutableLiveData<Int?>(null)
     val openRelayEvent: LiveData<Int?>
         get() = _openRelayEvent
 
     private var _relayList = MutableLiveData<List<Relay>>(emptyList())
-
     val relayList: LiveData<List<Relay>>
         get() = _relayList
 
     private var _relayValueList = MutableLiveData(listOf("0", "0", "0", "0"))
-
     val relayValueList: LiveData<List<String>>
         get() = _relayValueList
+
+
+    var relays = MediatorLiveData<Int>()
 
     var RVmap: MutableMap<Int, Int> = LinkedHashMap()
 
     var refresh: Disposable
     init{
-        _relayList.value = repository.getAll()
-        if (_relayList.value?.size == 0) {
-            for (i in 0..3) {
-                val relay = Relay()
-                relay.mode = 2
-                relay.number = i + 1
-                repository.insert(relay)
+        relays.addSource(_relayList){
+            relays.value = 1
+        }
+        relays.addSource(_relayValueList){
+            relays.value = 1}
+
+        viewModelScope.launch() {
+            try {
+                _relayList.value = repository.getAll()//listOf(Requests.get(1),Requests.get(2),Requests.get(3),Requests.get(4))
+            } catch (e: Exception) {
+                Log.d("TCP","EX")
             }
-            _relayList.value = repository.getAll()
+            RVmapFill()
         }
 
-
-        RVmapFill()
         refresh = Observable.interval(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .doOnNext{_-> handleTickEvent() }
@@ -64,7 +66,7 @@ class RelaysVM(val repository: DataSource) : ViewModel() {
     }
 
     fun handleTickEvent(){
-        val r = Requests.relayStateRequest().toMutableList()
+        val r = repository.getRelayStates().toMutableList()
         Log.d("RX Relay", Thread.currentThread().name)
         if(r.isNotEmpty()){
             _relayValueList.postValue(r)
@@ -79,9 +81,9 @@ class RelaysVM(val repository: DataSource) : ViewModel() {
 
     fun relayToggle(relay: Relay){
         if(relayValueList.value?.get((relay.number - 1)) == "1")
-            Requests.relayOffRequest(relay.number)
+            repository.setRelayState(relay.number, false)
         else
-            Requests.relayOnRequest(relay.number)
+            repository.setRelayState(relay.number, true)
     }
 
 
@@ -91,10 +93,10 @@ class RelaysVM(val repository: DataSource) : ViewModel() {
     }
 
     fun updateConfig(){
-//        val relays = relayList.value
+        val relays = relayList.value
 //        relays?.let {
 //            for (r in it) {
-                _relayList.postValue(repository.getAll())
+//                _relayList.postValue(repository.getAll())
 //            }
 //        }
     }

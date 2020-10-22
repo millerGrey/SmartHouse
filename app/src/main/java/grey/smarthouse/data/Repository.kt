@@ -2,46 +2,35 @@ package grey.smarthouse.data
 
 import android.util.Log
 import kotlinx.coroutines.*
+import java.lang.IllegalStateException
 
 import java.util.*
 import java.util.concurrent.TimeoutException
+import kotlin.coroutines.CoroutineContext
 
-class Repository(val local: DataSource, val remote: DataSource): DataSource {
+import kotlin.coroutines.suspendCoroutine
+
+class Repository(val local: LocalDataSource, val remote: RemoteDataSource): LocalDataSource, RemoteDataSource {
 //    override fun get(id: UUID): Relay {
 //        return local.get(id)
 //    }
 
-    override fun get(num: Int): Relay {
-        lateinit var res: Relay
-        runBlocking(Dispatchers.IO) {
-            withTimeoutOrNull(2000) {
-                res = remote.get(num)
-            }
-        }
+    override suspend fun get(num: Int): Relay {
+        var res: Relay = remote.get(num)
         if(res.number > 0)
             return res
         return local.get(num)
     }
 
-    override fun getAll(): List<Relay> {
+    override suspend fun getAll(): List<Relay> {
         lateinit var res: List<Relay>
-        runBlocking(Dispatchers.IO) {
-            Log.d("COR", "start")
-            withTimeoutOrNull(2000) {
-                res = remote.getAll()
-            }
-        }
 
-        for(r in res){
-            if(r.number > 0) {
-                local.update(r)
-            }else{
-                return local.getAll()
-            }
+        withTimeoutOrNull(2000) {
+            res = remote.getAll()
+        }?:let{
+            res = local.getAll()
         }
-        Log.d("COR", "end")
         return res
-
     }
 
     override fun insert(relay: Relay) {
@@ -59,5 +48,13 @@ class Repository(val local: DataSource, val remote: DataSource): DataSource {
 
     override fun getSensorList(): List<SensorConfig> {
         return remote.getSensorList()
+    }
+
+    override fun getRelayStates(): List<String> {
+        return remote.getRelayStates()
+    }
+
+    override fun setRelayState(num: Int, enable: Boolean) {
+        remote.setRelayState(num, enable)
     }
 }

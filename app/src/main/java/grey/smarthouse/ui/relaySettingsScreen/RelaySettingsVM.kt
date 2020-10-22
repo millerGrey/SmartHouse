@@ -3,12 +3,15 @@ package grey.smarthouse.ui.relaySettingsScreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
+import grey.smarthouse.data.Repository
+import kotlinx.coroutines.launch
 import java.util.*
 
 
-class RelaySettingsVM(val repository: DataSource): ViewModel() {
+class RelaySettingsVM(val repository: Repository): ViewModel() {
 
 
     private val _mode = MutableLiveData<Int>(2)
@@ -29,15 +32,17 @@ class RelaySettingsVM(val repository: DataSource): ViewModel() {
     var relay = Relay()
 
     fun start(number: Int){
-        relay  = repository.get(number)
-        num = relay.number
-        description = relay.description
-        _mode.value = relay.mode
-        topTemp = relay.topTemp.toString()
-        botTemp = relay.botTemp.toString()
-        _isTempUp.value = relay.topTemp > relay.botTemp
-        periodTime = relay.periodTime.toString()
-        durationTime = relay.durationTime.toString()
+        viewModelScope.launch {
+            relay = repository.get(number)
+            num = relay.number
+            description = relay.description
+            _mode.value = relay.mode
+            topTemp = relay.topTemp.toString()
+            botTemp = relay.botTemp.toString()
+            _isTempUp.value = relay.topTemp > relay.botTemp
+            periodTime = relay.periodTime.toString()
+            durationTime = relay.durationTime.toString()
+        }
     }
 
     fun setSettingsToRelay() {

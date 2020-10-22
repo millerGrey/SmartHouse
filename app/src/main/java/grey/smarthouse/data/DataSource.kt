@@ -5,18 +5,9 @@ import java.util.*
 
 interface DataSource {
 
-//    fun get(id: UUID): Relay
+    suspend fun get(num: Int): Relay
 
-    fun get(num: Int): Relay
-
-    fun getAll(): List<Relay>
-
-    fun insert(relay: Relay)
+    suspend fun getAll(): List<Relay>
 
     fun update(relay: Relay)
-
-    fun delete(relay: Relay)
-
-    fun getSensorList(): List<SensorConfig>
-
 }

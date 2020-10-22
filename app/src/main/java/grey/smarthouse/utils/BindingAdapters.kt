@@ -45,7 +45,7 @@ object IconTempAdapter{
 object SensorListBindingAdapter {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(listView: RecyclerView, items: List<String>) {
+    @JvmStatic fun setItems(listView: RecyclerView, items: Int) {
         with(listView.adapter as RecyclerViewAdapter) {
             refresh()
         }

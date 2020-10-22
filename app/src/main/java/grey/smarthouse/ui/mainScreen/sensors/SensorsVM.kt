@@ -1,4 +1,4 @@
-package grey.smarthouse.ui.mainScreen
+package grey.smarthouse.ui.mainScreen.sensors
 
 import android.util.Log
 import androidx.lifecycle.LiveData
