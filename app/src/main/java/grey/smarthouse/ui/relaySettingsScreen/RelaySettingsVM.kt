@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import grey.smarthouse.data.DataSource
 import grey.smarthouse.data.Relay
 import grey.smarthouse.data.Repository
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class RelaySettingsVM(val repository: Repository): ViewModel() {
@@ -33,7 +31,7 @@ class RelaySettingsVM(val repository: Repository): ViewModel() {
 
     fun start(number: Int){
         viewModelScope.launch {
-            relay = repository.get(number)
+            relay = repository.getRelay(number)
             num = relay.number
             description = relay.description
             _mode.value = relay.mode

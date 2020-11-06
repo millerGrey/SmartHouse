@@ -13,7 +13,7 @@ import grey.smarthouse.utils.ViewModelFactory
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentRelayListBinding
-import grey.smarthouse.model.App
+import grey.smarthouse.App
 import grey.smarthouse.utils.RecyclerViewAdapter
 
 /**
@@ -24,7 +24,7 @@ class RelayListFragment: Fragment(){
 
     val relayVM by lazy{ ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(RelaysVM::class.java)}
     lateinit var binding: FragmentRelayListBinding
-
+    private val TAG = "RELAYS"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("tag", "listFragmentCreate")
@@ -43,7 +43,8 @@ class RelayListFragment: Fragment(){
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            relayVM.updateConfig()
+//            if(isAdded)
+//                relayVM.updateConfig()
         }
     }
 }

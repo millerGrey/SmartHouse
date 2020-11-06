@@ -22,10 +22,10 @@ interface SmartHouseApi {
     fun setIP(@Path("ipAddr") ipAddr: String): Call<ResponseBody>
 
     @GET("/cgi-bin/ds1820/value/")
-    fun ds18b20tempList(): Call<ResponseBody>
+    suspend fun getSensorValues(): ResponseBody
 
     @GET("/cgi-bin/state")
-    fun relayStateList(): Call<ResponseBody>
+    suspend fun relayStateList(): ResponseBody
 
     @GET("/cgi-bin/relay{relayNumber}/on/")
     fun relayOn(@Path("relayNumber") relayNum: Int): Call<ResponseBody>
@@ -49,5 +49,5 @@ interface SmartHouseApi {
 
 
     @GET("/data/dsList.csv")
-    fun getSensors(): Call<ResponseBody>
+    suspend fun getSensors(): ResponseBody
 }

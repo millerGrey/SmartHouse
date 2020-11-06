@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import grey.smarthouse.data.Repository
+import grey.smarthouse.ui.mainScreen.locations.LocationVM
 import grey.smarthouse.ui.mainScreen.relays.RelaysVM
 import grey.smarthouse.ui.mainScreen.sensors.SensorsVM
 import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsVM
@@ -17,13 +18,16 @@ class ViewModelFactory(
         ) as T
 
         SensorsVM::class.java -> SensorsVM(
-
+                repository
         ) as T
 
         RelaysVM::class.java -> RelaysVM(
                 repository
         ) as T
 
+        LocationVM::class.java -> LocationVM(
+                repository
+        ) as T
         else -> throw RuntimeException("Cannot create an instance of $modelClass")
     }
 }

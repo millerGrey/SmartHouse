@@ -1,6 +1,7 @@
 package grey.smarthouse.data
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
@@ -25,7 +26,8 @@ data class Relay(
         var botTemp: Int = 0,
         var periodTime: Int = 0,
         var durationTime: Int = 0,
-        var sensNum: Int = 0
+        var sensNum: Int = 0,
+        var state: Boolean = false
 ) {
 
 

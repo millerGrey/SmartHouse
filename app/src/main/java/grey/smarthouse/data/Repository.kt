@@ -2,59 +2,99 @@ package grey.smarthouse.data
 
 import android.util.Log
 import kotlinx.coroutines.*
-import java.lang.IllegalStateException
 
-import java.util.*
-import java.util.concurrent.TimeoutException
-import kotlin.coroutines.CoroutineContext
-
-import kotlin.coroutines.suspendCoroutine
-
-class Repository(val local: LocalDataSource, val remote: RemoteDataSource): LocalDataSource, RemoteDataSource {
-//    override fun get(id: UUID): Relay {
-//        return local.get(id)
-//    }
-
-    override suspend fun get(num: Int): Relay {
-        var res: Relay = remote.get(num)
-        if(res.number > 0)
-            return res
-        return local.get(num)
-    }
-
-    override suspend fun getAll(): List<Relay> {
-        lateinit var res: List<Relay>
-
-        withTimeoutOrNull(2000) {
-            res = remote.getAll()
-        }?:let{
-            res = local.getAll()
+class Repository(private val local: DataSource, private val remote: DataSource): DataSource {
+    private final val TAG = "Repo"
+    override suspend fun getRelay(num: Int): Relay {
+        val relay: Relay = remote.getRelay(num)
+        if (relay.number > 0) {
+            local.update(relay)
+            return relay
         }
-        return res
+        return local.getRelay(num)
+    }
+//?
+    override suspend fun getAllRelays(l: List<Relay>?): List<Relay>? {
+        Log.d(TAG,"start response relays")
+        var list: List<Relay>? = null
+        list = local.getAllRelays()
+        withTimeoutOrNull(2000) {
+
+            remote.getAllRelays()?.let{
+                list = it
+                if(it.isNotEmpty()){
+                    list?.forEach {
+                        sensor -> local.update(sensor)
+                    }
+                }
+            }
+        } ?: let {
+//            list = local.getAllRelays()
+        }
+        Log.d(TAG,"end response relays")
+        return list
     }
 
     override fun insert(relay: Relay) {
         local.insert(relay)
     }
-
+//?
     override fun update(relay: Relay) {
-        local.update(relay)
         remote.update(relay)
+        local.update(relay)
     }
 
-    override fun delete(relay: Relay) {
-        local.delete(relay)
+    override suspend fun getSensor(num: Int): SensorRoom {
+        TODO("Not yet implemented")
+    }
+//?
+
+    override suspend fun getAllSensors(): List<SensorRoom>? {
+        var list: List<SensorRoom>? = null
+        withTimeoutOrNull(2000) {
+            list = remote.getAllSensors()
+            list?.let{
+                if(it.isNotEmpty()){
+                    list?.forEach {
+                        sensor -> local.insert(sensor)
+                    }
+                }
+            }
+        } ?: let {
+//            list = local.getAllSensors()
+        }
+        return list
     }
 
-    override fun getSensorList(): List<SensorConfig> {
-        return remote.getSensorList()
+    override fun update(sensor: SensorRoom) {
+        remote.update(sensor)
     }
 
-    override fun getRelayStates(): List<String> {
-        return remote.getRelayStates()
+    override fun insert(sensor: SensorRoom) {
+        local.insert(sensor)
     }
 
-    override fun setRelayState(num: Int, enable: Boolean) {
-        remote.setRelayState(num, enable)
+    override fun delete(sensor: SensorRoom) {
+        local.delete(sensor)
+    }
+
+    override suspend fun getLocation(name: String): Location {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllLocations(): List<LocationWithLists> {
+        return local.getAllLocations()
+    }
+
+    override fun update(location: Location) {
+        TODO("Not yet implemented")
+    }
+
+    override fun insert(location: Location) {
+        local.insert(location)
+    }
+
+    override fun delete(location: Location) {
+        super.delete(location)
     }
 }

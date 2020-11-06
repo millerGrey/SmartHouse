@@ -14,7 +14,6 @@ package View{
 package model{
     class Relay{
         num
-        id
         mode
         topTemp
         botTemp
@@ -29,11 +28,8 @@ package model{
         id
         type
         locationName
-
     }
     class location{
-        num
-        id
         name
         List<Sensor>
         List<Relay>
@@ -47,12 +43,20 @@ package model{
 
 class RelayVM
 class SensorVM
-class Repository
+class LocationVM
+class Repository{
+    get(num)
+    getAll()
+    insert()
+    update()
+    delete()
+}
 interface DataSource
-interface LocalDataSource
-interface RemoteDataSource
 class Requests
 class AppDatabase
+interface RelayDAO
+interface SensorDAO
+interface LocationDAO
 Relay <|.. RelayListFragment
 Relay <|. RelaySettingsFragment
 Relay <|.. RelaySettingsActivity
@@ -68,10 +72,10 @@ RelayVM <|.. RelayListFragment
 SensorVM <|.. SensorListFragment
 Repository <|.. RelayVM
 Repository <|.. SensorVM
-LocalDataSource <|.. DataSource
-RemoteDataSource <|.. DataSource
-LocalDataSource <|.. Repository
-RemoteDataSource <|.. Repository
-AppDatabase ..|> LocalDataSource
-Requests ..|> RemoteDataSource
+DataSource <|.. Repository
+AppDatabase ..|> DataSource
+Requests ..|> DataSource
+LocationDAO <|.. AppDatabase
+SensorDAO <|.. AppDatabase
+RelayDAO <|.. AppDatabase
 @enduml

@@ -16,18 +16,12 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import grey.smarthouse.R;
-import grey.smarthouse.model.App;
-import grey.smarthouse.model.SensorList;
+import grey.smarthouse.App;
 
 import grey.smarthouse.data.remote.Requests;
 import grey.smarthouse.data.remote.SmartHouseApi;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 
@@ -36,28 +30,28 @@ public class NetService extends Service {
     private static int notifTemp = 0;
     public NotificationManager nm;
     static List<Float> lastTemp = new ArrayList<Float>();
-    Disposable netRequest;
+//    Disposable netRequest;
     static final String CHANNEL_ID = "ch";
     static int notifCount = 0;
     static private SmartHouseApi smartHouseApi;
-    static private SensorList mTemp = new SensorList();
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        netRequest =  Observable.interval(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(x -> {
-                            nextHandler();
-                            Log.d("RX", "onN:  "+ Thread.currentThread().getName());
-
-                        },
-                        e -> e.printStackTrace(),
-                        () -> Log.d("RX", "onC: "),
-                        d -> Log.d("RX", "sub"));
+//        netRequest =  Observable.interval(5, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(x -> {
+//                            nextHandler();
+//                            Log.d("RX", "onN:  "+ Thread.currentThread().getName());
+//
+//                        },
+//                        e -> e.printStackTrace(),
+//                        () -> Log.d("RX", "onC: "),
+//                        d -> Log.d("RX", "sub"));
 ////                .
 //        netRequest.subscribe(x -> {
 //                    nextHandler();
@@ -98,9 +92,9 @@ public class NetService extends Service {
         return null;
     }
 
-    public static List<String> getTemp() {
-        return mTemp.getList();
-    }
+//    public static List<String> getTemp() {
+//        return mTemp.getList();
+//    }
 
     void sendNotif(int i) {
         Intent resultIntent = new Intent(this, NetService.class);
@@ -112,7 +106,7 @@ public class NetService extends Service {
                         .setTicker(getResources().getString(R.string.notificationTicker))
                         .setSmallIcon(R.drawable.ic_whatshot_black_24dp)
                         .setContentTitle(getResources().getString(R.string.notificationTicker))
-                        .setContentText(String.format(getResources().getString(R.string.notificationTemp), i + 1, mTemp.getList().get(i)))
+//                        .setContentText(String.format(getResources().getString(R.string.notificationTemp), i + 1, mTemp.getList().get(i)))
                         .setContentIntent(resultPendingIntent)
                         .setAutoCancel(true)
                         .setNumber(notifCount++);
@@ -124,28 +118,28 @@ public class NetService extends Service {
     }
 
     private void nextHandler() {
-        Requests.INSTANCE.ds18b20Request(mTemp);
+//        Requests.INSTANCE.ds18b20Request(mTemp);
         Log.d("NET", Thread.currentThread().getName());
 //        Requests.INSTANCE.relayStateRequest();
-        List<String> list = mTemp.getList();
-        if(isNotif==true) {
-            try{
-                for (int i = 0; i < list.size(); i++) {
-                    float t = Float.parseFloat(list.get(i));
-                    if (lastTemp.size() < list.size()) {
-                        lastTemp.add(t);
-                    }
-                    if (t >= notifTemp && lastTemp.get(i) < notifTemp) {
-                        sendNotif(i);
-                    }
-                    lastTemp.set(i, t);
-                }
-            }catch (NumberFormatException e) {
-                e.printStackTrace();
-            }catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
+//        List<String> list = mTemp.getList();
+//        if(isNotif==true) {
+//            try{
+//                for (int i = 0; i < list.size(); i++) {
+//                    float t = Float.parseFloat(list.get(i));
+//                    if (lastTemp.size() < list.size()) {
+//                        lastTemp.add(t);
+//                    }
+//                    if (t >= notifTemp && lastTemp.get(i) < notifTemp) {
+//                        sendNotif(i);
+//                    }
+//                    lastTemp.set(i, t);
+//                }
+//            }catch (NumberFormatException e) {
+//                e.printStackTrace();
+//            }catch (NullPointerException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
     @Override
     public void onTaskRemoved(Intent rootIntent) {

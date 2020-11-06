@@ -1,4 +1,4 @@
-package grey.smarthouse.model
+package grey.smarthouse
 
 import android.app.Application
 import android.content.Context

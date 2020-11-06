@@ -6,7 +6,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 import grey.smarthouse.R
+import grey.smarthouse.data.LocationWithLists
 import grey.smarthouse.data.Relay
+import grey.smarthouse.data.SensorRoom
 
 //relayItem
 object IconItemBindingAdapter {
@@ -45,7 +47,7 @@ object IconTempAdapter{
 object SensorListBindingAdapter {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(listView: RecyclerView, items: Int) {
+    @JvmStatic fun setItems(listView: RecyclerView, items: List<Relay>) {
         with(listView.adapter as RecyclerViewAdapter) {
             refresh()
         }
@@ -55,7 +57,18 @@ object SensorListBindingAdapter {
 object RelayListBindingAdapter {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(listView: RecyclerView, value: List<String>) {
+    @JvmStatic fun setItems(listView: RecyclerView, value: List<SensorRoom>) {
+        with(listView.adapter as RecyclerViewAdapter) {
+//            setRelays(items)
+            refresh()
+        }
+    }
+}
+
+object LocationListBindingAdapter {
+
+    @BindingAdapter("app:items")
+    @JvmStatic fun setItems(listView: RecyclerView, value: List<LocationWithLists>) {
         with(listView.adapter as RecyclerViewAdapter) {
 //            setRelays(items)
             refresh()

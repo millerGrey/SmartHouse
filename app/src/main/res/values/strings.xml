@@ -10,6 +10,7 @@
     <string name="hot">Нагрев</string>
     <string name="degree">°С</string>
     <string name="degree_with_digital">%d °С</string>
+    <string name="degree_with_digital_float">%.1f °С</string>
     <string name="cool">Охлаждение</string>
     <string name="temp_off">Отключение:</string>
     <string name="temp_on">Включение:</string>
@@ -46,13 +47,17 @@
     <!--Диалог сенсора-->
 
     <string name="sensor">Датчик</string>
-    <string name="location">Локация</string>
+    <string name="location">Помещение</string>
     <string name="sensorDesc">Описание датчика</string>
 
 
 <!--    Константы-->
     <string name="EXTRA_RELAY_ID">grey.smarthouse.relay_id</string>
 
+
+
+    <string name="addLocation">Добавьте помещение</string>
+    <string name="locationName">Название</string>
 
 
 </resources>

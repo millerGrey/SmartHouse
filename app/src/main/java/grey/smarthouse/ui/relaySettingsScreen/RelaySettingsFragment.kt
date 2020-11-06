@@ -11,8 +11,7 @@ import grey.smarthouse.utils.ViewModelFactory
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentRelaySetBinding
-import grey.smarthouse.model.App
-import java.util.*
+import grey.smarthouse.App
 
 /**
  * Created by GREY on 29.04.2018.

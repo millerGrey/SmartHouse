@@ -14,7 +14,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 
 import grey.smarthouse.R
-import grey.smarthouse.model.App
+import grey.smarthouse.App
 import grey.smarthouse.data.remote.Requests
 import okhttp3.ResponseBody
 import retrofit2.Call
