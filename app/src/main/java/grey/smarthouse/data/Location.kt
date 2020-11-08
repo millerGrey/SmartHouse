@@ -1,12 +1,16 @@
 package grey.smarthouse.data
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 
 @Entity(tableName = "locationTable")
 data class Location(
-    @PrimaryKey()
-    var name: String=""
+        @PrimaryKey(autoGenerate = true)
+        var id: Int = 0,
+        var name: String = ""
 )
 
 data class LocationWithLists (

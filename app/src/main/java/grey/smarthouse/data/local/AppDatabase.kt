@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import grey.smarthouse.data.*
 import grey.smarthouse.data.local.converters.IdConverter
-import java.util.*
 
 @Database(entities = [Relay::class, Location::class, SensorRoom::class], version = 1)
 @TypeConverters(IdConverter::class)
@@ -63,7 +62,7 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
     }
 
     override suspend fun getLocation(name: String): Location {
-        TODO("Not yet implemented")
+        return mLocationDao().getLocation(name)
     }
 
     override suspend fun getAllLocations(): List<LocationWithLists> {
@@ -71,7 +70,7 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
     }
 
     override fun update(location: Location) {
-        TODO("Not yet implemented")
+        mLocationDao().update(location)
     }
 
     override fun insert(location: Location) {
@@ -79,6 +78,6 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
     }
 
     override fun delete(location: Location) {
-        super.delete(location)
+        mLocationDao().delete(location)
     }
 }

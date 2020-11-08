@@ -8,6 +8,9 @@ import grey.smarthouse.data.LocationWithLists
 @Dao
 interface LocationDao {
 
+    @Query("SELECT * FROM locationTable WHERE name = :name")
+    suspend fun getLocation(name: String): Location
+
     @Transaction
     @Query("SELECT * FROM locationTable")
     suspend fun getLocations(): List<LocationWithLists>

@@ -4,10 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
-            name="location"
+            name="locationWithLists"
             type="grey.smarthouse.data.LocationWithLists" />
+
+        <variable
+            name="vm"
+            type="grey.smarthouse.ui.mainScreen.locations.LocationVM" />
 
     </data>
 
@@ -15,9 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorCustomMoreDark"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp">
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,9 +36,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{location.location.name}"
+                android:text="@{locationWithLists.location.name}"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                app:layout_constraintEnd_toStartOf="@+id/buttonEdit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/location" />
@@ -50,26 +55,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:padding="0dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonClose"
+                style="@style/Widget.SmartHouse.Button.TextButton.IconOnly"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{_ -> vm.deleteLocation(locationWithLists.location)}"
+                app:icon="@drawable/ic_baseline_close_24"
+                app:iconTint="@color/colorCustomText"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_close_24" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonEdit"
+                style="@style/Widget.SmartHouse.Button.TextButton.IconOnly"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{_ -> vm.editLocation(locationWithLists.location.name)}"
+                app:icon="@drawable/ic_baseline_edit_24"
+                app:iconTint="@color/colorCustomText"
+                app:layout_constraintEnd_toStartOf="@+id/buttonClose"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -88,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="@{location.sensors.size() > 0 ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{locationWithLists.sensors.size() > 0 ? View.VISIBLE : View.GONE}">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -103,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text='@{location.sensors.size() > 0 ? String.format(@string/degree_with_digital_float, location.sensors.get(0).value): ""}'
+                        android:text='@{locationWithLists.sensors.size() > 0 ? String.format(@string/degree_with_digital_float, locationWithLists.sensors.get(0).value): ""}'
                         tools:text="25 C" />
 
                 </LinearLayout>

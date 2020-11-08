@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Location
-import grey.smarthouse.data.Repository
 import grey.smarthouse.data.LocationWithLists
+import grey.smarthouse.data.Repository
 import grey.smarthouse.utils.RecyclerViewAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,18 +32,19 @@ class LocationVM (val repository: Repository) : ViewModel() {
         }
     }
 
-    private fun handleTickEvent(){
-        Log.d("RX","handletick "+ Thread.currentThread().name)
+    private fun handleTickEvent() {
+        Log.d("RX", "handletick " + Thread.currentThread().name)
         viewModelScope.launch() {
-            repository.getAllLocations()?.let{
+            repository.getAllLocations()?.let {
                 _locationsList.value = it
                 RVmapFill()
             }
         }
     }
 
-    private fun RVmapFill(){
-        for (index in locationsList.value!!.indices){
+    private fun RVmapFill() {
+        RVmap.clear()
+        for (index in locationsList.value!!.indices) {
             RVmap.plusAssign(index to RecyclerViewAdapter.LOCATION_LIST_TYPE)
         }
     }
@@ -52,14 +53,28 @@ class LocationVM (val repository: Repository) : ViewModel() {
         _editLocationEvent.value = ""
     }
 
-    fun itemClickListener(name: String) {
+    fun positiveDialogListener(oldName: String, name: String) {
+        viewModelScope.launch {
+            val loc = repository.getLocation(oldName)
+            loc?.let {
+                val location = it
+                location.name = name
+                repository.update(location)
+            } ?: let {
+                val location = Location()
+                location.name = name
+                repository.insert(location)
+            }
+        }
+    }
+
+    fun editLocation(name: String) {
         _editLocationEvent.value = name
     }
 
-    fun positiveDialogListener(name: String){
-        repository.insert(Location(name))
+    fun deleteLocation(location: Location) {
+        repository.delete(location)
     }
-
 //    fun update(){
 //        viewModelScope.launch {
 //            repository.getAllLocations()?.let{

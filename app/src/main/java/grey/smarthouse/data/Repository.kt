@@ -1,7 +1,7 @@
 package grey.smarthouse.data
 
 import android.util.Log
-import kotlinx.coroutines.*
+import kotlinx.coroutines.withTimeoutOrNull
 
 class Repository(private val local: DataSource, private val remote: DataSource): DataSource {
     private final val TAG = "Repo"
@@ -79,7 +79,7 @@ class Repository(private val local: DataSource, private val remote: DataSource):
     }
 
     override suspend fun getLocation(name: String): Location {
-        TODO("Not yet implemented")
+        return local.getLocation(name)
     }
 
     override suspend fun getAllLocations(): List<LocationWithLists> {
@@ -87,7 +87,7 @@ class Repository(private val local: DataSource, private val remote: DataSource):
     }
 
     override fun update(location: Location) {
-        TODO("Not yet implemented")
+        local.update(location)
     }
 
     override fun insert(location: Location) {
@@ -95,6 +95,6 @@ class Repository(private val local: DataSource, private val remote: DataSource):
     }
 
     override fun delete(location: Location) {
-        super.delete(location)
+        local.delete(location)
     }
 }

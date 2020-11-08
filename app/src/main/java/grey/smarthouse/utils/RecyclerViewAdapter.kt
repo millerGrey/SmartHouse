@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import grey.smarthouse.R
 import grey.smarthouse.databinding.ListItemLocationBinding
-import grey.smarthouse.ui.mainScreen.relays.RelaysVM
-import grey.smarthouse.ui.mainScreen.sensors.SensorsVM
 import grey.smarthouse.databinding.ListItemRelayBinding
 import grey.smarthouse.databinding.ListItemSensorBinding
 import grey.smarthouse.ui.mainScreen.locations.LocationVM
+import grey.smarthouse.ui.mainScreen.relays.RelaysVM
+import grey.smarthouse.ui.mainScreen.sensors.SensorsVM
 
 
 class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, Int>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -60,9 +60,9 @@ class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, In
 
             with(vm as LocationVM) {
                 locationsList.value?.let { list ->
-                    binding.location = list[pos]
-//                    binding.itemClickListener = vm.editLocationEvent(list[pos].name)
+                    binding.locationWithLists = list[pos]
                 }
+                binding.vm = vm
             }
             binding.executePendingBindings()
         }
@@ -90,13 +90,9 @@ class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, In
             else -> SensorViewHolder(view, viewModel)
         }
 
-//        binding = delegate.createBinding(viewModel, view)
-
-//        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        delegate.bind(position)
         holder.bind(position)
     }
 
