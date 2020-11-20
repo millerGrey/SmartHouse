@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="grey.smarthouse.data.RelayMode"/>
+
+        <import type="grey.smarthouse.data.RelayMode" />
+
         <variable
             name="viewModel"
             type="grey.smarthouse.ui.relaySettingsScreen.RelaySettingsVM" />
@@ -131,7 +132,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:allowUndo="false"
                         android:background="@drawable/edit_text_style"
                         android:ems="5"
                         android:enabled="@{viewModel.mode == 0}"
@@ -172,7 +172,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:allowUndo="false"
                         android:background="@drawable/edit_text_style"
                         android:ems="10"
                         android:enabled="@{viewModel.mode == 0}"
@@ -237,7 +236,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:allowUndo="false"
                         android:background="@drawable/edit_text_style"
                         android:ems="5"
                         android:enabled="@{viewModel.mode == 1}"
@@ -301,14 +299,13 @@
                         app:layout_constraintStart_toEndOf="@+id/durationTime"
                         app:layout_constraintTop_toBottomOf="@+id/textPeriodMin" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/saveButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_button"
                         android:onClick="@{(view)->viewModel.setSettingsToRelay()}"
                         android:text="@string/save"
                         android:textColor="#000000"

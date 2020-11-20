@@ -38,14 +38,14 @@ interface SmartHouseApi {
     //Call<List<PostModel>> getData(@Query("name") String resourceName, @Query("num") int count);
 
     @GET("/cgi-bin/relay{relayNumber}/{mode}/temp_h/{tempHigh}/temp_l/{tempLow}/period/{periodTime}/action/{actionTime}/sensor_num/{sensNumber}/desc/{desc}")
-    fun relaySetConfig(@Path("relayNumber") relayNum: Int,
-                       @Path("mode") mode: String,
-                       @Path("tempHigh") tempHigh: Int,
-                       @Path("tempLow") tempLow: Int,
-                       @Path("periodTime") periodTime: Int,
-                       @Path("actionTime") actionTimer: Int,
-                       @Path("sensNumber") sensNumber: Int,
-                       @Path("desc") desc: String): Call<ResponseBody>
+    suspend fun relaySetConfig(@Path("relayNumber") relayNum: Int,
+                               @Path("mode") mode: String,
+                               @Path("tempHigh") tempHigh: Int,
+                               @Path("tempLow") tempLow: Int,
+                               @Path("periodTime") periodTime: Int,
+                               @Path("actionTime") actionTimer: Int,
+                               @Path("sensNumber") sensNumber: Int,
+                               @Path("desc") desc: String): ResponseBody
 
 
     @GET("/data/dsList.csv")

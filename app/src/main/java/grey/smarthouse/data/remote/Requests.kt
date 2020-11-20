@@ -7,7 +7,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
 
 
 /**
@@ -16,7 +15,7 @@ import java.io.IOException
 
 object Requests : DataSource {
 
-    private val TAG = "req"
+    private val TAG = "TCP"
 
     lateinit var api: SmartHouseApi
         private set
@@ -41,9 +40,9 @@ object Requests : DataSource {
     }
 
 
-    private fun parceSensor(str: String): SensorRoom {
+    private fun parceSensor(str: String): Sensor {
         val array = str.split(",")
-        return SensorRoom(array[0].toInt(), array[1], array[2] )
+        return Sensor(array[0].toInt(), array[1], array[2])
     }
 
     private fun parceRelay(str: String): Relay {
@@ -67,14 +66,14 @@ object Requests : DataSource {
         val resp = api.configList(num)
         val log = resp.string()
         relay = parceRelay(log)
-        Log.d("TCP", "<<< get relay $num | $log")
+        Log.d(TAG, "<<< get relay $num | $log")
         return relay
     }
 
 
     override suspend fun getAllRelays(list: List<Relay>?): List<Relay>? {
 
-        Log.d("TCP", "list is empty")
+        Log.d(TAG, "list is empty")
         val relayList = emptyList<Relay>().toMutableList()
         try {
             relayList.add(getRelay(1))
@@ -96,8 +95,8 @@ object Requests : DataSource {
         return relayList
     }
 
-    override fun update(relay: Relay) {
-
+    override suspend fun update(relay: Relay) {
+        Log.d(TAG, ">>> update relay")
         val mode = relay.mode
         var modeStr: String = ""
         setRelayState(relay.number, relay.state)
@@ -106,45 +105,30 @@ object Requests : DataSource {
             Relay.TIME_MODE -> modeStr = "time"
             Relay.HAND_MODE -> modeStr = "hand"
         }
-        val tempReq = api.relaySetConfig(relay.number,
-                modeStr,
-                relay.topTemp,
-                relay.botTemp,
-                relay.periodTime,
-                relay.durationTime,
-                relay.sensNum,
-                relay.description)
-        Log.d("TCP", ">>> " + tempReq.request().toString())
-        tempReq.enqueue(object : Callback<ResponseBody> {
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.message() == "OK") {
-                    var resp: String? = null
-                    try {
-                        resp = response.body()!!.string()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-
-                    Log.d("TCP", "<<< " + response.message() + " " + resp)
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
+        try {
+            val response = api.relaySetConfig(relay.number,
+                    modeStr,
+                    relay.topTemp,
+                    relay.botTemp,
+                    relay.periodTime,
+                    relay.durationTime,
+                    relay.sensNum,
+                    relay.description)
+            Log.d(TAG, "<<< " + response.string())
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     private suspend fun getRelayStates(): List<String> {
-        Log.d("TCP", "start method")
+        Log.d(TAG, "start method")
         var list: List<String> = emptyList()
         val stateReq = api.relayStateList()
         val log = stateReq.string()
-        Log.d("TCP", ">>> request")
+//        Log.d(TAG, ">>> request")
         list = log.split("/".toRegex()).dropLastWhile { it.isEmpty() }.subList(1, 9)
-        Log.d("TCP", "<<< response" + log)
-        Log.d("TCP", "end method")
+        Log.d(TAG, "<<< response" + log)
+        Log.d(TAG, "end method")
         return list
     }
 
@@ -155,10 +139,10 @@ object Requests : DataSource {
         } else {
             api.relayOff(num)
         }
-        Log.d("TCP", ">>> " + relaySetState.request().toString())
+        Log.d(TAG, ">>> " + relaySetState.request().toString())
         relaySetState.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d("TCP", "<<< " + response.message())
+                Log.d(TAG, "<<< " + response.message())
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -167,34 +151,34 @@ object Requests : DataSource {
         })
     }
 
-    override suspend fun getSensor(num: Int): SensorRoom {
+    override suspend fun getSensor(num: Int): Sensor {
         TODO("Not yet implemented")
     }
 
 
-    override suspend fun getAllSensors(): List<SensorRoom>? {
+    override suspend fun getAllSensors(): List<Sensor>? {
         lateinit var log: String
         lateinit var response: ResponseBody
 
-        var sensorList: MutableList<SensorRoom>? = null
+        var sensorList: MutableList<Sensor>? = null
         try {
             response = api.getSensors()
             log = response.string()
             response = api.getSensorValues()
-            if(log.isNotEmpty()) {
-                sensorList = emptyList<SensorRoom>().toMutableList()
+            if (log.isNotEmpty()) {
+                sensorList = emptyList<Sensor>().toMutableList()
                 for (line in log.split("\r\n")) {
                     if (line != "")
                         sensorList.add(parceSensor(line))
                 }
             }
-            Log.d("TCP", "<<< | $log")
+            Log.d(TAG, "<<< | $log")
             log = response.string()
             val values = log.replace(',', '.').split("/".toRegex()).dropLastWhile { it.isEmpty() }
             sensorList?.forEachIndexed { index, sensor ->
                 sensor.value = values[index].toFloat()
             }
-            Log.d("TCP", "<<< | $log")
+            Log.d(TAG, "<<< | $log")
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -202,15 +186,15 @@ object Requests : DataSource {
         return sensorList
     }
 
-    override fun update(sensor: SensorRoom) {
+    override fun update(sensor: Sensor) {
         TODO("Not yet implemented")
     }
 
-    override fun insert(sensor: SensorRoom) {
+    override fun insert(sensor: Sensor) {
         super.insert(sensor)
     }
 
-    override fun delete(sensor: SensorRoom) {
+    override fun delete(sensor: Sensor) {
         super.delete(sensor)
     }
 

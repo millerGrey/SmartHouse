@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/sensor_dialog"
     android:layout_height="wrap_content"
     android:background="@color/colorCustomMoreDark">
-
-    <TextView
-        android:id="@+id/textLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/location"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerSensorLocation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinnerSensorLocation" />
 
     <Spinner
         android:id="@+id/spinnerSensorLocation"
@@ -25,51 +13,26 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:dropDownWidth="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextSensorDesc"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextInput"
+        style="@style/Widget.SmartHouse.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/CustomEditText"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/sensorDesc"
+        android:layout_margin="16dp"
+        android:hint="@string/locationName"
+        android:textColorHint="@color/colorCustomText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSensorLocation" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!--<Button-->
-        <!--android:id="@+id/buttonCancel"-->
-        <!--style="@style/CustomButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="@string/cancel"-->
-        <!--android:background="@drawable/bg_button"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/editTextSensorDesc" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/buttonOK"-->
-        <!--style="@style/CustomButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="@string/save"-->
-        <!--android:background="@drawable/bg_button"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/editTextSensorDesc" />-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

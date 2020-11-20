@@ -6,18 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Repository
-import grey.smarthouse.data.SensorRoom
+import grey.smarthouse.data.Sensor
 import grey.smarthouse.utils.RecyclerViewAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 class SensorsVM(val repository: Repository) : ViewModel() {
     private val TAG = "sensorsVM"
 
-    private var _sensorsList = MutableLiveData<List<SensorRoom>>(emptyList())
-    val sensorsList: LiveData<List<SensorRoom>>
+    private var _sensorsList = MutableLiveData<List<Sensor>>(emptyList())
+    val sensorsList: LiveData<List<Sensor>>
         get() = _sensorsList
 
     private var _progress = MutableLiveData<Boolean>(true)
@@ -27,6 +26,11 @@ class SensorsVM(val repository: Repository) : ViewModel() {
     private var _cnt = MutableLiveData<Int>(0)
     val cnt: LiveData<Int>
         get() = _cnt
+
+    private var _editSensorEvent = MutableLiveData<String>()
+    val editSensorEvent: LiveData<String>
+        get() = _editSensorEvent
+
 
     var RVmap: MutableMap<Int, Int> = LinkedHashMap()
 
@@ -53,7 +57,7 @@ class SensorsVM(val repository: Repository) : ViewModel() {
             if(it.isNotEmpty()){
                 RVmapFill()
                 _progress.value = false
-            }else {
+            } else {
                 _progress.value = true
                 _cnt.postValue(cnt.value?.plus(1))
                 return
@@ -61,7 +65,9 @@ class SensorsVM(val repository: Repository) : ViewModel() {
             _cnt.postValue(0)
         }
         Log.d(TAG, "end coroutine")
+    }
 
-
+    fun editSensorDescription(name: String) {
+        _editSensorEvent.value = name
     }
 }

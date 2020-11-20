@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LocationVM (val repository: Repository) : ViewModel() {
-    private var _locationsList = MutableLiveData<List<LocationWithLists>>()
+    private var _locationsList = MutableLiveData<List<LocationWithLists>>(emptyList())
     val locationsList: LiveData<List<LocationWithLists>>
         get() = _locationsList
 
@@ -68,19 +68,11 @@ class LocationVM (val repository: Repository) : ViewModel() {
         }
     }
 
-    fun editLocation(name: String) {
-        _editLocationEvent.value = name
+    fun editLocation(description: String) {
+        _editLocationEvent.value = description
     }
 
     fun deleteLocation(location: Location) {
         repository.delete(location)
     }
-//    fun update(){
-//        viewModelScope.launch {
-//            repository.getAllLocations()?.let{
-//                _locationsList.value = it
-//                RVmapFill()
-//            }
-//        }
-//    }
 }

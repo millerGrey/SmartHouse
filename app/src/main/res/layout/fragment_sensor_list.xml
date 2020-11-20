@@ -23,7 +23,7 @@
             tools:layout_editor_absoluteY="0dp"
             tools:listitem="@layout/list_item_sensor"
             android:visibility="@{viewModel.progress == false ? View.VISIBLE : View.GONE}"
-            app:items="@{viewModel.sensorsList}">
+            app:sensorItems="@{viewModel.sensorsList}">
 
         </androidx.recyclerview.widget.RecyclerView>
 

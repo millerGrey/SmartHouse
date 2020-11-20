@@ -1,11 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="boxStrokeWidth">2dp</item>
     </style>
 
     <style name="CustomTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -15,7 +17,8 @@
         <item name="colorAccent">@color/colorCustomAccent</item>
         <item name="colorSecondary">@color/colorCustomAccent</item>
         <item name="android:textColor">@color/colorCustomText</item>
-        <item name="android:textColorPrimary">@color/selector_color_text_primary</item>
+        <item name="android:textColorPrimary">@color/colorCustomText</item>
+        <item name="android:textColorSecondary">#FF0000</item>
         <item name="colorControlNormal">@color/colorCustomText</item>
         <item name="android:textColorPrimaryDisableOnly">@color/colorCustomAccent</item>
         <item name="editTextStyle">@style/CustomEditText</item>
@@ -23,12 +26,17 @@
         <item name="dialogTheme">@style/CustomDialog</item>
         <item name="spinnerStyle">@style/CustomSpinner</item>
         <item name="android:windowBackground">@color/colorCustomDark</item>
+        <item name="android:spinnerStyle">@style/SmartHouse.Widget.Spinner</item>
         <!--<item name="android:textColorHint">@color/colorCustomEditBgDisabled</item>-->
         <!--<item name="editTextBackground">@drawable/edit_text_style</item>-->
     </style>
 
-
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/colorCustomMoreDark</item>
+    </style>
+
+
+    <style name="SmartHouse.Widget.Spinner" parent="Widget.AppCompat.Spinner">
         <item name="android:background">@color/colorCustomMoreDark</item>
     </style>
 
@@ -36,6 +44,7 @@
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
         <item name="tabBackground">@drawable/bg_tablayout</item>
     </style>
+
     <style name="CustomEditText" parent="android:Widget.EditText">
         <item name="android:background">@drawable/edit_text_style</item>
         <item name="android:paddingStart">4dp</item>
@@ -66,5 +75,18 @@
         <item name="android:padding">0dp</item>
         <item name="android:minWidth">36dp</item>
         <item name="android:minHeight">36dp</item>
+    </style>
+
+    <style name="Widget.SmartHouse.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@style/TextAppearance.SmartHouse.TextInputLayout.HintText
+        </item>
+        <item name="hintTextColor">@color/colorCustomText</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/colorCustomAccent</item>
+        <item name="android:textColorHint">@color/colorCustomAccent</item>
+    </style>
+
+    <style name="TextAppearance.SmartHouse.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">#FF0000</item>
     </style>
 </resources>

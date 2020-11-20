@@ -3,15 +3,13 @@ package grey.smarthouse.ui.mainScreen.relays
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Relay
 import grey.smarthouse.data.Repository
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.utils.RecyclerViewAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
-import kotlin.collections.LinkedHashMap
 
 
 class RelaysVM(val repository: Repository) : ViewModel() {
@@ -23,11 +21,6 @@ class RelaysVM(val repository: Repository) : ViewModel() {
     private var _relayList = MutableLiveData<List<Relay>>(emptyList())
     val relayList: LiveData<List<Relay>>
         get() = _relayList
-
-
-
-
-
 
     var RVmap: MutableMap<Int, Int> = LinkedHashMap()
 
@@ -59,29 +52,17 @@ class RelaysVM(val repository: Repository) : ViewModel() {
         }
     }
 
-    fun relayToggle(relay: Relay){
+    fun relayToggle(relay: Relay) {
         relay.state = !relay.state
-        repository.update(relay)
+        viewModelScope.launch() {
+            repository.update(relay)
+        }
+
     }
 
 
-    fun openRelay(num: Int){
+    fun openRelay(num: Int) {
         _openRelayEvent.value = num
         _openRelayEvent.value = null
     }
-
-//    fun updateConfig(){
-//        viewModelScope.launch() {
-//            try {
-//                Log.d(TAG,"start coroutine config " + Thread.currentThread().name)
-//                _relayList.value = repository.getAllRelays()
-//            } catch (e: Exception) {
-//                Log.d("TAG","tcp exception")
-//            }
-//            RVmapFill()
-//            Log.d(TAG,"end coroutine config" + "${relayList.value}")
-//        }
-//    }
-
-
 }

@@ -1,7 +1,5 @@
 package grey.smarthouse.data
 
-import java.util.*
-
 
 interface DataSource {
 
@@ -9,19 +7,20 @@ interface DataSource {
     //TODO divide responsibilities. backend realisation
     suspend fun getAllRelays(list: List<Relay>? = null): List<Relay>?
 
-    fun update(relay: Relay)
+    suspend fun update(relay: Relay)
 
     fun insert(relay: Relay){}
 
-    suspend fun getSensor(num: Int): SensorRoom
+    suspend fun getSensor(num: Int): Sensor
+
     //TODO divide responsibilities. backend realisation
-    suspend fun getAllSensors(): List<SensorRoom>?
+    suspend fun getAllSensors(): List<Sensor>?
 
-    fun update(sensor: SensorRoom)
+    fun update(sensor: Sensor)
 
-    fun insert(sensor: SensorRoom){}
+    fun insert(sensor: Sensor) {}
 
-    fun delete(sensor: SensorRoom){}
+    fun delete(sensor: Sensor) {}
 
     suspend fun getLocation(name: String): Location
 

@@ -35,7 +35,7 @@ class App : Application() {
         ed.putInt(SAVED_NOTIF_TEMP, mNotifTemp)
         ed.putBoolean(SAVED_NOTIF_ON, mIsNotifOn)
         ed.putBoolean(SAVED_TEST_SET, mIsTestSet)
-        ed.commit()
+        ed.apply()
 
     }
 

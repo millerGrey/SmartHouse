@@ -23,10 +23,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.NetService"
+        <service
+            android:name=".services.NetService"
             android:exported="false"
-            android:enabled="true">
-        </service>
+            android:enabled="true"></service>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

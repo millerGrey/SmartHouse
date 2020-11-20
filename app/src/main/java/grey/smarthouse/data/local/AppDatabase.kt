@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import grey.smarthouse.data.*
 import grey.smarthouse.data.local.converters.IdConverter
 
-@Database(entities = [Relay::class, Location::class, SensorRoom::class], version = 1)
+@Database(entities = [Relay::class, Location::class, Sensor::class], version = 1)
 @TypeConverters(IdConverter::class)
 abstract class AppDatabase : RoomDatabase(), DataSource {
 
@@ -33,7 +33,7 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
         return mRelayDao().getByNum(num)
     }
 
-    override fun update(relay: Relay) {
+    override suspend fun update(relay: Relay) {
         mRelayDao().update(relay)
     }
 
@@ -41,23 +41,23 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
         mRelayDao().insert(relay)
     }
 
-    override suspend fun getSensor(num: Int): SensorRoom {
+    override suspend fun getSensor(num: Int): Sensor {
         return mSensorDao().getByNum(num)
     }
 
-    override suspend fun getAllSensors(): List<SensorRoom>? {
+    override suspend fun getAllSensors(): List<Sensor>? {
         return mSensorDao().getAll()
     }
 
-    override fun update(sensor: SensorRoom) {
+    override fun update(sensor: Sensor) {
         mSensorDao().update(sensor)
     }
 
-    override fun insert(sensor: SensorRoom) {
+    override fun insert(sensor: Sensor) {
         mSensorDao().insert(sensor)
     }
 
-    override fun delete(sensor: SensorRoom) {
+    override fun delete(sensor: Sensor) {
         mSensorDao().delete(sensor)
     }
 

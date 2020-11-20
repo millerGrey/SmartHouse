@@ -38,25 +38,26 @@ class Repository(private val local: DataSource, private val remote: DataSource):
     override fun insert(relay: Relay) {
         local.insert(relay)
     }
-//?
-    override fun update(relay: Relay) {
+
+    //?
+    override suspend fun update(relay: Relay) {
         remote.update(relay)
         local.update(relay)
     }
 
-    override suspend fun getSensor(num: Int): SensorRoom {
+    override suspend fun getSensor(num: Int): Sensor {
         TODO("Not yet implemented")
     }
 //?
 
-    override suspend fun getAllSensors(): List<SensorRoom>? {
-        var list: List<SensorRoom>? = null
+    override suspend fun getAllSensors(): List<Sensor>? {
+        var list: List<Sensor>? = null
         withTimeoutOrNull(2000) {
             list = remote.getAllSensors()
-            list?.let{
-                if(it.isNotEmpty()){
-                    list?.forEach {
-                        sensor -> local.insert(sensor)
+            list?.let {
+                if (it.isNotEmpty()) {
+                    list?.forEach { sensor ->
+                        local.insert(sensor)
                     }
                 }
             }
@@ -66,15 +67,15 @@ class Repository(private val local: DataSource, private val remote: DataSource):
         return list
     }
 
-    override fun update(sensor: SensorRoom) {
+    override fun update(sensor: Sensor) {
         remote.update(sensor)
     }
 
-    override fun insert(sensor: SensorRoom) {
+    override fun insert(sensor: Sensor) {
         local.insert(sensor)
     }
 
-    override fun delete(sensor: SensorRoom) {
+    override fun delete(sensor: Sensor) {
         local.delete(sensor)
     }
 

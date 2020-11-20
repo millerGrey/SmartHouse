@@ -52,7 +52,7 @@ class RelaySettingsVM(val repository: Repository): ViewModel() {
         relay.durationTime = Integer.parseInt(durationTime)
         relay.description = description
 
-        repository.update(relay)
+        viewModelScope.launch { repository.update(relay) }
     }
 
     fun updateCheckBoxes(mode: Int){ //TODO isChecked

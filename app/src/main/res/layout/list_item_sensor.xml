@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="sensor"
-            type="grey.smarthouse.data.SensorRoom" />
+            type="grey.smarthouse.data.Sensor" />
+
+        <variable
+            name="vm"
+            type="grey.smarthouse.ui.mainScreen.sensors.SensorsVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,36 +19,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:background="@color/colorCustomMoreDark">
+        android:background="@color/colorCustomMoreDark"
+        android:onClick="@{() -> vm.editSensorDescription(sensor.description)}">
         <!--android:background="@drawable/relay_list_item_style">-->
 
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sensorIcon="@{sensor}"
+            app:srcCompat="@drawable/ic_termo" />
 
         <TextView
             android:id="@+id/text_sensorDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="25sp"
-            android:text="@{sensor.location}"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{sensor.description}"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Локация" />
+
+        <TextView
+            android:id="@+id/sensorLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@{sensor.location}"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_sensorDesc"
+            app:layout_constraintTop_toBottomOf="@+id/text_sensorDesc"
+            tools:text="Описание" />
 
         <TextView
             android:id="@+id/text_sensorValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text='@{sensor.type == "ds18b20" ? String.format(@string/degree_with_digital_float, sensor.value): String.valueOf(sensor.value)}'
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif"
+            android:text='@{sensor.type == "temperature" ? String.format(@string/degree_with_digital_float, sensor.value): String.valueOf(sensor.value)}'
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_sensorDesc"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            tools:text="20.0C" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

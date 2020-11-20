@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import grey.smarthouse.App
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentSensorListBinding
-import grey.smarthouse.App
 import grey.smarthouse.utils.RecyclerViewAdapter
 import grey.smarthouse.utils.ViewModelFactory
 
@@ -23,12 +24,16 @@ class SensorListFragment : Fragment() {
 
     val sensorsVM by lazy{ ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(SensorsVM::class.java)}
     lateinit var binding: FragmentSensorListBinding
-    private var mPage: Int = 0
     private val TAG = "SENSORS"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mPage = arguments!!.getInt(ARG_PAGE)
+        sensorsVM.editSensorEvent.observe(this) {
+            val args = Bundle()
+            args.putString("description", it)
+            val sensorDialog = SensorDialog()
+            sensorDialog.arguments = args
+            sensorDialog.show(requireActivity().supportFragmentManager, "sensorDialog")
+
         }
     }
 
@@ -40,7 +45,6 @@ class SensorListFragment : Fragment() {
         binding.sensorRecyclerView.adapter = RecyclerViewAdapter(sensorsVM, sensorsVM.RVmap)
         binding.sensorRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
         binding.lifecycleOwner = requireActivity()
-//        sensorsVM.updateConfig()
         return binding.root
     }
 
@@ -55,12 +59,5 @@ class SensorListFragment : Fragment() {
     companion object {
         val ARG_PAGE = "ARG PAGE"
 
-        fun newInstance(page: Int): SensorListFragment {
-            val args = Bundle()
-            args.putInt(ARG_PAGE, page)
-            val fragment = SensorListFragment()
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

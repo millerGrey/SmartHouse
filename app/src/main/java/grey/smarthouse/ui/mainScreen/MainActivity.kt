@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import grey.smarthouse.App
 import grey.smarthouse.R
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.remote.Requests
-import grey.smarthouse.App
 import grey.smarthouse.ui.mainScreen.locations.LocationDialog
 import grey.smarthouse.ui.mainScreen.locations.LocationVM
 import grey.smarthouse.ui.mainScreen.relays.RelaysVM
 import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity
 import grey.smarthouse.utils.ViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * Created by GREY on 26.05.2018.
@@ -30,10 +31,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mViewPager = findViewById(R.id.view_pager)
+        mViewPager = view_pager
         val fm = supportFragmentManager
         mViewPager.adapter = ViewPagerAdapter(fm, 1)
-
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
         tabLayout.setupWithViewPager(mViewPager)
         Requests.retrofitInit(App.app.mDeviceURL)
@@ -54,8 +54,6 @@ class MainActivity : AppCompatActivity() {
                 show(supportFragmentManager, "locationDialog")
             }
         }
-
-
     }
 
     companion object {

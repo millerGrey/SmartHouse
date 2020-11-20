@@ -1,10 +1,7 @@
 package grey.smarthouse.data.local
 
 import androidx.room.*
-import grey.smarthouse.data.DataSource
-import grey.smarthouse.data.local.converters.IdConverter
 import grey.smarthouse.data.Relay
-import java.util.*
 
 @Dao
 interface RelayDao{
@@ -18,7 +15,7 @@ interface RelayDao{
     fun insert(relay: Relay)
 
     @Update
-    fun update(relay: Relay)
+    suspend fun update(relay: Relay)
 
     @Delete
     fun delete(relay: Relay)
