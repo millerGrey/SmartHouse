@@ -15,7 +15,7 @@ data class Location(
 
 data class LocationWithLists (
         @Embedded
-    var location: Location,
+        var location: Location,
         @Relation(parentColumn = "name", entityColumn = "location")
         var sensors: List<Sensor>
 )

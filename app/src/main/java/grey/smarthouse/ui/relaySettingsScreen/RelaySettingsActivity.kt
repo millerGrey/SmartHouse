@@ -6,9 +6,6 @@ import android.os.Bundle
 
 import androidx.fragment.app.Fragment
 import grey.smarthouse.R
-
-import java.util.UUID
-
 import grey.smarthouse.ui.SingleFragmentActivity
 
 class RelaySettingsActivity : SingleFragmentActivity() {

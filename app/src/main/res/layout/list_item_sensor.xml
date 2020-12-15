@@ -12,6 +12,10 @@
         <variable
             name="vm"
             type="grey.smarthouse.ui.mainScreen.sensors.SensorsVM" />
+
+        <variable
+            name="value"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,25 +48,25 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
-            android:text="@{sensor.description}"
+            android:text='@{sensor.description.equals("") ? sensor.location : sensor.description}'
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="Локация" />
+            tools:text="Описание" />
 
         <TextView
             android:id="@+id/sensorLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@{sensor.location}"
+            android:text='@{sensor.description.equals("") ? "" : sensor.location}'
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/text_sensorDesc"
             app:layout_constraintTop_toBottomOf="@+id/text_sensorDesc"
-            tools:text="Описание" />
+            tools:text="Локация" />
 
         <TextView
             android:id="@+id/text_sensorValue"
@@ -70,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif"
-            android:text='@{sensor.type == "temperature" ? String.format(@string/degree_with_digital_float, sensor.value): String.valueOf(sensor.value)}'
-            android:textSize="14sp"
+            android:text="@{value}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/text_sensorDesc"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="20.0C" />

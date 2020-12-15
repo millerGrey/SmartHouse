@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 openRelaySettings(it)
             }
         }
+
         locationsVM.editLocationEvent.observe(this) {
             val args = Bundle()
             args.putString("name", it)

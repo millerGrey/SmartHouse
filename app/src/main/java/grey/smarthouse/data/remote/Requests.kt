@@ -42,7 +42,12 @@ object Requests : DataSource {
 
     private fun parceSensor(str: String): Sensor {
         val array = str.split(",")
-        return Sensor(array[0].toInt(), array[1], array[2])
+        return Sensor(number = array[0].toInt(),
+                id = array[1],
+                location = array[2],
+                description = array[3],
+                model = array[4],
+                type = array[5])
     }
 
     private fun parceRelay(str: String): Relay {

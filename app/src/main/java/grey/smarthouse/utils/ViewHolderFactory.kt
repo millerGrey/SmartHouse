@@ -29,8 +29,14 @@ object ViewHolderFactory {
                     Log.d("RV", "bind sensor ${list.size}")
                 }
                 Log.d("RV", "bind sensor $pos ${list[pos]} ${list.size}")
-                binding.sensor = list[pos]
+                val sensor = list[pos]
+                binding.sensor = sensor
                 binding.vm = vm
+                binding.value = when (sensor.type) {
+                    "temperature" -> String.format(itemView.resources.getString(R.string.degree_with_digital_float), sensor.value)
+                    "humidity" -> String.format(itemView.resources.getString(R.string.percent_with_digital_float), sensor.value)
+                    else -> ""
+                }
             }
             binding.executePendingBindings()
         }

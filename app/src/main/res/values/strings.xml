@@ -11,6 +11,8 @@
     <string name="degree">°С</string>
     <string name="degree_with_digital">%d °С</string>
     <string name="degree_with_digital_float">%.1f °С</string>
+    <string name="percent_with_digital">%d %%</string>
+    <string name="percent_with_digital_float">%.1f %%</string>
     <string name="cool">Охлаждение</string>
     <string name="temp_off">Отключение:</string>
     <string name="temp_on">Включение:</string>
