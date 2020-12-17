@@ -22,14 +22,16 @@ interface DataSource {
 
     fun delete(sensor: Sensor) {}
 
-    suspend fun getLocation(name: String): Location
+    suspend fun getLocation(name: String): Location?
+
+    suspend fun getLocation(id: Int): Location?
 
     suspend fun getAllLocations(): List<LocationWithLists>
 
     fun update(location: Location)
 
-    fun insert(location: Location){}
+    fun insert(location: Location) {}
 
-    fun delete(location: Location){}
+    fun delete(location: Location) {}
 }
 

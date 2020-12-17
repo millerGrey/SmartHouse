@@ -78,7 +78,7 @@
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:onClick="@{_ -> vm.editLocation(locationWithLists.location.name)}"
+                android:onClick="@{_ -> vm.editLocation(locationWithLists.location.id)}"
                 app:icon="@drawable/ic_baseline_edit_24"
                 app:iconTint="@color/colorCustomText"
                 app:layout_constraintEnd_toStartOf="@+id/buttonClose"

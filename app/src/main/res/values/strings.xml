@@ -53,12 +53,13 @@
     <string name="sensorDesc">Описание датчика</string>
 
 
-<!--    Константы-->
+    <!--    Константы-->
     <string name="EXTRA_RELAY_ID">grey.smarthouse.relay_id</string>
 
 
     <string name="addLocation">Добавьте локацию</string>
     <string name="locationName">Название</string>
-    <string name="locationNameError">Введите название</string>
+    <string name="locationNameEmptyError">Введите название</string>
+    <string name="locationNameDublicateError">Эта локация уже существует</string>
 
 </resources>

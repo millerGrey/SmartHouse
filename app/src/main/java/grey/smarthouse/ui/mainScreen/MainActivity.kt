@@ -48,11 +48,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         locationsVM.editLocationEvent.observe(this) {
-            val args = Bundle()
-            args.putString("name", it)
-            val locDialog = LocationDialog().apply {
-                arguments = args
-                show(supportFragmentManager, "locationDialog")
+            it?.let {
+                val args = Bundle()
+                args.putInt("id", it)
+                val locDialog = LocationDialog().apply {
+                    arguments = args
+                    show(supportFragmentManager, "locationDialog")
+                }
             }
         }
     }

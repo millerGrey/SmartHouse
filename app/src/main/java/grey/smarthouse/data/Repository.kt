@@ -79,8 +79,12 @@ class Repository(private val local: DataSource, private val remote: DataSource):
         local.delete(sensor)
     }
 
-    override suspend fun getLocation(name: String): Location {
+    override suspend fun getLocation(name: String): Location? {
         return local.getLocation(name)
+    }
+
+    override suspend fun getLocation(id: Int): Location? {
+        return local.getLocation(id)
     }
 
     override suspend fun getAllLocations(): List<LocationWithLists> {

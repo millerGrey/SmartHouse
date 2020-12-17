@@ -61,8 +61,12 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
         mSensorDao().delete(sensor)
     }
 
-    override suspend fun getLocation(name: String): Location {
+    override suspend fun getLocation(name: String): Location? {
         return mLocationDao().getLocation(name)
+    }
+
+    override suspend fun getLocation(id: Int): Location? {
+        return mLocationDao().getLocation(id)
     }
 
     override suspend fun getAllLocations(): List<LocationWithLists> {

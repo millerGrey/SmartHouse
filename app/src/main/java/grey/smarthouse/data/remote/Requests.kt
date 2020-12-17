@@ -203,7 +203,11 @@ object Requests : DataSource {
         super.delete(sensor)
     }
 
-    override suspend fun getLocation(name: String): Location {
+    override suspend fun getLocation(name: String): Location? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getLocation(id: Int): Location? {
         TODO("Not yet implemented")
     }
 
