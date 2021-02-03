@@ -36,14 +36,26 @@ package model{
     }
 }
 
+package ViewModel{
+    class RelayVM
+    class SensorVM
+    class LocationVM
+}
+
+storage DataBase {
+    class AppDatabase
+    interface RelayDAO
+    interface SensorDAO
+    interface LocationDAO
+}
+
+cloud network{
+    class Requests
+}
 
 
 
 
-
-class RelayVM
-class SensorVM
-class LocationVM
 class Repository{
     get(num)
     getAll()
@@ -52,11 +64,8 @@ class Repository{
     delete()
 }
 interface DataSource
-class Requests
-class AppDatabase
-interface RelayDAO
-interface SensorDAO
-interface LocationDAO
+
+
 Relay <|.. RelayListFragment
 Relay <|. RelaySettingsFragment
 Relay <|.. RelaySettingsActivity

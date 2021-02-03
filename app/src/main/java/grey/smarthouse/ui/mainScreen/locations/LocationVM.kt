@@ -64,7 +64,7 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
         _editLocationEvent.value = -1
     }
 
-    fun positiveDialogListener() {
+    fun saveLocation() {
         viewModelScope.launch {
             val loc = repository.getLocation(name.value!!)
             loc?.let {
@@ -92,8 +92,6 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
 
     fun dismissListener() {
         error.value = null
-//        error.value = "null"
-//        _editLocationEvent.value = null
     }
 
     fun editLocation(id: Int) {
@@ -105,7 +103,6 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
     }
 
     fun fillDescription(id: Int) {
-        error.value = null
         viewModelScope.launch {
             if (id > 0) {
                 val loc = repository.getLocation(id)

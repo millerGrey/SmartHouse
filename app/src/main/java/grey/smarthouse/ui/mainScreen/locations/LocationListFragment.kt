@@ -48,18 +48,18 @@ class LocationDialog : DialogFragment() {
 
     @TargetApi(11)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val inflater = activity!!.layoutInflater
+        val inflater = requireActivity().layoutInflater
         binding = FragmentDialogLocationBinding.inflate(inflater)
         val locationId = arguments?.getInt("id") ?: -1
         binding.vm = locationsVM
-        binding.lifecycleOwner = activity
+        binding.lifecycleOwner = requireActivity()
         locationsVM.fillDescription(locationId)
         locationsVM.dialogDismiss.observe(this) {
             it?.let {
                 dialog?.dismiss()
             }
         }
-        val dialog = AlertDialog.Builder(activity!!)
+        val dialog = AlertDialog.Builder(requireActivity())
                 .setView(binding.root)
                 .setTitle(R.string.location)
                 .setPositiveButton(android.R.string.ok, null)
@@ -67,10 +67,9 @@ class LocationDialog : DialogFragment() {
                 .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                locationsVM.positiveDialogListener()
+                locationsVM.saveLocation()
             }
         }
-
         return dialog
     }
 

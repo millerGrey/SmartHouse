@@ -46,17 +46,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/location" />
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            <!--            <View-->
+            <!--                android:id="@+id/divider2"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_margin="16dp"-->
+            <!--                android:background="@color/colorCustomPrimary"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/textView2" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonClose"
@@ -97,7 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2">
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <TextView
                     android:id="@+id/textView4"
