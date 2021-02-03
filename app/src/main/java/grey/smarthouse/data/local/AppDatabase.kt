@@ -49,7 +49,7 @@ abstract class AppDatabase : RoomDatabase(), DataSource {
         return mSensorDao().getAll()
     }
 
-    override fun update(sensor: Sensor) {
+    override suspend fun update(sensor: Sensor) {
         mSensorDao().update(sensor)
     }
 

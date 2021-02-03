@@ -13,6 +13,8 @@ import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.ui.mainScreen.locations.LocationDialog
 import grey.smarthouse.ui.mainScreen.locations.LocationVM
 import grey.smarthouse.ui.mainScreen.relays.RelaysVM
+import grey.smarthouse.ui.mainScreen.sensors.SensorDialog
+import grey.smarthouse.ui.mainScreen.sensors.SensorsVM
 import grey.smarthouse.ui.relaySettingsScreen.RelaySettingsActivity
 import grey.smarthouse.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     val relayVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(RelaysVM::class.java) }
     val locationsVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(LocationVM::class.java) }
+    val sensorsVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(SensorsVM::class.java) }
     private lateinit var mViewPager: ViewPager
 
 
@@ -55,6 +58,15 @@ class MainActivity : AppCompatActivity() {
                     arguments = args
                     show(supportFragmentManager, "locationDialog")
                 }
+            }
+        }
+
+        sensorsVM.editSensorEvent.observe(this) {
+            val args = Bundle()
+            args.putInt("num", it)
+            val sensorDialog = SensorDialog().apply {
+                arguments = args
+                show(supportFragmentManager, "sensorDialog")
             }
         }
     }

@@ -12,16 +12,13 @@ import retrofit2.http.Path
 interface SmartHouseApi {
 
 
-    @get:GET("/data/ds18b20/dsList.csv")
-    val sensorsList: Call<ResponseBody>
-
     @GET("/cgi-bin/reset")
     fun reset(): Call<ResponseBody>
 
     @GET("/cgi-bin/ip/set/{ipAddr}")
     fun setIP(@Path("ipAddr") ipAddr: String): Call<ResponseBody>
 
-    @GET("/cgi-bin/ds1820/value/")
+    @GET("/cgi-bin/sensor/value/")
     suspend fun getSensorValues(): ResponseBody
 
     @GET("/cgi-bin/state")
@@ -50,4 +47,9 @@ interface SmartHouseApi {
 
     @GET("/data/dsList.csv")
     suspend fun getSensors(): ResponseBody
+
+    @GET("/cgi-bin/sensor/{number}/desc/{description}/loc/{location}")
+    suspend fun setSensorData(@Path("number") number: Int,
+                              @Path("description") description: String,
+                              @Path("location") location: String): ResponseBody
 }

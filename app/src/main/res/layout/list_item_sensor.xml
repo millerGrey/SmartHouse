@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@color/colorCustomMoreDark"
-        android:onClick="@{() -> vm.editSensorDescription(sensor.description)}">
+        android:onClick="@{() -> vm.editSensorDescription(sensor.number)}">
         <!--android:background="@drawable/relay_list_item_style">-->
 
 

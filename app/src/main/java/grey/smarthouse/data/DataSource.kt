@@ -16,7 +16,7 @@ interface DataSource {
     //TODO divide responsibilities. backend realisation
     suspend fun getAllSensors(): List<Sensor>?
 
-    fun update(sensor: Sensor)
+    suspend fun update(sensor: Sensor)
 
     fun insert(sensor: Sensor) {}
 

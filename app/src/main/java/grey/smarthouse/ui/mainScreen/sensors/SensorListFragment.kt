@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
 import grey.smarthouse.data.Repository
@@ -27,14 +26,14 @@ class SensorListFragment : Fragment() {
     private val TAG = "SENSORS"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sensorsVM.editSensorEvent.observe(this) {
-            val args = Bundle()
-            args.putString("description", it)
-            val sensorDialog = SensorDialog()
-            sensorDialog.arguments = args
-            sensorDialog.show(requireActivity().supportFragmentManager, "sensorDialog")
-
-        }
+//        sensorsVM.editSensorEvent.observe(this) {
+//            val args = Bundle()
+//            args.putString("description", it)
+//            val sensorDialog = SensorDialog()
+//            sensorDialog.arguments = args
+//            sensorDialog.show(requireActivity().supportFragmentManager, "sensorDialog")
+//
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -2,10 +2,13 @@ package grey.smarthouse.utils
 
 
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ImageView
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
-
 import grey.smarthouse.R
 import grey.smarthouse.data.LocationWithLists
 import grey.smarthouse.data.Relay
@@ -92,10 +95,42 @@ object RelayListBindingAdapter {
 object LocationListBindingAdapter {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(listView: RecyclerView, value: List<LocationWithLists>) {
-        with(listView.adapter as RecyclerViewAdapter) {
-//            setRelays(items)
-            refresh()
-        }
+    @JvmStatic
+    fun setItems(listView: RecyclerView, value: List<LocationWithLists>) {
+        (listView.adapter as RecyclerViewAdapter).refresh()
     }
 }
+
+object SensorDialogBindingAdapter {
+    @JvmStatic
+    @BindingAdapter("app:value")
+    fun setValue(view: Spinner, position: Int) {
+        view.setSelection(position)
+    }
+
+    @InverseBindingAdapter(attribute = "app:value", event = "valueAttrChanged")
+    @JvmStatic
+    fun getValue(view: Spinner): Int {
+
+        return view.selectedItemPosition
+    }
+
+
+    @BindingAdapter("valueAttrChanged")
+    @JvmStatic
+    fun setInverseBindingListener(view: Spinner, valueAttrChanged: InverseBindingListener) {
+        val listener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                valueAttrChanged.onChange()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                valueAttrChanged.onChange()
+            }
+        }
+        view.onItemSelectedListener = listener
+    }
+
+}
+
+

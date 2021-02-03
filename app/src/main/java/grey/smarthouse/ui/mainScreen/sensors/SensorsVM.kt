@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.Sensor
 import grey.smarthouse.utils.RecyclerViewAdapter
+import grey.smarthouse.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,10 +28,19 @@ class SensorsVM(val repository: Repository) : ViewModel() {
     val cnt: LiveData<Int>
         get() = _cnt
 
-    private var _editSensorEvent = MutableLiveData<String>()
-    val editSensorEvent: LiveData<String>
+    private var _editSensorEvent = MutableLiveData<Int>()
+    val editSensorEvent: LiveData<Int>
         get() = _editSensorEvent
 
+    private var _dialogDismiss = SingleLiveEvent<Boolean>()
+    val dialogDismiss: LiveData<Boolean?>
+        get() = _dialogDismiss
+
+    val sensorDescription: MutableLiveData<String> = MutableLiveData()
+    val locationList: MutableLiveData<MutableList<String>> = MutableLiveData()
+    var selectedPosition: MutableLiveData<Int> = MutableLiveData(0)
+
+    var error: MutableLiveData<String> = MutableLiveData()
 
     var RVmap: MutableMap<Int, Int> = LinkedHashMap()
 
@@ -67,7 +77,38 @@ class SensorsVM(val repository: Repository) : ViewModel() {
         Log.d(TAG, "end coroutine")
     }
 
-    fun editSensorDescription(name: String) {
-        _editSensorEvent.value = name
+    fun editSensorDescription(num: Int) {
+        _editSensorEvent.value = num
+    }
+
+    fun fillDescription(num: Int) {
+        error.value = null
+        viewModelScope.launch {
+            if (num >= 0) {
+                val sensor = repository.getSensor(num)
+                locationList.value = repository.getAllLocations().map { it.location.name }.toMutableList().apply { add(0, "---") }
+                sensorDescription.value = sensor.description
+                Log.d(TAG, "$sensor, ${sensorDescription.value}")
+                locationList.value?.let {
+                    val index = it.indexOf(sensor.location)
+                    selectedPosition.value = if (index > 0) index else 0
+                }
+            }
+        }
+    }
+
+    fun saveSensor() {
+        viewModelScope.launch {
+            val sensor = repository.getSensor(_editSensorEvent.value!!)
+            sensor.description = sensorDescription.value!!
+            if (selectedPosition.value!! > 0)
+                sensor.location = locationList.value?.get(selectedPosition.value!!).toString()
+            repository.update(sensor)
+            _dialogDismiss.value = true
+        }
+    }
+
+    fun dismissListener() {
+        error.value = null
     }
 }

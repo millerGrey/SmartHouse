@@ -46,7 +46,7 @@ class Repository(private val local: DataSource, private val remote: DataSource):
     }
 
     override suspend fun getSensor(num: Int): Sensor {
-        TODO("Not yet implemented")
+        return local.getSensor(num)
     }
 //?
 
@@ -67,7 +67,7 @@ class Repository(private val local: DataSource, private val remote: DataSource):
         return list
     }
 
-    override fun update(sensor: Sensor) {
+    override suspend fun update(sensor: Sensor) {
         remote.update(sensor)
     }
 

@@ -191,8 +191,13 @@ object Requests : DataSource {
         return sensorList
     }
 
-    override fun update(sensor: Sensor) {
-        TODO("Not yet implemented")
+    override suspend fun update(sensor: Sensor) {
+        try {
+            val request = api.setSensorData(sensor.number, sensor.description, sensor.location)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun insert(sensor: Sensor) {
