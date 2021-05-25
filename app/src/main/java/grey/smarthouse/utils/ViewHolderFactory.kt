@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import grey.smarthouse.R
+import grey.smarthouse.data.Location
+import grey.smarthouse.data.Relay
+import grey.smarthouse.data.Sensor
 import grey.smarthouse.databinding.ListItemLocationBinding
 import grey.smarthouse.databinding.ListItemRelayBinding
 import grey.smarthouse.databinding.ListItemSensorBinding
@@ -57,6 +60,7 @@ object ViewHolderFactory {
             }
             binding.executePendingBindings()
         }
+
     }
 
     class LocationViewHolder(v: View, private val vm: ViewModel) : RecyclerViewAdapter.ViewHolder(v) {
@@ -71,12 +75,14 @@ object ViewHolderFactory {
             }
             binding.executePendingBindings()
         }
+
     }
 
     class HeaderViewHolder(private val v: View) : RecyclerViewAdapter.ViewHolder(v) {
         override fun bind(pos: Int) {
             (v as TextView).text = "Оборудование"
         }
+
     }
 
 
@@ -95,12 +101,28 @@ object ViewHolderFactory {
                 LocationViewHolder(v, vm)
             }
             HEADER_LIST_TYPE -> {
-                val v = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+                val v = LayoutInflater.from(parent.context)
+                    .inflate(android.R.layout.simple_list_item_1, parent, false)
                 HeaderViewHolder(v)
             }
             //TODO убрать else
-            else -> SensorViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_sensor, parent, false), vm);
+            else -> SensorViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_sensor, parent, false), vm
+            );
         }
     }
+
+    fun getItemViewType(item: Any): Int {
+        return when (item) {
+            is Sensor -> SENSOR_LIST_TYPE
+            is Relay -> RELAY_LIST_TYPE
+            is Location -> LOCATION_LIST_TYPE
+            is String -> HEADER_LIST_TYPE
+            else -> HEADER_LIST_TYPE
+        }
+
+    }
+
 
 }

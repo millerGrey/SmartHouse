@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
 import grey.smarthouse.data.Repository
@@ -21,7 +21,12 @@ import grey.smarthouse.utils.ViewModelFactory
 
 class SensorListFragment : Fragment() {
 
-    val sensorsVM by lazy{ ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(SensorsVM::class.java)}
+    val sensorsVM by lazy {
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(SensorsVM::class.java)
+    }
     lateinit var binding: FragmentSensorListBinding
     private val TAG = "SENSORS"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +41,10 @@ class SensorListFragment : Fragment() {
 //        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentSensorListBinding.inflate(inflater, container, false)
         binding.viewModel = sensorsVM

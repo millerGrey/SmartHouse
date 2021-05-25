@@ -2,7 +2,7 @@ package grey.smarthouse.ui.mainScreen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -25,9 +25,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val relayVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(RelaysVM::class.java) }
-    val locationsVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(LocationVM::class.java) }
-    val sensorsVM by lazy { ViewModelProviders.of(this, ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(SensorsVM::class.java) }
+    val relayVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(RelaysVM::class.java)
+    }
+    val locationsVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(LocationVM::class.java)
+    }
+    val sensorsVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(SensorsVM::class.java)
+    }
     private lateinit var mViewPager: ViewPager
 
 
@@ -40,10 +55,7 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
         tabLayout.setupWithViewPager(mViewPager)
         Requests.retrofitInit(App.app.mDeviceURL)
-//        val intent = Intent(applicationContext, NetService::class.java)
-//        intent.putExtra(NOTIFICATION_FLAG, App.app.mIsNotifOn)
-//        intent.putExtra(NOTIFICATION_TEMP, App.app.mNotifTemp)
-//        startService(intent)
+
         relayVM.openRelayEvent.observe(this) {
             it?.let {
                 openRelaySettings(it)
@@ -54,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             it?.let {
                 val args = Bundle()
                 args.putInt("id", it)
-                val locDialog = LocationDialog().apply {
+                LocationDialog().apply {
                     arguments = args
                     show(supportFragmentManager, "locationDialog")
                 }
@@ -64,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         sensorsVM.editSensorEvent.observe(this) {
             val args = Bundle()
             args.putInt("num", it)
-            val sensorDialog = SensorDialog().apply {
+            SensorDialog().apply {
                 arguments = args
                 show(supportFragmentManager, "sensorDialog")
             }

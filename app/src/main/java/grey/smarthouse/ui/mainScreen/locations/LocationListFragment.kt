@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
@@ -24,12 +24,19 @@ import grey.smarthouse.utils.ViewModelFactory
 
 class LocationListFragment : Fragment() {
 
-    val locationsVM by lazy { ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(LocationVM::class.java) }
+    private val locationsVM by lazy {
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(LocationVM::class.java)
+    }
     lateinit var binding: FragmentLocationListBinding
     private val TAG = "LOCATIONS"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentLocationListBinding.inflate(inflater, container, false)
         binding.viewModel = locationsVM
@@ -42,7 +49,12 @@ class LocationListFragment : Fragment() {
 }
 
 class LocationDialog : DialogFragment() {
-    val locationsVM by lazy { ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(LocationVM::class.java) }
+    private val locationsVM by lazy {
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(LocationVM::class.java)
+    }
 
     lateinit var binding: FragmentDialogLocationBinding
 
@@ -60,11 +72,11 @@ class LocationDialog : DialogFragment() {
             }
         }
         val dialog = AlertDialog.Builder(requireActivity())
-                .setView(binding.root)
-                .setTitle(R.string.location)
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(R.string.cancel, null)
-                .create()
+            .setView(binding.root)
+            .setTitle(R.string.location)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(R.string.cancel, null)
+            .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 locationsVM.saveLocation()

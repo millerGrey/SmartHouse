@@ -3,7 +3,6 @@
 package View{
     class MainActivity
     class RelaySettingsActivity
-    abstract class SingleFragmentActivity
     class SensorListFragment
     class SettingsFragment
     class RelaySettingsFragment
@@ -69,8 +68,6 @@ interface DataSource
 Relay <|.. RelayListFragment
 Relay <|. RelaySettingsFragment
 Relay <|.. RelaySettingsActivity
-SingleFragmentActivity <|. RelaySettingsActivity
-SingleFragmentActivity <|. MainActivity
 RelaySettingsFragment <|.. RelaySettingsActivity
 RelaySettingsActivity <|.. RelayListFragment
 SettingsFragment <|.. ViewPagerAdapter

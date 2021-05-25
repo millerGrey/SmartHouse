@@ -108,6 +108,8 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
                 val loc = repository.getLocation(id)
                 name.value = loc?.name
                 Log.d("TAG", "$loc, ${name.value}")
+            } else {
+                name.value = ""
             }
         }
     }

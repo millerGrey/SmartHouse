@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import grey.smarthouse.App
 import grey.smarthouse.R
@@ -17,7 +17,13 @@ import grey.smarthouse.utils.ViewModelFactory
 
 class SensorDialog : DialogFragment() {
 
-    val sensorVM by lazy { ViewModelProviders.of(requireActivity(), ViewModelFactory(App.app, Repository(App.app.database, Requests))).get(SensorsVM::class.java) }
+    val sensorVM by lazy {
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelFactory(App.app, Repository(App.app.database, Requests))
+        ).get(SensorsVM::class.java)
+    }
+
     @TargetApi(11)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater
@@ -31,17 +37,19 @@ class SensorDialog : DialogFragment() {
                 dialog?.dismiss()
             }
         }
+
         val dialog = AlertDialog.Builder(requireActivity())
-                .setView(binding.root)
-                .setTitle(R.string.sensor)
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(R.string.cancel, null)
-                .create()
+            .setView(binding.root)
+            .setTitle(R.string.sensor)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(R.string.cancel, null)
+            .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 sensorVM.saveSensor()
             }
         }
+
         return dialog
     }
 
