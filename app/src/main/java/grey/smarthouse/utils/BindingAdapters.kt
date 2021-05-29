@@ -62,7 +62,7 @@ object IconSensorBindingAdapter {
                 view.setImageResource(R.drawable.ic_humy)
             }
             else -> {//TODO убрать
-                view.setImageResource(R.drawable.ic_termo)
+                null
             }
         }
     }
@@ -75,7 +75,7 @@ object SensorListBindingAdapter {
     @JvmStatic
     fun setItems(listView: RecyclerView, items: List<Sensor>) {
         with(listView.adapter as RecyclerViewAdapter) {
-            refresh()
+            refresh(items)
         }
     }
 }
@@ -84,10 +84,10 @@ object RelayListBindingAdapter {
 
     @BindingAdapter("app:relayItems")
     @JvmStatic
-    fun setItems(listView: RecyclerView, value: List<Relay>) {
+    fun setItems(listView: RecyclerView, items: List<Relay>) {
         with(listView.adapter as RecyclerViewAdapter) {
 //            setRelays(items)
-            refresh()
+            refresh(items)
         }
     }
 }
@@ -96,8 +96,8 @@ object LocationListBindingAdapter {
 
     @BindingAdapter("app:items")
     @JvmStatic
-    fun setItems(listView: RecyclerView, value: List<LocationWithLists>) {
-        (listView.adapter as RecyclerViewAdapter).refresh()
+    fun setItems(listView: RecyclerView, items: List<LocationWithLists>) {
+        (listView.adapter as RecyclerViewAdapter).refresh(items)
     }
 }
 

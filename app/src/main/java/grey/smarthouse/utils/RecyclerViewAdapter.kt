@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, Int>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(var items: List<Any>, val viewModel: ViewModel) :
+    RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
 
     abstract class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -14,7 +15,7 @@ class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, In
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-         return ViewHolderFactory.createHolder(parent, viewModel, viewType)
+        return ViewHolderFactory.createHolder(parent, viewModel, viewType)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -22,27 +23,23 @@ class RecyclerViewAdapter(val viewModel: ViewModel, private val map: Map<Int, In
     }
 
     override fun getItemCount(): Int {
-        try {
-            return map.keys.size
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return 0
-        }
+        return items.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return map[position] ?: 0
+        return ViewHolderFactory.getItemViewType(items[position])
     }
 
-    fun refresh() {
+    fun refresh(list: List<Any>) {
+        items = list
         notifyDataSetChanged()
     }
 
     companion object {
-        val SENSOR_LIST_TYPE = 0
-        val RELAY_LIST_TYPE = 1
-        val LOCATION_LIST_TYPE = 2
-        val HEADER_LIST_TYPE = 3
+        const val SENSOR_LIST_TYPE = 0
+        const val RELAY_LIST_TYPE = 1
+        const val LOCATION_LIST_TYPE = 2
+        const val HEADER_LIST_TYPE = 3
 
     }
 }

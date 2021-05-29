@@ -47,11 +47,15 @@ class SensorListFragment : Fragment() {
     ): View? {
 
         binding = FragmentSensorListBinding.inflate(inflater, container, false)
-        binding.viewModel = sensorsVM
-        binding.sensorRecyclerView.adapter = RecyclerViewAdapter(sensorsVM, sensorsVM.RVmap)
-        binding.sensorRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.lifecycleOwner = requireActivity()
-        return binding.root
+        with(binding) {
+            viewModel = sensorsVM
+            sensorsVM.sensorsList.value?.let {
+                sensorRecyclerView.adapter = RecyclerViewAdapter(it, sensorsVM)
+            }
+            sensorRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+            lifecycleOwner = requireActivity()
+            return root
+        }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

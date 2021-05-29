@@ -9,53 +9,25 @@ import grey.smarthouse.data.Repository
 import kotlinx.coroutines.launch
 
 
-class RelaySettingsVM(val repository: Repository): ViewModel() {
+class RelaySettingsVM(val repository: Repository) : ViewModel() {
 
+    private var _relay = MutableLiveData<Relay>()
+    val relay: LiveData<Relay>
+        get() = _relay
 
-    private val _mode = MutableLiveData<Int>(2)
-    val mode: LiveData<Int>
-        get() = _mode
-
-    private val _isTempUp = MutableLiveData(true)
-    val isTempUp: LiveData<Boolean>
-        get() = _isTempUp
-
-
-    var num = 0
-    var description = ""
-    var topTemp = ""
-    var botTemp = ""
-    var periodTime = ""
-    var durationTime = ""
-    var relay = Relay()
-
-    fun start(number: Int){
+    fun start(number: Int) {
         viewModelScope.launch {
-            relay = repository.getRelay(number)
-            num = relay.number
-            description = relay.description
-            _mode.value = relay.mode
-            topTemp = relay.topTemp.toString()
-            botTemp = relay.botTemp.toString()
-            _isTempUp.value = relay.topTemp > relay.botTemp
-            periodTime = relay.periodTime.toString()
-            durationTime = relay.durationTime.toString()
+            _relay.value = repository.getRelay(number)
         }
     }
 
     fun setSettingsToRelay() {
-        _isTempUp.value = topTemp > botTemp
-        relay.mode = mode.value!!
-        relay.topTemp = Integer.parseInt(topTemp)
-        relay.botTemp = Integer.parseInt(botTemp)
-        relay.periodTime = Integer.parseInt(periodTime)
-        relay.durationTime = Integer.parseInt(durationTime)
-        relay.description = description
-
-        viewModelScope.launch { repository.update(relay) }
+        relay.value?.let {
+            viewModelScope.launch { repository.update(relay.value!!) }
+        }
     }
 
-    fun updateCheckBoxes(mode: Int){ //TODO isChecked
-        _mode.value = mode
+    fun updateCheckBoxes(value: Int) { //TODO isChecked
+        _relay.value = relay.value?.apply { mode = value }
     }
 }

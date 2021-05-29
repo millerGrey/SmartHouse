@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Repository
 import grey.smarthouse.data.Sensor
-import grey.smarthouse.utils.RecyclerViewAdapter
 import grey.smarthouse.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,21 +41,12 @@ class SensorsVM(val repository: Repository) : ViewModel() {
 
     var error: MutableLiveData<String> = MutableLiveData()
 
-    var RVmap: MutableMap<Int, Int> = LinkedHashMap()
-
     init {
         viewModelScope.launch {
             while (true) {
                 handleTickEvent()
                 delay(2000)
             }
-        }
-
-    }
-
-    private fun RVmapFill() {
-        for (index in sensorsList.value!!.indices) {
-            RVmap.plusAssign(index to RecyclerViewAdapter.SENSOR_LIST_TYPE)
         }
     }
 
@@ -65,7 +55,6 @@ class SensorsVM(val repository: Repository) : ViewModel() {
         repository.getAllSensors()?.let{
             _sensorsList.value = it
             if(it.isNotEmpty()){
-                RVmapFill()
                 _progress.value = false
             } else {
                 _progress.value = true

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import grey.smarthouse.data.Relay
 import grey.smarthouse.data.Repository
-import grey.smarthouse.utils.RecyclerViewAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -21,8 +20,6 @@ class RelaysVM(val repository: Repository) : ViewModel() {
     private var _relayList = MutableLiveData<List<Relay>>(emptyList())
     val relayList: LiveData<List<Relay>>
         get() = _relayList
-
-    var RVmap: MutableMap<Int, Int> = LinkedHashMap()
 
     init{
 
@@ -40,15 +37,9 @@ class RelaysVM(val repository: Repository) : ViewModel() {
             Log.d(TAG,"start coroutine states "+ Thread.currentThread().name)
             repository.getAllRelays()?.let{
                 _relayList.value = it
-                RVmapFill()
+                Log.d(TAG, "relay ${it[3].state}")
             }
             Log.d(TAG,"end coroutine states")
-        }
-    }
-
-    private fun RVmapFill(){
-        for (index in relayList.value!!.indices){
-            RVmap.plusAssign(index to RecyclerViewAdapter.RELAY_LIST_TYPE)
         }
     }
 
@@ -57,9 +48,7 @@ class RelaysVM(val repository: Repository) : ViewModel() {
         viewModelScope.launch() {
             repository.update(relay)
         }
-
     }
-
 
     fun openRelay(num: Int) {
         _openRelayEvent.value = num

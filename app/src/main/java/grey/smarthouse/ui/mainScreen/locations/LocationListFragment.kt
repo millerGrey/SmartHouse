@@ -39,11 +39,15 @@ class LocationListFragment : Fragment() {
     ): View? {
 
         binding = FragmentLocationListBinding.inflate(inflater, container, false)
-        binding.viewModel = locationsVM
-        binding.locationRecyclerView.adapter = RecyclerViewAdapter(locationsVM, locationsVM.RVmap)
-        binding.locationRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.lifecycleOwner = requireActivity()
-        return binding.root
+        with(binding) {
+            viewModel = locationsVM
+            locationsVM.locationsList.value?.let {
+                locationRecyclerView.adapter = RecyclerViewAdapter(it, locationsVM)
+            }
+            locationRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+            lifecycleOwner = requireActivity()
+            return root
+        }
     }
 
 }

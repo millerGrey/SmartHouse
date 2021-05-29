@@ -10,7 +10,6 @@ import grey.smarthouse.R
 import grey.smarthouse.data.Location
 import grey.smarthouse.data.LocationWithLists
 import grey.smarthouse.data.Repository
-import grey.smarthouse.utils.RecyclerViewAdapter
 import grey.smarthouse.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,9 +30,6 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
     val name: MutableLiveData<String> = MutableLiveData()
     var error: MutableLiveData<String> = MutableLiveData()
 
-
-    var RVmap: MutableMap<Int, Int> = LinkedHashMap()
-
     init {
         viewModelScope.launch {
             while (true) {
@@ -48,15 +44,7 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
         viewModelScope.launch() {
             repository.getAllLocations()?.let {
                 _locationsList.value = it
-                RVmapFill()
             }
-        }
-    }
-
-    private fun RVmapFill() {
-        RVmap.clear()
-        for (index in locationsList.value!!.indices) {
-            RVmap.plusAssign(index to RecyclerViewAdapter.LOCATION_LIST_TYPE)
         }
     }
 

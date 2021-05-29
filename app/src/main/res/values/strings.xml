@@ -14,8 +14,8 @@
     <string name="percent_with_digital">%d %%</string>
     <string name="percent_with_digital_float">%.1f %%</string>
     <string name="cool">Охлаждение</string>
-    <string name="temp_off">Отключение:</string>
-    <string name="temp_on">Включение:</string>
+    <string name="temp_up">Верхняя:</string>
+    <string name="temp_down">Нижняя:</string>
     <string name="time_mode">Время</string>
     <string name="minutes">мин.</string>
     <string name="minutes_with_digital">%d мин.</string>

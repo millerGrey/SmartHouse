@@ -42,18 +42,14 @@ class RelayListFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_relay_list, container, false)
         binding = FragmentRelayListBinding.bind(v)
-        binding.viewModel = relayVM
-        binding.relayRecyclerView.adapter = RecyclerViewAdapter(relayVM, relayVM.RVmap)
-        binding.relayRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.lifecycleOwner = requireActivity()
-        return binding.root
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) {
-//            if(isAdded)
-//                relayVM.updateConfig()
+        with(binding) {
+            viewModel = relayVM
+            relayVM.relayList.value?.let {
+                relayRecyclerView.adapter = RecyclerViewAdapter(it, relayVM)
+            }
+            relayRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+            lifecycleOwner = requireActivity()
+            return root
         }
     }
 }

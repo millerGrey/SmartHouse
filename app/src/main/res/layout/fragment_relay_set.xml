@@ -9,6 +9,7 @@
         <variable
             name="viewModel"
             type="grey.smarthouse.ui.relaySettingsScreen.RelaySettingsVM" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{String.format(@string/relay_n, viewModel.num)}"
+                        android:text="@{String.format(@string/relay_n, viewModel.relay.number)}"
                         android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
@@ -51,7 +52,7 @@
                         android:layout_marginTop="8dp"
                         android:hint="@string/description"
                         android:inputType="text"
-                        android:text="@{viewModel.description}"
+                        android:text="@={viewModel.relay.description}"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/relayNumber" />
@@ -72,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@{viewModel.mode == 2}"
+                        android:checked="@{viewModel.relay.mode == 2}"
                         android:onClick="@{_ -> viewModel.updateCheckBoxes(2)}"
                         android:text="@string/hand_mode"
                         android:textColor="@color/colorCustomText"
@@ -88,7 +89,7 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/handModeCheckbox"
-                        app:icon="@{viewModel.isTempUp}" />
+                        app:icon="@{viewModel.relay.topTemp > viewModel.relay.botTemp}" />
 
                     <CheckBox
                         android:id="@+id/tempModeCheckbox"
@@ -96,7 +97,7 @@
                         android:layout_height="33dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@{viewModel.mode == 0}"
+                        android:checked="@{viewModel.relay.mode == 0}"
                         android:onClick="@{_ -> viewModel.updateCheckBoxes(0)}"
                         android:text="@string/temp_mode"
                         android:textColor="@color/colorCustomText"
@@ -121,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@string/temp_off"
+                        android:text="@string/temp_up"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
@@ -134,12 +135,12 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/edit_text_style"
                         android:ems="5"
-                        android:enabled="@{viewModel.mode == 0}"
+                        android:enabled="@{viewModel.relay.mode == 0}"
                         android:hint="0"
                         android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="2dp"
-                        android:text="@={viewModel.topTemp}"
+                        android:text="@={`` + viewModel.relay.topTemp}"
                         android:textSize="18sp"
                         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
                         app:layout_constraintTop_toBottomOf="@+id/tempModeCheckbox" />
@@ -161,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@string/temp_on"
+                        android:text="@string/temp_down"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textTopTemp" />
@@ -174,12 +175,12 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/edit_text_style"
                         android:ems="10"
-                        android:enabled="@{viewModel.mode == 0}"
+                        android:enabled="@{viewModel.relay.mode == 0}"
                         android:hint="0"
                         android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="2dp"
-                        android:text="@={viewModel.botTemp}"
+                        android:text="@={`` + viewModel.relay.botTemp}"
                         android:textSize="18sp"
                         app:layout_constraintStart_toEndOf="@+id/textTopTemp"
                         app:layout_constraintTop_toBottomOf="@+id/topTemp" />
@@ -211,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@{viewModel.mode == 1}"
+                        android:checked="@{viewModel.relay.mode == 1}"
                         android:onClick="@{_ -> viewModel.updateCheckBoxes(1)}"
                         android:text="@string/time_mode"
                         android:textColor="@color/colorCustomText"
@@ -238,12 +239,12 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/edit_text_style"
                         android:ems="5"
-                        android:enabled="@{viewModel.mode == 1}"
+                        android:enabled="@{viewModel.relay.mode == 1}"
                         android:hint="0"
                         android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="2dp"
-                        android:text="@={viewModel.periodTime}"
+                        android:text="@={`` + viewModel.relay.periodTime}"
                         android:textSize="18sp"
                         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
                         app:layout_constraintTop_toBottomOf="@+id/timeModeCheckbox" />
@@ -278,12 +279,12 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/edit_text_style"
                         android:ems="10"
-                        android:enabled="@{viewModel.mode == 1}"
+                        android:enabled="@{viewModel.relay.mode == 1}"
                         android:hint="0"
                         android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="2dp"
-                        android:text="@={viewModel.durationTime}"
+                        android:text='@={"" + viewModel.relay.durationTime}'
                         android:textSize="18sp"
                         app:layout_constraintStart_toEndOf="@+id/textDurationTime"
                         app:layout_constraintTop_toBottomOf="@+id/periodTime" />

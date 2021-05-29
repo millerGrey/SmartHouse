@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import grey.smarthouse.R
-import grey.smarthouse.data.Location
+import grey.smarthouse.data.LocationWithLists
 import grey.smarthouse.data.Relay
 import grey.smarthouse.data.Sensor
 import grey.smarthouse.databinding.ListItemLocationBinding
@@ -36,9 +36,15 @@ object ViewHolderFactory {
                 binding.sensor = sensor
                 binding.vm = vm
                 binding.value = when (sensor.type) {
-                    "temperature" -> String.format(itemView.resources.getString(R.string.degree_with_digital_float), sensor.value)
-                    "humidity" -> String.format(itemView.resources.getString(R.string.percent_with_digital_float), sensor.value)
-                    else -> ""
+                    "temperature" -> String.format(
+                        itemView.resources.getString(R.string.degree_with_digital_float),
+                        sensor.value
+                    )
+                    "humidity" -> String.format(
+                        itemView.resources.getString(R.string.percent_with_digital_float),
+                        sensor.value
+                    )
+                    else -> "${sensor.value}"
                 }
             }
             binding.executePendingBindings()
@@ -53,9 +59,9 @@ object ViewHolderFactory {
                 relayList.value?.let { list ->
                     binding.relay = list[pos]
                     binding.buttonClickListener = View.OnClickListener { vm.relayToggle(list[pos]) }
-                    binding.itemClickListener = View.OnClickListener { vm.openRelay(list[pos].number) }
+                    binding.itemClickListener =
+                        View.OnClickListener { vm.openRelay(list[pos].number) }
                     binding.state = list[pos].state
-
                 }
             }
             binding.executePendingBindings()
@@ -63,7 +69,8 @@ object ViewHolderFactory {
 
     }
 
-    class LocationViewHolder(v: View, private val vm: ViewModel) : RecyclerViewAdapter.ViewHolder(v) {
+    class LocationViewHolder(v: View, private val vm: ViewModel) :
+        RecyclerViewAdapter.ViewHolder(v) {
         private val binding = ListItemLocationBinding.bind(v)
         override fun bind(pos: Int) {
 
@@ -86,18 +93,25 @@ object ViewHolderFactory {
     }
 
 
-    fun createHolder(parent: ViewGroup, vm: ViewModel, itemViewType: Int): RecyclerViewAdapter.ViewHolder {
+    fun createHolder(
+        parent: ViewGroup,
+        vm: ViewModel,
+        itemViewType: Int
+    ): RecyclerViewAdapter.ViewHolder {
         return when (itemViewType) {
             SENSOR_LIST_TYPE -> {
-                val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_sensor, parent, false)
+                val v = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_sensor, parent, false)
                 SensorViewHolder(v, vm)
             }
             RELAY_LIST_TYPE -> {
-                val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_relay, parent, false)
+                val v = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_relay, parent, false)
                 RelayViewHolder(v, vm)
             }
             LOCATION_LIST_TYPE -> {
-                val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_location, parent, false)
+                val v = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_location, parent, false)
                 LocationViewHolder(v, vm)
             }
             HEADER_LIST_TYPE -> {
@@ -117,7 +131,7 @@ object ViewHolderFactory {
         return when (item) {
             is Sensor -> SENSOR_LIST_TYPE
             is Relay -> RELAY_LIST_TYPE
-            is Location -> LOCATION_LIST_TYPE
+            is LocationWithLists -> LOCATION_LIST_TYPE
             is String -> HEADER_LIST_TYPE
             else -> HEADER_LIST_TYPE
         }
