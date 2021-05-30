@@ -13,18 +13,22 @@ import grey.smarthouse.data.Repository
 import grey.smarthouse.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocationVM(val application: App, val repository: Repository) : AndroidViewModel(application) {
+@Singleton
+class LocationVM @Inject constructor(val application: App, val repository: Repository) :
+    AndroidViewModel(application) {
     private var _locationsList = MutableLiveData<List<LocationWithLists>>(emptyList())
     val locationsList: LiveData<List<LocationWithLists>>
         get() = _locationsList
 
-    private var _editLocationEvent = SingleLiveEvent<Int?>()
-    val editLocationEvent: LiveData<Int?>
+    private var _editLocationEvent = MutableLiveData<Int>()
+    val editLocationEvent: LiveData<Int>
         get() = _editLocationEvent
 
     private var _dialogDismiss = SingleLiveEvent<Boolean>()
-    val dialogDismiss: LiveData<Boolean?>
+    val dialogDismiss: SingleLiveEvent<Boolean>
         get() = _dialogDismiss
 
     val name: MutableLiveData<String> = MutableLiveData()
@@ -52,12 +56,13 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
         _editLocationEvent.value = -1
     }
 
-    fun saveLocation() {
+    fun positiveAction() {
         viewModelScope.launch {
             val loc = repository.getLocation(name.value!!)
             loc?.let {
                 if (loc.id != editLocationEvent.value) {
-                    error.value = application.resources.getString(R.string.locationNameDublicateError)
+                    error.value =
+                        application.resources.getString(R.string.locationNameDublicateError)
                 } else {
                     _dialogDismiss.value = true
                 }
@@ -66,7 +71,7 @@ class LocationVM(val application: App, val repository: Repository) : AndroidView
                 location.name = name.value!!
                 if (name.value!!.isEmpty()) {
                     error.value = application.resources.getString(R.string.locationNameEmptyError)
-                } else if (editLocationEvent.value!! > 0) {
+                } else if (editLocationEvent.value ?: -1 > 0) {
                     location.id = editLocationEvent.value!!
                     repository.update(location)
                     _dialogDismiss.value = true

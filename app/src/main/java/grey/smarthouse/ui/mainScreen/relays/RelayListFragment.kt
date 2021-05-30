@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
 import grey.smarthouse.R
-import grey.smarthouse.data.Repository
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentRelayListBinding
 import grey.smarthouse.utils.RecyclerViewAdapter
-import grey.smarthouse.utils.ViewModelFactory
+import javax.inject.Inject
 
 /**
  * Created by GREY on 30.04.2018.
@@ -22,12 +19,9 @@ import grey.smarthouse.utils.ViewModelFactory
 
 class RelayListFragment : Fragment() {
 
-    val relayVM by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelFactory(App.app, Repository(App.app.database, Requests))
-        ).get(RelaysVM::class.java)
-    }
+    @Inject
+    lateinit var relaysVM: RelaysVM
+
     lateinit var binding: FragmentRelayListBinding
     private val TAG = "RELAYS"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +35,12 @@ class RelayListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_relay_list, container, false)
+        relaysVM = (requireActivity().application as App).appComponent.getRelaysVM()
         binding = FragmentRelayListBinding.bind(v)
         with(binding) {
-            viewModel = relayVM
-            relayVM.relayList.value?.let {
-                relayRecyclerView.adapter = RecyclerViewAdapter(it, relayVM)
+            viewModel = relaysVM
+            relaysVM.relayList.value?.let {
+                relayRecyclerView.adapter = RecyclerViewAdapter(it)
             }
             relayRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             lifecycleOwner = requireActivity()

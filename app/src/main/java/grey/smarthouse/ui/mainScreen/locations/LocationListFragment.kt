@@ -10,26 +10,18 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
 import grey.smarthouse.R
-import grey.smarthouse.data.Repository
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentDialogLocationBinding
 import grey.smarthouse.databinding.FragmentLocationListBinding
 import grey.smarthouse.utils.RecyclerViewAdapter
-import grey.smarthouse.utils.ViewModelFactory
+import javax.inject.Inject
 
 class LocationListFragment : Fragment() {
-
-    private val locationsVM by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelFactory(App.app, Repository(App.app.database, Requests))
-        ).get(LocationVM::class.java)
-    }
+    @Inject
+    lateinit var locationVM: LocationVM
     lateinit var binding: FragmentLocationListBinding
     private val TAG = "LOCATIONS"
 
@@ -38,27 +30,23 @@ class LocationListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        locationVM = (requireActivity().application as App).appComponent.getLocationVM()
         binding = FragmentLocationListBinding.inflate(inflater, container, false)
         with(binding) {
-            viewModel = locationsVM
-            locationsVM.locationsList.value?.let {
-                locationRecyclerView.adapter = RecyclerViewAdapter(it, locationsVM)
+            viewModel = locationVM
+            locationVM.locationsList.value?.let {
+                locationRecyclerView.adapter = RecyclerViewAdapter(it)
             }
             locationRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             lifecycleOwner = requireActivity()
             return root
         }
     }
-
 }
 
 class LocationDialog : DialogFragment() {
-    private val locationsVM by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelFactory(App.app, Repository(App.app.database, Requests))
-        ).get(LocationVM::class.java)
-    }
+    @Inject
+    lateinit var locationVM: LocationVM
 
     lateinit var binding: FragmentDialogLocationBinding
 
@@ -67,10 +55,11 @@ class LocationDialog : DialogFragment() {
         val inflater = requireActivity().layoutInflater
         binding = FragmentDialogLocationBinding.inflate(inflater)
         val locationId = arguments?.getInt("id") ?: -1
-        binding.vm = locationsVM
+        locationVM = (requireActivity().application as App).appComponent.getLocationVM()
+        binding.vm = locationVM
         binding.lifecycleOwner = requireActivity()
-        locationsVM.fillDescription(locationId)
-        locationsVM.dialogDismiss.observe(this) {
+        locationVM.fillDescription(locationId)
+        locationVM.dialogDismiss.observe(viewLifecycleOwner) {
             it?.let {
                 dialog?.dismiss()
             }
@@ -83,14 +72,14 @@ class LocationDialog : DialogFragment() {
             .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                locationsVM.saveLocation()
+                locationVM.positiveAction()
             }
         }
         return dialog
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        locationsVM.dismissListener()
+        locationVM.dismissListener()
         super.onDismiss(dialog)
     }
 }

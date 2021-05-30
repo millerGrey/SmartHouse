@@ -6,33 +6,27 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import grey.smarthouse.App
 import grey.smarthouse.R
-import grey.smarthouse.data.Repository
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentDialogSensorBinding
-import grey.smarthouse.utils.ViewModelFactory
+import javax.inject.Inject
 
 class SensorDialog : DialogFragment() {
 
-    val sensorVM by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelFactory(App.app, Repository(App.app.database, Requests))
-        ).get(SensorsVM::class.java)
-    }
+    @Inject
+    lateinit var sensorsVM: SensorsVM
 
     @TargetApi(11)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater
         val binding = FragmentDialogSensorBinding.inflate(inflater)
-        binding.viewModel = sensorVM
+        sensorsVM = (requireActivity().application as App).appComponent.getSensorsVM()
+        binding.viewModel = sensorsVM
         binding.lifecycleOwner = requireActivity()
         val sensorId = arguments?.getInt("num") ?: -1
-        sensorVM.fillDescription(sensorId)
-        sensorVM.dialogDismiss.observe(this) {
+        sensorsVM.fillDescription(sensorId)
+        sensorsVM.dialogDismiss.observe(viewLifecycleOwner) {
             it?.let {
                 dialog?.dismiss()
             }
@@ -46,15 +40,14 @@ class SensorDialog : DialogFragment() {
             .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                sensorVM.saveSensor()
+                sensorsVM.positiveAction()
             }
         }
-
         return dialog
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        sensorVM.dismissListener()
+        sensorsVM.dismissListener()
         super.onDismiss(dialog)
     }
 }

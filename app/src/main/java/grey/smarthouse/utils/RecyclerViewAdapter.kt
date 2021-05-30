@@ -2,11 +2,10 @@ package grey.smarthouse.utils
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerViewAdapter(var items: List<Any>, val viewModel: ViewModel) :
+class RecyclerViewAdapter(var items: List<Any>) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
 
@@ -15,7 +14,7 @@ class RecyclerViewAdapter(var items: List<Any>, val viewModel: ViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolderFactory.createHolder(parent, viewModel, viewType)
+        return ViewHolderFactory.createHolder(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -40,6 +39,5 @@ class RecyclerViewAdapter(var items: List<Any>, val viewModel: ViewModel) :
         const val RELAY_LIST_TYPE = 1
         const val LOCATION_LIST_TYPE = 2
         const val HEADER_LIST_TYPE = 3
-
     }
 }

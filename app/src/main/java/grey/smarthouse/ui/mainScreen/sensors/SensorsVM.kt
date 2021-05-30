@@ -10,9 +10,11 @@ import grey.smarthouse.data.Sensor
 import grey.smarthouse.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class SensorsVM(val repository: Repository) : ViewModel() {
+@Singleton
+class SensorsVM @Inject constructor(val repository: Repository) : ViewModel() {
     private val TAG = "sensorsVM"
 
     private var _sensorsList = MutableLiveData<List<Sensor>>(emptyList())
@@ -52,9 +54,9 @@ class SensorsVM(val repository: Repository) : ViewModel() {
 
     private suspend fun handleTickEvent() {
         Log.d(TAG, "start coroutine " + Thread.currentThread().name)
-        repository.getAllSensors()?.let{
+        repository.getAllSensors()?.let {
             _sensorsList.value = it
-            if(it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 _progress.value = false
             } else {
                 _progress.value = true
@@ -75,7 +77,9 @@ class SensorsVM(val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             if (num >= 0) {
                 val sensor = repository.getSensor(num)
-                locationList.value = repository.getAllLocations().map { it.location.name }.toMutableList().apply { add(0, "---") }
+                locationList.value =
+                    repository.getAllLocations().map { it.location.name }.toMutableList()
+                        .apply { add(0, "---") }
                 sensorDescription.value = sensor.description
                 Log.d(TAG, "$sensor, ${sensorDescription.value}")
                 locationList.value?.let {
@@ -86,7 +90,7 @@ class SensorsVM(val repository: Repository) : ViewModel() {
         }
     }
 
-    fun saveSensor() {
+    fun positiveAction() {
         viewModelScope.launch {
             val sensor = repository.getSensor(_editSensorEvent.value!!)
             sensor.description = sensorDescription.value!!

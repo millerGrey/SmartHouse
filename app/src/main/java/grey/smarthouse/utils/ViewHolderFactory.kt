@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.ViewModel
+import grey.smarthouse.App
 import grey.smarthouse.R
 import grey.smarthouse.data.LocationWithLists
 import grey.smarthouse.data.Relay
@@ -20,21 +20,27 @@ import grey.smarthouse.utils.RecyclerViewAdapter.Companion.HEADER_LIST_TYPE
 import grey.smarthouse.utils.RecyclerViewAdapter.Companion.LOCATION_LIST_TYPE
 import grey.smarthouse.utils.RecyclerViewAdapter.Companion.RELAY_LIST_TYPE
 import grey.smarthouse.utils.RecyclerViewAdapter.Companion.SENSOR_LIST_TYPE
+import javax.inject.Inject
 
 object ViewHolderFactory {
 
-    class SensorViewHolder(v: View, private val vm: ViewModel) : RecyclerViewAdapter.ViewHolder(v) {
-        private val binding = ListItemSensorBinding.bind(v)
-        override fun bind(pos: Int) {
+    class SensorViewHolder(v: View) : RecyclerViewAdapter.ViewHolder(v) {
 
-            (vm as SensorsVM).sensorsList.value?.let { list ->
+        @Inject
+        lateinit var sensorsVM: SensorsVM
+
+        private val binding = ListItemSensorBinding.bind(v)
+
+        override fun bind(pos: Int) {
+            sensorsVM = (itemView.context.applicationContext as App).appComponent.getSensorsVM()
+            sensorsVM.sensorsList.value?.let { list ->
                 if (list.isEmpty()) {
                     Log.d("RV", "bind sensor ${list.size}")
                 }
                 Log.d("RV", "bind sensor $pos ${list[pos]} ${list.size}")
                 val sensor = list[pos]
                 binding.sensor = sensor
-                binding.vm = vm
+                binding.vm = sensorsVM
                 binding.value = when (sensor.type) {
                     "temperature" -> String.format(
                         itemView.resources.getString(R.string.degree_with_digital_float),
@@ -51,68 +57,71 @@ object ViewHolderFactory {
         }
     }
 
-    class RelayViewHolder(v: View, private val vm: ViewModel) : RecyclerViewAdapter.ViewHolder(v) {
-        private val binding = ListItemRelayBinding.bind(v)
-        override fun bind(pos: Int) {
+    class RelayViewHolder(v: View) : RecyclerViewAdapter.ViewHolder(v) {
 
-            with(vm as RelaysVM) {
-                relayList.value?.let { list ->
-                    binding.relay = list[pos]
-                    binding.buttonClickListener = View.OnClickListener { vm.relayToggle(list[pos]) }
-                    binding.itemClickListener =
-                        View.OnClickListener { vm.openRelay(list[pos].number) }
-                    binding.state = list[pos].state
-                }
+        @Inject
+        lateinit var relaysVM: RelaysVM
+
+        private val binding = ListItemRelayBinding.bind(v)
+
+        override fun bind(pos: Int) {
+            relaysVM = (itemView.context.applicationContext as App).appComponent.getRelaysVM()
+            relaysVM.relayList.value?.let { list ->
+                binding.relay = list[pos]
+                binding.buttonClickListener =
+                    View.OnClickListener { relaysVM.relayToggle(list[pos]) }
+                binding.itemClickListener =
+                    View.OnClickListener { relaysVM.openRelay(list[pos].number) }
+                binding.state = list[pos].state
             }
             binding.executePendingBindings()
         }
 
     }
 
-    class LocationViewHolder(v: View, private val vm: ViewModel) :
+    class LocationViewHolder(v: View) :
         RecyclerViewAdapter.ViewHolder(v) {
-        private val binding = ListItemLocationBinding.bind(v)
-        override fun bind(pos: Int) {
 
-            with(vm as LocationVM) {
-                locationsList.value?.let { list ->
-                    binding.locationWithLists = list[pos]
-                }
-                binding.vm = vm
+        @Inject
+        lateinit var locationVM: LocationVM
+
+        private val binding = ListItemLocationBinding.bind(v)
+
+        override fun bind(pos: Int) {
+            locationVM = (itemView.context.applicationContext as App).appComponent.getLocationVM()
+            locationVM.locationsList.value?.let { list ->
+                binding.locationWithLists = list[pos]
             }
+            binding.vm = locationVM
             binding.executePendingBindings()
         }
-
     }
 
     class HeaderViewHolder(private val v: View) : RecyclerViewAdapter.ViewHolder(v) {
         override fun bind(pos: Int) {
             (v as TextView).text = "Оборудование"
         }
-
     }
-
 
     fun createHolder(
         parent: ViewGroup,
-        vm: ViewModel,
         itemViewType: Int
     ): RecyclerViewAdapter.ViewHolder {
         return when (itemViewType) {
             SENSOR_LIST_TYPE -> {
                 val v = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item_sensor, parent, false)
-                SensorViewHolder(v, vm)
+                SensorViewHolder(v)
             }
             RELAY_LIST_TYPE -> {
                 val v = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item_relay, parent, false)
-                RelayViewHolder(v, vm)
+                RelayViewHolder(v)
             }
             LOCATION_LIST_TYPE -> {
                 val v = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item_location, parent, false)
-                LocationViewHolder(v, vm)
+                LocationViewHolder(v)
             }
             HEADER_LIST_TYPE -> {
                 val v = LayoutInflater.from(parent.context)
@@ -122,8 +131,8 @@ object ViewHolderFactory {
             //TODO убрать else
             else -> SensorViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_sensor, parent, false), vm
-            );
+                    .inflate(R.layout.list_item_sensor, parent, false)
+            )
         }
     }
 
@@ -135,8 +144,5 @@ object ViewHolderFactory {
             is String -> HEADER_LIST_TYPE
             else -> HEADER_LIST_TYPE
         }
-
     }
-
-
 }

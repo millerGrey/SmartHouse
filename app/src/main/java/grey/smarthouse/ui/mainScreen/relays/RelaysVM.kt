@@ -9,9 +9,11 @@ import grey.smarthouse.data.Relay
 import grey.smarthouse.data.Repository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class RelaysVM(val repository: Repository) : ViewModel() {
+@Singleton
+class RelaysVM @Inject constructor(val repository: Repository) : ViewModel() {
     private val TAG = "relaysVM"
     private var _openRelayEvent = MutableLiveData<Int?>(null)
     val openRelayEvent: LiveData<Int?>
@@ -21,7 +23,7 @@ class RelaysVM(val repository: Repository) : ViewModel() {
     val relayList: LiveData<List<Relay>>
         get() = _relayList
 
-    init{
+    init {
 
         viewModelScope.launch {
             while (true) {

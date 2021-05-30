@@ -1,9 +1,14 @@
 package grey.smarthouse.data
 
 import android.util.Log
+import grey.smarthouse.di.AppModule
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
 
-class Repository(private val local: DataSource, private val remote: DataSource): DataSource {
+class Repository @Inject constructor(
+    @AppModule.LocalDataSource private val local: DataSource,
+    @AppModule.RemoteDataSource private val remote: DataSource
+) : DataSource {
     private final val TAG = "Repo"
     override suspend fun getRelay(num: Int): Relay {
         val relay: Relay = remote.getRelay(num)
@@ -13,25 +18,26 @@ class Repository(private val local: DataSource, private val remote: DataSource):
         }
         return local.getRelay(num)
     }
-//?
+
+    //?
     override suspend fun getAllRelays(l: List<Relay>?): List<Relay>? {
-        Log.d(TAG,"start response relays")
+        Log.d(TAG, "start response relays")
         var list: List<Relay>? = null
         list = local.getAllRelays()
         withTimeoutOrNull(2000) {
 
-            remote.getAllRelays()?.let{
+            remote.getAllRelays()?.let {
                 list = it
-                if(it.isNotEmpty()){
-                    list?.forEach {
-                        sensor -> local.update(sensor)
+                if (it.isNotEmpty()) {
+                    list?.forEach { sensor ->
+                        local.update(sensor)
                     }
                 }
             }
         } ?: let {
 //            list = local.getAllRelays()
         }
-        Log.d(TAG,"end response relays")
+        Log.d(TAG, "end response relays")
         return list
     }
 

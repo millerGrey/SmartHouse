@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import grey.smarthouse.App
-import grey.smarthouse.data.Repository
-import grey.smarthouse.data.remote.Requests
 import grey.smarthouse.databinding.FragmentSensorListBinding
 import grey.smarthouse.utils.RecyclerViewAdapter
-import grey.smarthouse.utils.ViewModelFactory
+import javax.inject.Inject
 
 
 /**
@@ -21,53 +18,27 @@ import grey.smarthouse.utils.ViewModelFactory
 
 class SensorListFragment : Fragment() {
 
-    val sensorsVM by lazy {
-        ViewModelProvider(
-            requireActivity(),
-            ViewModelFactory(App.app, Repository(App.app.database, Requests))
-        ).get(SensorsVM::class.java)
-    }
+    @Inject
+    lateinit var sensorsVM: SensorsVM
+
     lateinit var binding: FragmentSensorListBinding
     private val TAG = "SENSORS"
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        sensorsVM.editSensorEvent.observe(this) {
-//            val args = Bundle()
-//            args.putString("description", it)
-//            val sensorDialog = SensorDialog()
-//            sensorDialog.arguments = args
-//            sensorDialog.show(requireActivity().supportFragmentManager, "sensorDialog")
-//
-//        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+        sensorsVM = (requireActivity().application as App).appComponent.getSensorsVM()
         binding = FragmentSensorListBinding.inflate(inflater, container, false)
         with(binding) {
             viewModel = sensorsVM
             sensorsVM.sensorsList.value?.let {
-                sensorRecyclerView.adapter = RecyclerViewAdapter(it, sensorsVM)
+                sensorRecyclerView.adapter = RecyclerViewAdapter(it)
             }
             sensorRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             lifecycleOwner = requireActivity()
             return root
         }
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && isAdded) {
-//            if(isAdded)
-//                sensorsVM.updateConfig()
-        }
-    }
-
-    companion object {
-        val ARG_PAGE = "ARG PAGE"
-
     }
 }

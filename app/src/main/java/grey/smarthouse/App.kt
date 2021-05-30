@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import androidx.room.Room
 
 import grey.smarthouse.data.local.AppDatabase
+import grey.smarthouse.di.AppComponent
+import grey.smarthouse.di.DaggerAppComponent
 
 
 class App : Application() {
@@ -17,6 +19,7 @@ class App : Application() {
     var mNotifTemp: Int = 0
     var mIsNotifOn: Boolean = false
     var mIsTestSet: Boolean = false
+    val appComponent: AppComponent = DaggerAppComponent.factory().create(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -24,23 +27,23 @@ class App : Application() {
         sPreferences = this.getSharedPreferences("Preferenses", Context.MODE_PRIVATE)
         loadPref()
         database = Room.databaseBuilder(this, AppDatabase::class.java, "database.db")
-                .allowMainThreadQueries()
-                .build()
+            .allowMainThreadQueries()
+            .build()
+
     }
 
-
     fun savePref() {
-        val ed = sPreferences!!.edit()
-        ed.putString(SAVED_URL, mDeviceURL)
-        ed.putInt(SAVED_NOTIF_TEMP, mNotifTemp)
-        ed.putBoolean(SAVED_NOTIF_ON, mIsNotifOn)
-        ed.putBoolean(SAVED_TEST_SET, mIsTestSet)
-        ed.apply()
+        val editor = sPreferences!!.edit()
+        editor.putString(SAVED_URL, mDeviceURL)
+        editor.putInt(SAVED_NOTIF_TEMP, mNotifTemp)
+        editor.putBoolean(SAVED_NOTIF_ON, mIsNotifOn)
+        editor.putBoolean(SAVED_TEST_SET, mIsTestSet)
+        editor.apply()
 
     }
 
     fun loadPref() {
-        sPreferences!!.getString(SAVED_URL, "")?.let{
+        sPreferences!!.getString(SAVED_URL, "")?.let {
             mDeviceURL = it
         }
         mNotifTemp = sPreferences!!.getInt(SAVED_NOTIF_TEMP, 25)
