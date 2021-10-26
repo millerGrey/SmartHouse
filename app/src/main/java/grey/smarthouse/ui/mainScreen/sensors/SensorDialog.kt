@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.observe
@@ -17,6 +18,15 @@ class SensorDialog : DialogFragment() {
     @Inject
     lateinit var sensorsVM: SensorsVM
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sensorsVM.dialogDismiss.observe(viewLifecycleOwner) {
+            it?.let {
+                dialog?.dismiss()
+            }
+        }
+    }
+
     @TargetApi(11)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater
@@ -26,12 +36,6 @@ class SensorDialog : DialogFragment() {
         binding.lifecycleOwner = requireActivity()
         val sensorId = arguments?.getInt("num") ?: -1
         sensorsVM.fillDescription(sensorId)
-        sensorsVM.dialogDismiss.observe(viewLifecycleOwner) {
-            it?.let {
-                dialog?.dismiss()
-            }
-        }
-
         val dialog = AlertDialog.Builder(requireActivity())
             .setView(binding.root)
             .setTitle(R.string.sensor)

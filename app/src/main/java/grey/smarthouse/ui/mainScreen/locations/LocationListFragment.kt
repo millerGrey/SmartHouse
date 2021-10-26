@@ -49,6 +49,15 @@ class LocationDialog : DialogFragment() {
     lateinit var locationVM: LocationVM
 
     lateinit var binding: FragmentDialogLocationBinding
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        locationVM.dialogDismiss.observe(viewLifecycleOwner) {
+            it?.let {
+                dialog?.dismiss()
+            }
+        }
+    }
 
     @TargetApi(11)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -59,11 +68,7 @@ class LocationDialog : DialogFragment() {
         binding.vm = locationVM
         binding.lifecycleOwner = requireActivity()
         locationVM.fillDescription(locationId)
-        locationVM.dialogDismiss.observe(viewLifecycleOwner) {
-            it?.let {
-                dialog?.dismiss()
-            }
-        }
+
         val dialog = AlertDialog.Builder(requireActivity())
             .setView(binding.root)
             .setTitle(R.string.location)

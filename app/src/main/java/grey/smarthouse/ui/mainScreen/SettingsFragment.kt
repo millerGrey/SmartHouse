@@ -12,9 +12,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
-
-import grey.smarthouse.R
 import grey.smarthouse.App
+import grey.smarthouse.R
 import grey.smarthouse.data.remote.Requests
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -45,6 +44,7 @@ class SettingsFragment : Fragment(), TextView.OnEditorActionListener {
             if (i == 6) {
                 App.app.mDeviceURL = mEditURL!!.text.toString()
                 Requests.retrofitInit(App.app.mDeviceURL)
+                App.app.savePref()
                 return@OnEditorActionListener false
             }
             false

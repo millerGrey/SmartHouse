@@ -1,8 +1,11 @@
 package grey.smarthouse.data.remote
 
 import android.util.Log
+import grey.smarthouse.BuildConfig
 import grey.smarthouse.data.*
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,14 +30,22 @@ object Requests : DataSource {
 
     fun retrofitInit(url: String) {
         var url = url
+        val okHttptBuilder = OkHttpClient.Builder()
+        if (BuildConfig.DEBUG) okHttptBuilder.addNetworkInterceptor(
+            HttpLoggingInterceptor()
+                .apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+        val client = okHttptBuilder.build()
         if (url.isEmpty()) {
             url = "192.168.0.201"
         }
         URL = "http://$url"
         retrofit = Retrofit.Builder()
-                .baseUrl(URL!!)
-                //.addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(URL!!)
+            //.addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
         api = retrofit!!.create(SmartHouseApi::class.java)
         Log.d("SH", "retrofit init")
     }
@@ -71,7 +82,6 @@ object Requests : DataSource {
         val resp = api.configList(num)
         val log = resp.string()
         relay = parceRelay(log)
-        Log.d(TAG, "<<< get relay $num | $log")
         return relay
     }
 
@@ -101,7 +111,6 @@ object Requests : DataSource {
     }
 
     override suspend fun update(relay: Relay) {
-        Log.d(TAG, ">>> update relay")
         val mode = relay.mode
         var modeStr: String = ""
         setRelayState(relay.number, relay.state)
@@ -119,21 +128,16 @@ object Requests : DataSource {
                     relay.durationTime,
                     relay.sensNum,
                     relay.description)
-            Log.d(TAG, "<<< " + response.string())
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
     }
 
     private suspend fun getRelayStates(): List<String> {
-        Log.d(TAG, "start method")
         var list: List<String> = emptyList()
         val stateReq = api.relayStateList()
         val log = stateReq.string()
-//        Log.d(TAG, ">>> request")
         list = log.split("/".toRegex()).dropLastWhile { it.isEmpty() }.subList(1, 9)
-        Log.d(TAG, "<<< response" + log)
-        Log.d(TAG, "end method")
         return list
     }
 
@@ -144,10 +148,9 @@ object Requests : DataSource {
         } else {
             api.relayOff(num)
         }
-        Log.d(TAG, ">>> " + relaySetState.request().toString())
         relaySetState.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d(TAG, "<<< " + response.message())
+
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -177,13 +180,11 @@ object Requests : DataSource {
                         sensorList.add(parceSensor(line))
                 }
             }
-            Log.d(TAG, "<<< | $log")
             log = response.string()
             val values = log.replace(',', '.').split("/".toRegex()).dropLastWhile { it.isEmpty() }
             sensorList?.forEachIndexed { index, sensor ->
                 sensor.value = values[index].toFloat()
             }
-            Log.d(TAG, "<<< | $log")
 
         } catch (e: Exception) {
             e.printStackTrace()

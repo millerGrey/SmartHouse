@@ -60,10 +60,10 @@ class SensorsVM @Inject constructor(val repository: Repository) : ViewModel() {
                 _progress.value = false
             } else {
                 _progress.value = true
-                _cnt.postValue(cnt.value?.plus(1))
+                _cnt.value = cnt.value?.plus(1)
                 return
             }
-            _cnt.postValue(0)
+            _cnt.value = 0
         }
         Log.d(TAG, "end coroutine")
     }
